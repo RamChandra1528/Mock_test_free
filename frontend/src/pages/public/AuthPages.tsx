@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, ArrowRight, Eye, EyeOff, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { LanguageToggle } from "../../components/LanguageToggle";
 import { Logo } from "../../components/Logo";
@@ -115,19 +115,14 @@ export function LoginPage() {
   const { language } = useLanguage();
   const bi = (english: string, hindi: string) =>
     language === "hi" ? hindi : english;
-  const [params] = useSearchParams();
   const [show, setShow] = useState(false);
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors, isSubmitting },
   } = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
-    defaultValues:
-      params.get("role") === "admin"
-        ? { email: "admin@mockmaster.com", password: "Admin@123" }
-        : { email: "", password: "" },
+    defaultValues: { email: "", password: "" },
   });
   if (user)
     return (
@@ -204,37 +199,6 @@ export function LoginPage() {
           )}
         </button>
       </form>
-      <div className="my-6 flex items-center gap-3 text-[11px] font-bold uppercase tracking-wider text-[#929c97]">
-        <span className="h-px flex-1 bg-[#dfe2dc]" />
-        {bi("Demo access", "डेमो प्रवेश")}
-        <span className="h-px flex-1 bg-[#dfe2dc]" />
-      </div>
-      <div className="grid grid-cols-2 gap-3">
-        <button
-          className="rounded-xl border border-[#dde1da] bg-white p-3 text-left text-xs hover:border-forest"
-          onClick={() => {
-            setValue("email", "student@mockmaster.com");
-            setValue("password", "Student@123");
-          }}
-        >
-          <b className="block">{bi("Student", "विद्यार्थी")}</b>
-          <span className="text-[#77837d]">
-            {bi("Load credentials", "लॉगिन विवरण भरें")}
-          </span>
-        </button>
-        <button
-          className="rounded-xl border border-[#dde1da] bg-white p-3 text-left text-xs hover:border-forest"
-          onClick={() => {
-            setValue("email", "admin@mockmaster.com");
-            setValue("password", "Admin@123");
-          }}
-        >
-          <b className="block">{bi("Administrator", "प्रशासक")}</b>
-          <span className="text-[#77837d]">
-            {bi("Load credentials", "लॉगिन विवरण भरें")}
-          </span>
-        </button>
-      </div>
       <p className="mt-7 text-center text-sm text-[#6c7973]">
         {bi("New here?", "यहाँ नए हैं?")}{" "}
         <Link
