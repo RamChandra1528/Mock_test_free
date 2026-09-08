@@ -1,0 +1,68 @@
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: mockmaster
+      MYSQL_USER: mockmaster
+      MYSQL_PASSWORD: mockmaster
+      MYSQL_ROOT_PASSWORD: local-root-password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mockmaster_mysql:/var/lib/mysql
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-uroot",
+          "-plocal-root-password",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: mysql://mockmaster:mockmaster@mysql:3306/mockmaster
+      JWT_SECRET: docker-development-secret-change-before-production
+      JWT_EXPIRES_IN: 8h
+      NODE_ENV: production
+      COOKIE_SECURE: "false"
+      FRONTEND_URL: http://localhost:5173
+      PORT: 3000
+      UPLOAD_DIR: /app/backend/uploads
+      MAX_UPLOAD_MB: 150
+      THROTTLE_TTL_MS: 60000
+      THROTTLE_LIMIT: 180
+    ports:
+      - "3000:3000"
+    volumes:
+      - mockmaster_uploads:/app/backend/uploads
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        VITE_API_URL: http://localhost:3000/api
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  mockmaster_mysql:
+  mockmaster_uploads:

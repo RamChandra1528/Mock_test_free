@@ -1,0 +1,370 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  STUDENT
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum ExamStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum AttemptStatus {
+  IN_PROGRESS
+  SUBMITTED
+  EXPIRED
+}
+
+enum ImportStatus {
+  PROCESSING
+  REVIEW
+  READY
+  FAILED
+  CONFIRMED
+}
+
+enum QuestionStatus {
+  PENDING
+  APPROVED
+  SKIPPED
+}
+
+enum DuplicateAction {
+  KEEP
+  REPLACE
+  SKIP
+}
+
+enum Language {
+  EN
+  HI
+}
+
+model User {
+  id                String         @id @default(uuid()) @db.Char(36)
+  fullName          String         @db.VarChar(120)
+  email             String         @unique @db.VarChar(190)
+  passwordHash      String         @db.VarChar(255)
+  roleId            Int
+  role              RoleDefinition @relation(fields: [roleId], references: [id])
+  status            UserStatus     @default(ACTIVE)
+  preferredLanguage Language       @default(EN)
+  attempts          Attempt[]
+  imports           PaperImport[]
+  statistics        UserStatistic?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  @@index([roleId, status])
+  @@map("users")
+}
+
+model RoleDefinition {
+  id          Int      @id @default(autoincrement())
+  code        Role     @unique
+  name        String   @db.VarChar(60)
+  description String?  @db.VarChar(255)
+  users       User[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("roles")
+}
+
+model UserStatistic {
+  userId          String   @id @db.Char(36)
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  totalAttempts   Int      @default(0)
+  totalQuestions  Int      @default(0)
+  totalCorrect    Int      @default(0)
+  totalWrong      Int      @default(0)
+  averageScore    Decimal  @default(0) @db.Decimal(6, 2)
+  highestScore    Decimal  @default(0) @db.Decimal(6, 2)
+  lowestScore     Decimal  @default(0) @db.Decimal(6, 2)
+  averageAccuracy Decimal  @default(0) @db.Decimal(6, 2)
+  updatedAt       DateTime @updatedAt
+
+  @@map("user_statistics")
+}
+
+model Category {
+  id          String   @id @default(uuid()) @db.Char(36)
+  name        String   @unique @db.VarChar(100)
+  nameHi      String?  @db.VarChar(100)
+  description String?  @db.VarChar(255)
+  exams       Exam[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("categories")
+}
+
+model Subject {
+  id        String        @id @default(uuid()) @db.Char(36)
+  name      String        @unique @db.VarChar(100)
+  nameHi    String?       @db.VarChar(100)
+  topics    Topic[]
+  sections  ExamSection[]
+  questions Question[]
+  exams     Exam[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@map("subjects")
+}
+
+model Topic {
+  id        String     @id @default(uuid()) @db.Char(36)
+  name      String     @db.VarChar(120)
+  nameHi    String?    @db.VarChar(120)
+  subjectId String     @db.Char(36)
+  subject   Subject    @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  questions Question[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@unique([subjectId, name])
+  @@index([subjectId])
+  @@map("topics")
+}
+
+model Exam {
+  id               String        @id @default(uuid()) @db.Char(36)
+  title            String        @db.VarChar(180)
+  titleHi          String?       @db.VarChar(180)
+  description      String?       @db.Text
+  descriptionHi    String?       @db.Text
+  instructions     String?       @db.Text
+  instructionsHi   String?       @db.Text
+  categoryId       String        @db.Char(36)
+  category         Category      @relation(fields: [categoryId], references: [id])
+  subjectId        String?       @db.Char(36)
+  subject          Subject?      @relation(fields: [subjectId], references: [id])
+  durationMinutes  Int
+  totalMarks       Decimal       @db.Decimal(8, 2)
+  marksPerQuestion Decimal       @default(1) @db.Decimal(6, 2)
+  negativeMarks    Decimal       @default(0) @db.Decimal(6, 2)
+  difficulty       Difficulty    @default(MEDIUM)
+  status           ExamStatus    @default(DRAFT)
+  settings         ExamSettings?
+  sections         ExamSection[]
+  questions        Question[]
+  attempts         Attempt[]
+  imports          PaperImport[]
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  publishedAt      DateTime?
+
+  @@index([status, categoryId])
+  @@index([subjectId])
+  @@map("exams")
+}
+
+model ExamSettings {
+  examId                String   @id @db.Char(36)
+  exam                  Exam     @relation(fields: [examId], references: [id], onDelete: Cascade)
+  attemptLimit          Int?
+  randomizeQuestions    Boolean  @default(false)
+  randomizeOptions      Boolean  @default(false)
+  showResultImmediately Boolean  @default(true)
+  allowAnswerReview     Boolean  @default(true)
+  requireExplanations   Boolean  @default(false)
+  allowResume           Boolean  @default(true)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("exam_settings")
+}
+
+model ExamSection {
+  id        String     @id @default(uuid()) @db.Char(36)
+  examId    String     @db.Char(36)
+  exam      Exam       @relation(fields: [examId], references: [id], onDelete: Cascade)
+  subjectId String?    @db.Char(36)
+  subject   Subject?   @relation(fields: [subjectId], references: [id])
+  name      String     @db.VarChar(120)
+  nameHi    String?    @db.VarChar(120)
+  order     Int
+  questions Question[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@unique([examId, order])
+  @@index([examId])
+  @@map("exam_sections")
+}
+
+model Question {
+  id            String           @id @default(uuid()) @db.Char(36)
+  examId        String           @db.Char(36)
+  exam          Exam             @relation(fields: [examId], references: [id], onDelete: Cascade)
+  sectionId     String?          @db.Char(36)
+  section       ExamSection?     @relation(fields: [sectionId], references: [id], onDelete: SetNull)
+  subjectId     String?          @db.Char(36)
+  subject       Subject?         @relation(fields: [subjectId], references: [id])
+  topicId       String?          @db.Char(36)
+  topic         Topic?           @relation(fields: [topicId], references: [id])
+  text          String           @db.Text
+  textHi        String?          @db.Text
+  imageUrl      String?          @db.VarChar(500)
+  explanation   String?          @db.Text
+  explanationHi String?          @db.Text
+  difficulty    Difficulty       @default(MEDIUM)
+  marks         Decimal          @db.Decimal(6, 2)
+  negativeMarks Decimal          @default(0) @db.Decimal(6, 2)
+  order         Int
+  options       QuestionOption[]
+  answers       AttemptAnswer[]
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@unique([examId, order])
+  @@index([examId, sectionId])
+  @@index([subjectId, topicId])
+  @@map("questions")
+}
+
+model QuestionOption {
+  id         String          @id @default(uuid()) @db.Char(36)
+  questionId String          @db.Char(36)
+  question   Question        @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  label      String          @db.VarChar(5)
+  text       String          @db.Text
+  textHi     String?         @db.Text
+  imageUrl   String?         @db.VarChar(500)
+  isCorrect  Boolean         @default(false)
+  answers    AttemptAnswer[]
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+
+  @@unique([questionId, label])
+  @@index([questionId])
+  @@map("question_options")
+}
+
+model Attempt {
+  id               String          @id @default(uuid()) @db.Char(36)
+  userId           String          @db.Char(36)
+  user             User            @relation(fields: [userId], references: [id])
+  examId           String          @db.Char(36)
+  exam             Exam            @relation(fields: [examId], references: [id])
+  attemptNumber    Int
+  status           AttemptStatus   @default(IN_PROGRESS)
+  startTime        DateTime        @default(now())
+  expectedEndTime  DateTime
+  submittedAt      DateTime?
+  currentQuestion  Int             @default(0)
+  timeTakenSeconds Int?
+  score            Decimal?        @db.Decimal(8, 2)
+  totalMarks       Decimal?        @db.Decimal(8, 2)
+  correctCount     Int?
+  wrongCount       Int?
+  unansweredCount  Int?
+  accuracy         Decimal?        @db.Decimal(6, 2)
+  percentage       Decimal?        @db.Decimal(6, 2)
+  answers          AttemptAnswer[]
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  @@unique([userId, examId, attemptNumber])
+  @@index([userId, status])
+  @@index([examId, status])
+  @@map("attempts")
+}
+
+model AttemptAnswer {
+  id               String          @id @default(uuid()) @db.Char(36)
+  attemptId        String          @db.Char(36)
+  attempt          Attempt         @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId       String          @db.Char(36)
+  question         Question        @relation(fields: [questionId], references: [id])
+  selectedOptionId String?         @db.Char(36)
+  selectedOption   QuestionOption? @relation(fields: [selectedOptionId], references: [id])
+  markedForReview  Boolean         @default(false)
+  visited          Boolean         @default(true)
+  isCorrect        Boolean?
+  marksAwarded     Decimal?        @db.Decimal(6, 2)
+  createdAt        DateTime        @default(now())
+  savedAt          DateTime        @updatedAt
+
+  @@unique([attemptId, questionId])
+  @@index([attemptId])
+  @@map("attempt_answers")
+}
+
+model PaperImport {
+  id                String             @id @default(uuid()) @db.Char(36)
+  fileName          String             @db.VarChar(255)
+  storedPath        String             @db.VarChar(500)
+  mimeType          String             @db.VarChar(100)
+  status            ImportStatus       @default(PROCESSING)
+  uploadedById      String             @db.Char(36)
+  uploadedBy        User               @relation(fields: [uploadedById], references: [id])
+  examId            String?            @db.Char(36)
+  exam              Exam?              @relation(fields: [examId], references: [id])
+  detectedCount     Int                @default(0)
+  warningCount      Int                @default(0)
+  importedQuestions ImportedQuestion[]
+  errorMessage      String?            @db.Text
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  @@index([uploadedById, status])
+  @@map("paper_imports")
+}
+
+model ImportedQuestion {
+  id              String          @id @default(uuid()) @db.Char(36)
+  importId        String          @db.Char(36)
+  paperImport     PaperImport     @relation(fields: [importId], references: [id], onDelete: Cascade)
+  text            String          @db.Text
+  textHi          String?         @db.Text
+  optionA         String?         @db.Text
+  optionAHi       String?         @db.Text
+  optionB         String?         @db.Text
+  optionBHi       String?         @db.Text
+  optionC         String?         @db.Text
+  optionCHi       String?         @db.Text
+  optionD         String?         @db.Text
+  optionDHi       String?         @db.Text
+  correctAnswer   String?         @db.VarChar(5)
+  explanation     String?         @db.Text
+  explanationHi   String?         @db.Text
+  subjectName     String?         @db.VarChar(100)
+  subjectNameHi   String?         @db.VarChar(100)
+  topicName       String?         @db.VarChar(120)
+  topicNameHi     String?         @db.VarChar(120)
+  difficulty      Difficulty      @default(MEDIUM)
+  marks           Decimal         @default(1) @db.Decimal(6, 2)
+  negativeMarks   Decimal         @default(0) @db.Decimal(6, 2)
+  warnings        Json?
+  duplicateOfId   String?         @db.Char(36)
+  duplicateAction DuplicateAction @default(KEEP)
+  status          QuestionStatus  @default(PENDING)
+  order           Int
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([importId, status])
+  @@map("imported_questions")
+}

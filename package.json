@@ -1,0 +1,19 @@
+{
+  "name": "mockmaster",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": ["backend", "frontend"],
+  "scripts": {
+    "dev": "concurrently -n API,WEB -c blue,green \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+    "build": "npm run build -w backend && npm run build -w frontend",
+    "test": "npm run test -w backend && npm run test -w frontend",
+    "lint": "npm run lint -w frontend",
+    "db:generate": "node --env-file=.env backend/node_modules/prisma/build/index.js generate --schema=backend/prisma/schema.prisma",
+    "db:migrate": "node --env-file=.env backend/node_modules/prisma/build/index.js migrate deploy --schema=backend/prisma/schema.prisma",
+    "db:migrate:dev": "node --env-file=.env backend/node_modules/prisma/build/index.js migrate dev --schema=backend/prisma/schema.prisma",
+    "db:seed": "node --env-file=.env node_modules/tsx/dist/cli.mjs backend/prisma/seed.ts"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
