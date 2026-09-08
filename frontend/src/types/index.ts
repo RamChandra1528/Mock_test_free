@@ -32,10 +32,10 @@ export type AttemptRow = {
   testHi?: string | null;
   attemptNumber: number;
   date: string;
-  score: number;
+  score: number | null;
   totalMarks: number;
-  percentage: number;
-  accuracy: number;
+  percentage: number | null;
+  accuracy: number | null;
   timeTakenSeconds: number;
   status: string;
   resultAvailable?: boolean;

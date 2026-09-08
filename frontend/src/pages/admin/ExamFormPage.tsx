@@ -13,29 +13,8 @@ import { LanguageToggle } from "../../components/LanguageToggle";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { useToast } from "../../contexts/ToastContext";
 import { api } from "../../lib/api";
+import { buildExamPayload, type ExamForm as Form } from "../../features/admin/examPayload";
 
-type Form = {
-  title: string;
-  titleHi: string;
-  description: string;
-  descriptionHi: string;
-  instructions: string;
-  instructionsHi: string;
-  categoryId: string;
-  subjectId: string;
-  durationMinutes: number;
-  totalMarks: number;
-  marksPerQuestion: number;
-  negativeMarks: number;
-  difficulty: string;
-  attemptLimit: string | number;
-  randomizeQuestions: boolean;
-  randomizeOptions: boolean;
-  showResultImmediately: boolean;
-  allowAnswerReview: boolean;
-  requireExplanations: boolean;
-  allowResume: boolean;
-};
 type Taxonomy = { id: string; name: string; nameHi?: string | null };
 const defaults: Form = {
   title: "",
@@ -55,7 +34,7 @@ const defaults: Form = {
   attemptLimit: "",
   randomizeQuestions: false,
   randomizeOptions: false,
-  showResultImmediately: true,
+  showResultImmediately: false,
   allowAnswerReview: true,
   requireExplanations: false,
   allowResume: true,
@@ -93,7 +72,7 @@ export function ExamFormPage() {
   useEffect(() => {
     if (exam.data)
       reset({
-        ...exam.data,
+        ...buildExamPayload(exam.data),
         titleHi: exam.data.titleHi ?? "",
         descriptionHi: exam.data.descriptionHi ?? "",
         instructionsHi: exam.data.instructionsHi ?? "",
@@ -103,19 +82,7 @@ export function ExamFormPage() {
   }, [exam.data, reset]);
   const save = useMutation({
     mutationFn: (values: Form) => {
-      const payload = {
-        ...values,
-        titleHi: values.titleHi.trim() || undefined,
-        descriptionHi: values.descriptionHi.trim() || undefined,
-        instructionsHi: values.instructionsHi.trim() || undefined,
-        durationMinutes: Number(values.durationMinutes),
-        totalMarks: Number(values.totalMarks),
-        marksPerQuestion: Number(values.marksPerQuestion),
-        negativeMarks: Number(values.negativeMarks),
-        attemptLimit:
-          values.attemptLimit === "" ? undefined : Number(values.attemptLimit),
-        subjectId: values.subjectId || undefined,
-      };
+      const payload = buildExamPayload(values);
       return edit
         ? api.put(`/admin/exams/${id}`, payload)
         : api.post("/admin/exams", payload);
@@ -343,6 +310,9 @@ export function ExamFormPage() {
                 label="Show result immediately"
                 {...register("showResultImmediately")}
               />
+              <p className="px-2 pb-3 text-xs text-[#6d7973]">
+                Leave off to hold scores until you select Declare Result on the Exams page.
+              </p>
               <Toggle
                 label="Allow answer review"
                 {...register("allowAnswerReview")}

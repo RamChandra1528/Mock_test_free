@@ -75,6 +75,9 @@ export class AdminController {
   @Post("exams/:id/publish") publish(@Param("id") id: string) {
     return this.admin.publish(id, true);
   }
+  @Post("exams/:id/declare-result") declareResult(@Param("id") id: string) {
+    return this.admin.declareResult(id);
+  }
   @Post("exams/:id/unpublish") unpublish(@Param("id") id: string) {
     return this.admin.publish(id, false);
   }

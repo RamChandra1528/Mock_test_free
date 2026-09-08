@@ -139,12 +139,12 @@ export function StudentDashboard() {
                     <td className="text-[#6e7a74]">{dateLabel(a.date)}</td>
                     <td>
                       <span
-                        className={`rounded-lg px-2 py-1 font-extrabold ${scoreTone(a.percentage)}`}
+                        className={`rounded-lg px-2 py-1 font-extrabold ${a.resultAvailable ? scoreTone(a.percentage ?? 0) : "text-[#6d7973]"}`}
                       >
-                        {a.score}/{a.totalMarks}
+                        {a.resultAvailable ? `${a.score}/${a.totalMarks}` : "—"}
                       </span>
                     </td>
-                    <td>{a.accuracy}%</td>
+                    <td>{a.resultAvailable ? `${a.accuracy}%` : "—"}</td>
                     <td>{formatTime(a.timeTakenSeconds)}</td>
                     <td>
                       {a.resultAvailable ? (

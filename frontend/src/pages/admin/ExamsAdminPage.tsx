@@ -31,6 +31,7 @@ type Exam = {
   title: string;
   description?: string;
   status: "DRAFT" | "PUBLISHED";
+  showResultImmediately?: boolean;
   difficulty: string;
   durationMinutes: number;
   totalMarks: number;
@@ -42,6 +43,7 @@ export function ExamsAdminPage() {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
   const [remove, setRemove] = useState<Exam | null>(null);
+  const [declare, setDeclare] = useState<Exam | null>(null);
   const [page, setPage] = useState(1);
   const qc = useQueryClient();
   const toast = useToast();
@@ -72,6 +74,16 @@ export function ExamsAdminPage() {
       toast.show("Exam updated successfully");
     },
     onError: (e) => toast.show(e.message, "error"),
+  });
+  const release = useMutation({
+    mutationFn: (examId: string) => api.post(`/admin/exams/${examId}/declare-result`),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-exams"] });
+      qc.invalidateQueries({ queryKey: ["admin-exam"] });
+      setDeclare(null);
+      toast.show("Result declared. Students can now view their scores.");
+    },
+    onError: (error) => toast.show(error.message, "error"),
   });
   return (
     <>
@@ -125,6 +137,7 @@ export function ExamsAdminPage() {
               <tr>
                 <th>Exam</th>
                 <th>Status</th>
+                <th>Result</th>
                 <th>Questions</th>
                 <th>Attempts</th>
                 <th>Duration</th>
@@ -147,6 +160,22 @@ export function ExamsAdminPage() {
                     >
                       {exam.status}
                     </Badge>
+                  </td>
+                  <td>
+                    {(exam.showResultImmediately ?? true) ? (
+                      <Badge tone="green">Results available</Badge>
+                    ) : (
+                      <div className="space-y-2">
+                        <Badge tone="amber">Awaiting declaration</Badge>
+                        {exam.status !== "DRAFT" && (
+                          <button className="btn-primary whitespace-nowrap !px-3 !py-2"
+                            disabled={release.isPending || !exam._count.attempts}
+                            onClick={() => setDeclare(exam)}>
+                            Declare Result
+                          </button>
+                        )}
+                      </div>
+                    )}
                   </td>
                   <td>{exam._count.questions}</td>
                   <td>{exam._count.attempts}</td>
@@ -272,6 +301,19 @@ export function ExamsAdminPage() {
         <p className="text-sm leading-6 text-[#64726b]">
           This permanently removes <b>{remove?.title}</b> and its questions.
           Exams with student attempts are protected and cannot be deleted.
+        </p>
+      </Modal>
+      <Modal open={!!declare} title="Declare result?" onClose={() => !release.isPending && setDeclare(null)}
+        footer={<>
+          <button className="btn-secondary" disabled={release.isPending} onClick={() => setDeclare(null)}>Cancel</button>
+          <button className="btn-primary" disabled={release.isPending}
+            onClick={() => declare && release.mutate(declare.id)}>
+            {release.isPending ? "Declaring…" : "Declare Result"}
+          </button>
+        </>}>
+        <p className="text-sm leading-6 text-[#64726b]">
+          Release scores for <b>{declare?.title}</b> to all students who submitted this exam.
+          Future submissions will also show results immediately. Answer review follows the exam's review setting.
         </p>
       </Modal>
     </>

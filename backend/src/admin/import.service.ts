@@ -171,9 +171,9 @@ export class ImportService {
         status:
           dto.duplicateAction === "SKIP"
             ? "SKIPPED"
-            : item.status === "SKIPPED"
+            : dto.status ?? (item.status === "SKIPPED"
               ? "PENDING"
-              : dto.status,
+              : item.status),
         warnings: this.warningsFor({ ...item, ...dto }),
       },
     });
@@ -360,6 +360,10 @@ export class ImportService {
     if (extension === ".csv")
       return this.fromRows(
         parseCsv(buffer.toString("utf8"), {
+          // Spreadsheet applications commonly prefix UTF-8 CSV files with a
+          // byte-order mark. Without this option the first header becomes
+          // "\uFEFFquestion", so every otherwise valid row is discarded.
+          bom: true,
           columns: true,
           skip_empty_lines: true,
           trim: true,
@@ -470,7 +474,9 @@ export class ImportService {
 const val = (value: unknown) =>
   value == null || value === "" ? undefined : String(value).trim();
 const num = (value: unknown, fallback: number) =>
-  Number.isFinite(Number(value)) ? Number(value) : fallback;
+  value == null || String(value).trim() === ""
+    ? fallback
+    : Number.isFinite(Number(value)) ? Number(value) : fallback;
 const parseDifficulty = (value: unknown): Difficulty => {
   const parsed = String(value ?? "").toUpperCase();
   return parsed === "EASY" || parsed === "HARD"

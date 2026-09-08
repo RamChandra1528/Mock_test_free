@@ -22,6 +22,7 @@ export function AttemptsPage() {
   const [page, setPage] = useState(1);
   const query = useQuery({
     queryKey: ["attempt-history", search, sort, page],
+    refetchInterval: 30_000,
     queryFn: () =>
       api
         .get<{ items: AttemptRow[]; pages: number }>("/student/attempts", {
@@ -92,16 +93,16 @@ export function AttemptsPage() {
                     {dateLabel(a.date)}
                   </td>
                   <td>
-                    {a.score} / {a.totalMarks}
+                    {a.resultAvailable ? `${a.score} / ${a.totalMarks}` : "—"}
                   </td>
                   <td>
                     <span
-                      className={`rounded-lg px-2 py-1 font-extrabold ${scoreTone(a.percentage)}`}
+                      className={`rounded-lg px-2 py-1 font-extrabold ${a.resultAvailable ? scoreTone(a.percentage ?? 0) : "text-[#6d7973]"}`}
                     >
-                      {a.percentage}%
+                      {a.resultAvailable ? `${a.percentage}%` : "—"}
                     </span>
                   </td>
-                  <td>{a.accuracy}%</td>
+                  <td>{a.resultAvailable ? `${a.accuracy}%` : "—"}</td>
                   <td>{formatTime(a.timeTakenSeconds)}</td>
                   <td>
                     <div className="flex whitespace-nowrap gap-3">

@@ -60,6 +60,7 @@ export function ResultPage() {
   const { language, localize, t } = useLanguage();
   const query = useQuery({
     queryKey: ["result", attemptId],
+    refetchInterval: (state) => state.state.error?.message === "Results have not been released for this exam" ? 30_000 : false,
     queryFn: () =>
       api
         .get<Result>(`/student/attempts/${attemptId}/result`)
@@ -75,6 +76,17 @@ export function ResultPage() {
         }
       />
     );
+  if (query.error?.message === "Results have not been released for this exam")
+    return <div className="card mx-auto max-w-xl p-8 text-center">
+      <Clock3 className="mx-auto h-10 w-10 text-amber-600" />
+      <h1 className="mt-4 font-display text-2xl font-extrabold">
+        {language === "hi" ? "परिणाम की घोषणा बाकी है" : "Awaiting result declaration"}
+      </h1>
+      <p className="mt-3 text-sm text-[#6d7973]">
+        {language === "hi" ? "आपका टेस्ट जमा हो गया है। एडमिन परिणाम घोषित करेगा तब आपका स्कोर यहाँ दिखेगा।" : "Your test has been submitted. Your score will appear here once the admin declares the result."}
+      </p>
+      <Link to="/student/attempts" className="btn-secondary mt-6">{t("viewHistory")}</Link>
+    </div>;
   if (query.error) return <ErrorState error={query.error} />;
   const r = query.data!;
   const chart = [

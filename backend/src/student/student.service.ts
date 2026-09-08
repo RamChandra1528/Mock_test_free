@@ -86,7 +86,8 @@ export class StudentService {
         },
       }),
     ]);
-    const scores = attempts.map((a) => Number(a.percentage));
+    const released = attempts.filter((a) => a.exam.settings?.showResultImmediately ?? true);
+    const scores = released.map((a) => Number(a.percentage));
     const totalAnswered = attempts.reduce(
       (sum, a) => sum + (a.correctCount ?? 0) + (a.wrongCount ?? 0),
       0,
@@ -96,7 +97,7 @@ export class StudentService {
         testsAttempted: attempts.length,
         averageScore: avg(scores),
         bestScore: scores.length ? Math.max(...scores) : 0,
-        averageAccuracy: avg(attempts.map((a) => Number(a.accuracy))),
+        averageAccuracy: avg(released.map((a) => Number(a.accuracy))),
         totalQuestionsAttempted: totalAnswered,
       },
       availableExams: available.map(toExamCard),
@@ -165,6 +166,7 @@ export class StudentService {
           userId,
           status: { not: "IN_PROGRESS" },
           examId: { in: candidates.map((exam) => exam.id) },
+          exam: { OR: [{ settings: { is: null } }, { settings: { is: { showResultImmediately: true } } }] },
         },
         _max: { percentage: true },
       });
@@ -245,12 +247,16 @@ export class StudentService {
       },
     });
     if (!exam) throw new NotFoundException("Exam not found");
-    const { settings, ...details } = exam;
+    const { settings, attempts, ...details } = exam;
+    const safeAttempts = attempts.map((attempt) => ({ ...attempt,
+      percentage: (settings?.showResultImmediately ?? true) ? attempt.percentage : null,
+    }));
     return {
       ...details,
       ...(settings ?? {}),
       questionCount: exam._count.questions,
-      latestAttempt: exam.attempts[0] ?? null,
+      attempts: safeAttempts,
+      latestAttempt: safeAttempts[0] ?? null,
     };
   }
 
@@ -759,12 +765,13 @@ export class StudentService {
         : query.sort === "accuracy"
           ? { accuracy: "desc" }
           : { submittedAt: "desc" };
+    const sortByResult = query.sort === "score" || query.sort === "accuracy";
     const [items, total] = await Promise.all([
       this.prisma.attempt.findMany({
         where,
-        skip: (query.page - 1) * query.limit,
-        take: query.limit,
-        orderBy,
+        skip: sortByResult ? undefined : (query.page - 1) * query.limit,
+        take: sortByResult ? undefined : query.limit,
+        orderBy: sortByResult ? { submittedAt: "desc" } : orderBy,
         include: {
           exam: {
             select: {
@@ -782,8 +789,17 @@ export class StudentService {
       }),
       this.prisma.attempt.count({ where }),
     ]);
+    const rows = items.map(toAttemptRow);
+    if (sortByResult) {
+      const metric = query.sort === "score" ? "percentage" : "accuracy";
+      rows.sort((a, b) => {
+        if (a[metric] === null) return b[metric] === null ? 0 : 1;
+        if (b[metric] === null) return -1;
+        return b[metric]! - a[metric]!;
+      });
+    }
     return {
-      items: items.map(toAttemptRow),
+      items: sortByResult ? rows.slice((query.page - 1) * query.limit, query.page * query.limit) : rows,
       total,
       page: query.page,
       pages: Math.ceil(total / query.limit),
@@ -792,7 +808,9 @@ export class StudentService {
 
   async performance(userId: string) {
     const attempts = await this.prisma.attempt.findMany({
-      where: { userId, status: { not: "IN_PROGRESS" } },
+      where: { userId, status: { not: "IN_PROGRESS" },
+        exam: { OR: [{ settings: { is: null } }, { settings: { is: { showResultImmediately: true } } }] },
+      },
       orderBy: { submittedAt: "asc" },
       include: {
         exam: { select: { title: true, titleHi: true } },
@@ -1033,7 +1051,7 @@ const toExamCard = (exam: any) => {
     attemptsCount: exam._count.attempts,
     attemptStatus: active ? "RESUME" : completed.length ? "COMPLETED" : "NEW",
     activeAttemptId: active?.id,
-    bestScore: completed.length
+    bestScore: completed.length && (exam.settings?.showResultImmediately ?? true)
       ? Math.max(...completed.map((a: any) => Number(a.percentage)))
       : null,
   };
@@ -1044,10 +1062,10 @@ const toAttemptRow = (a: any) => ({
   testHi: a.exam.titleHi,
   attemptNumber: a.attemptNumber,
   date: a.submittedAt,
-  score: Number(a.score),
+  score: (a.exam.settings?.showResultImmediately ?? true) ? Number(a.score) : null,
   totalMarks: Number(a.totalMarks),
-  percentage: Number(a.percentage),
-  accuracy: Number(a.accuracy),
+  percentage: (a.exam.settings?.showResultImmediately ?? true) ? Number(a.percentage) : null,
+  accuracy: (a.exam.settings?.showResultImmediately ?? true) ? Number(a.accuracy) : null,
   timeTakenSeconds: a.timeTakenSeconds,
   status: a.status,
   resultAvailable: a.exam.settings?.showResultImmediately ?? true,

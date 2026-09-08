@@ -1,0 +1,300 @@
+﻿question,question_hi,option_a,option_a_hi,option_b,option_b_hi,option_c,option_c_hi,option_d,option_d_hi,correct_answer,explanation,explanation_hi,subject,subject_hi,topic,topic_hi,difficulty,marks,negative_marks
+"In a certain code language, if DOME is coded as 37 and CARGO is coded as 44, how will MOTHER be coded in the same code language?","किसी निश्चित कूट भाषा में यदि DOME को 37 के रूप में कूटबद्ध किया गया है और CARGO को 44 के रूप में कूटबद्ध किया गया है, तो उसी कूट भाषा में MOTHER को किस प्रकार कूटबद्ध किया जाएगा?",79,79,97,97,68,68,76,76,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"There are seven persons E, F, G, H, I, J and K. Each has a different height. F is taller than only four others. E is taller than K. G is taller than H. H is taller than only two members. J is the shortest of all. F is taller than G but shorter than K. Who is the tallest of all?","सात व्यक्ति E, F, G, H, I, J और K हैं। प्रत्येक अलग-अलग लंबाई के हैं। F केवल चार अन्यों से लंबा है। E, K से लंबा है। G, H से लंबा है। H केवल दो सदस्यों से लंबा है। J सभी में सबसे छोटा है। F, G से लंबा है लेकिन K से छोटा है। सभी में से सबसे लंबा कौन है?",K,K,G,G,E,E,F,F,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the combination of letters that, when placed sequentially in the blanks of the given series, will complete the series.
+AC _ G _ K _ _ Q _","अक्षरों के उस संयोजन का चयन करें, जो दी गई श्रृंखला के रिक्त स्थानों में क्रमिक रूप से रखे जाने पर श्रृंखला को पूरा करेगा।
+AC _ G _ K _ _ Q _",DJNPS,DJNPS,EJMSO,EJMSO,DIMPS,DIMPS,EIMOS,EIMOS,option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Three of the following four letter-groups are alike in a certain way and one is different. Select the different or odd one.,निम्नलिखित चार अक्षर-समूहों में से तीन एक निश्चित तरीके से एक समान हैं और एक अलग है। अलग या विषम का चयन करें।,GSK,GSK,DWH,DWH,JQN,JQN,AZE,AZE,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the option that represents the letters which, when placed sequentially from left to right in the blank given below, will complete the letter series.
+DEF, HIJ, MNO, ______","उस विकल्प का चयन करें, जो उन अक्षरों का प्रतिनिधित्व करता है, जिन्हें नीचे दिए गए रिक्त स्थान में क्रमिक रूप से बाएँ से दाएँ रखा जाता है, तो वह अक्षर श्रृंखला को पूरा करेगा।
+DEF, HIJ, MNO, ______",RTV,RTV,SRU,SRU,PTU,PTU,STU,STU,option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"‘A + B’ means ‘A is the brother of B’
+‘A – B’ means ‘A is the mother of B’
+‘A × B’ means ‘A is the husband of B’
+‘A ÷ B’ means ‘A is the sister of B’
+If B - D + F ÷ H x J - S, which of the following statements is NOT correct?","‘A + B’ का तात्पर्य है ‘A, B का भाई है’
+‘A – B’ का तात्पर्य है ‘A, B की माँ है’
+‘A × B’ का तात्पर्य है ‘A, B का पति है’
+‘A ÷ B’ का तात्पर्य है ‘A, B की बहन है’
+यदि B - D + F ÷ H x J - S है, तो निम्नलिखित में से कौन-सा कथन सही नहीं है?",F is the brother of J's husband.,"F, J के पति का भाई है।",J is the wife of B's son.,"J, B के पुत्र की पत्नी है।",B is the mother of D.,"B, D की माँ है।",H is the father of S.,"H, S के पिता है।",option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Which of the following numbers will replace the question mark (?) in the given series?
+7, ?, 34, 61, 97, 142","निम्नलिखित में से कौन सी संख्या दी गई श्रृंखला में प्रश्न चिह्न (?) के स्थान पर आएगी?
+7, ?, 34, 61, 97, 142",12,12,22,22,16,16,14,14,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the option that is related to the third word in the same way as the second word is related to the first word. (The words must be considered as meaningful Hindi words and must not be related to each other based on the number of letters/consonants/vowels in the word.)
+Tongs : Gripping :: Binoculars : ?","उस विकल्प का चयन करें जो तीसरे शब्द से उसी प्रकार संबंधित है जिस प्रकार दूसरा शब्द पहले शब्द से संबंधित है। (शब्दों को अर्थपूर्ण हिन्दी शब्दों के रूप में माना जाना चाहिए और इन्हें शब्द में अक्षरों की संख्या/व्यंजनों की संख्या/स्वरों की संख्या के आधार पर एक-दूसरे से संबद्ध नहीं किया जाना चाहिए।)
+चिमटा : पकड़ना :: दूरबीन (बाइनोकुलर) : ?",Viewing (view),देखना (व्यू),Feeding (feed),प्रभरण (फीड),Lens,लेंस,Magnifying,आवर्धन करना,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Seven persons - A, B, C, D, E, F and G - are sitting in a straight row facing north. Only two persons sit to the right of A. C sits at one end of the row and B sits immediately next to C. B does not sit immediately next to A. F sits at one end of the row. Only B sits between C and E. D does not sit immediately next to F.
+Who among the following sits exactly between A and F?","सात व्यक्ति - A, B, C, D, E, F और G - एक सीधी पंक्ति में उत्तर की ओर अभिमुख होकर बैठे हैं। A के दाईं ओर केवल दो व्यक्ति बैठे हैं। C पंक्ति के किसी एक सिरे पर पर बैठा है और B, C के ठीक बगल में बैठा हुआ है। B, A के ठीक बगल में नहीं बैठा है। F पंक्ति के एक सिरे पर बैठा है। C और E के बीच केवल B बैठा है। D, F के ठीक बगल में नहीं बैठा है।
+निम्न में से कौन A और F के ठीक बीच में बैठा हुआ है?",E,E,D,D,G,G,B,B,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Select the option which will replace the question mark (?) in the given figure to complete the pattern.,उस विकल्प का चयन कीजिए जो पैटर्न को पूरा करने के लिए दी गई आकृति में प्रश्न चिह्न (?) को प्रतिस्थापित करेगा।,@image,@image,@image,@image,@image,@image,@image,@image,option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Two statements followed by two conclusions numbered I and II are given below. Assuming the statements to be true, even if they seem to be at variance with commonly known facts, decide which conclusion(s) logically follow(s) from the statements.
+Statements:
+All mangoes are sweets.
+Some sweets are cheese.
+Conclusions:
+I. Some cheese are sweets.
+II. All mangoes are cheese.","नीचे दो कथन और उसके बाद दो निष्कर्ष I और II दिए गए हैं। कथनों को सत्य मानते हुए, भले ही वे सामान्य रूप से ज्ञात तथ्यों से भिन्न प्रतीत होते हों, निर्णय लीजिए कि कौन-सा/से निष्कर्ष कथनों का तार्किक रूप से अनुसरण करता/करते है/हैं।
+कथन:
+सभी आम मिष्ठान्न हैं।
+कुछ मिष्ठान्न पनीर हैं।
+निष्कर्ष:
+I. कुछ पनीर मिष्ठान्न हैं।
+II. सभी आम पनीर हैं।",Both conclusions I and II follow.,निष्कर्ष I और II दोनों अनुसरण करते हैं।,Only conclusion I follows.,केवल निष्कर्ष I अनुसरण करता है।,Neither conclusion I nor II follows.,न तो निष्कर्ष I और न ही II अनुसरण करता है।,Only conclusion II follows.,केवल निष्कर्ष II अनुसरण करता है।,option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the letter-group pair which best represents a similar relationship to that expressed in the letter-group pair given below.
+LOVE : NNXD","उस अक्षर-समूह युग्म का चयन करें जो नीचे दिए गए अक्षर-समूह युग्म में व्यक्त संबंध के समान संबंध का सबसे अच्छा निरूपण करता है।
+LOVE : NNXD",PORT : RNTS,PORT : RNTS,VIEW : WJFX,VIEW : WJFX,MINT : KJLU,MINT : KJLU,HELP : JFNQ,HELP : JFNQ,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Seven persons A, B, C, D, E, F and G sit in a straight row facing north. A sits third to the right of D. C sits next to A and F. Only two persons sit to the right of B. Only three persons sit between G and C. Who sits immediately to the right of A?","सात व्यक्ति A, B, C, D, E, F और G उत्तर की ओर मुख करके एक सीधी कतार में बैठे हैं। A, D के दाईं ओर तीसरे स्थान पर बैठता है। C, A और F के बगल में बैठता है। B के केवल दाईं ओर दो व्यक्ति बैठते हैं। केवल 3 व्यक्ति G और C के बीच में बैठते हैं। A के दाईं ओर बगल में कौन बैठता है?",B,B,G,G,F,F,C,C,option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Three statements are given followed by three conclusions I, II and III. Assuming the statements to be true, even if they seem to be at variance with commonly known facts, determine which conclusion(s) logically follow(s) from the statements.
+Statements:
+All rats are cats.
+Some cats are dogs.
+No dog is a tree.
+Conclusions:
+I. All cats are rats.
+II. Some dogs are cats.
+III. Some trees are not dogs.","तीन कथन दिए गए हैं, जिसके बाद तीन निष्कर्ष I, II और III दिए गए हैं। कथनों को सत्य मानते हुए, भले ही वे सामान्य रूप से ज्ञात तथ्यों से भिन्न प्रतीत होते हों, निश्चित करें कि कौन-सा/से निष्कर्ष कथनों का तार्किक रूप से अनुसरण करता है/करते हैं।
+कथन:
+सभी चूहे बिल्ली हैं।
+कुछ बिल्लियाँ कुत्ते हैं।
+कोई भी कुत्ता पेड़ नहीं है।
+निष्कर्ष:
+I. सभी बिल्लियाँ चूहे हैं।
+II. कुछ कुत्ते बिल्ली हैं।
+III. कुछ पेड़ कुत्ते नहीं हैं।",All conclusions follow.,सभी निष्कर्ष अनुसरण करते हैं।,Only conclusions I and III follow.,केवल निष्कर्ष I और III अनुसरण करते हैं।,Only conclusions I and II follow.,केवल निष्कर्ष I और II अनुसरण करते हैं।,Only conclusions II and III follow.,केवल निष्कर्ष II और III अनुसरण करते हैं।,option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the option that is related to the fourth term in the same way as the first term is related to the second term and the fifth term is related to the sixth term.
+7 : 24 :: ? : 264 :: 37 : 1344","उस विकल्प का चयन करें जो चौथे पद से उसी प्रकार संबंधित है जिस प्रकार पहला पद, दूसरे पद से संबंधित है और पांचवां पद, छठे पद से संबंधित है।
+7 : 24 :: ? : 264 :: 37 : 1344",65,65,17,17,45,45,9,9,option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Select the figure that will replace the question mark (?) in the given figure to complete the pattern.,"उस विकल्प चित्र का चयन कीजिए, जो पैटर्न को पूरा करने के लिए प्रस्तुत चित्र में प्रश्नचिह्न (?) को प्रतिस्थापित करेगा।",@image,@image,@image,@image,@image,@image,@image,@image,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"In a certain code language, 'TAKE' is written as 'GZPV' and 'GIVE' is written as 'TREV'. How will 'FOUND' be written in the same language?","एक निश्चित कूट भाषा में, 'TAKE' को 'GZPV' लिखा जाता है और 'GIVE' को 'TREV' लिखा जाता है। उसी भाषा में 'FOUND' को कैसे लिखा जाएगा?",LUFNX,LUFNX,LUFWM,LUFWM,ULFNX,ULFNX,ULFMW,ULFMW,option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the correct combination of mathematical signs to replace the * signs and balance the given equation.
+141 * 183 * (188 * 4)* 26 * (3 * 7)","* चिह्नों को प्रतिस्थापित करने और दिए गए समीकरण को संतुलित करने के लिए गणितीय चिह्नों के सही संयोजन का चयन कीजिये।
+141 * 183 * (188 * 4)* 26 * (3 * 7)","−, +, ÷, =, −, ×","−, +, ÷, =, −, ×","+, −, ×, =, −, +","+, −, ×, =, −, +","÷, +, −, =, −, ×","÷, +, −, =, −, ×","−, −, ×, +, ÷, +","−, −, ×, +, ÷, +",option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Which of the following options represents the correct order of the given words as they appear in an English dictionary?
+1. Axion
+2. Awful
+3. Avail
+4. Audio
+5. Above","निम्नलिखित में से कौन-सा विकल्प दिए गए शब्दों के उस सही क्रम का प्रतिनिधित्व करता है, जिस क्रम में वे अंग्रेजी शब्दकोश में दिखाई देते हैं?
+1. Axion
+2. Awful
+3. Avail
+4. Audio
+5. Above","5, 4, 3, 2, 1","5, 4, 3, 2, 1","5, 3, 2, 4, 1","5, 3, 2, 4, 1","4, 5, 2, 3, 1","4, 5, 2, 3, 1","4, 5, 2, 1, 3","4, 5, 2, 1, 3",option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"‘A + B’ means ‘A is the brother of B’
+‘A − B’ means ‘A is the mother of B’
+‘A × B’ means ‘A is the husband of B’
+‘A ÷ B’ means ‘A is the sister of B’
+If P ÷ G x R - H + E ÷ N, which of the following statements is NOT correct?","‘A + B’ का तात्पर्य है ‘A, B का भाई है’
+‘A − B’ का तात्पर्य है ‘A, B की माँ है’
+‘A × B’ का तात्पर्य है ‘A, B का पति है’
+‘A ÷ B’ का तात्पर्य है ‘A, B की बहन है’
+यदि P ÷ G x R - H + E ÷ N है, तो निम्नलिखित में से कौन-सा कथन सही नहीं है?",G is the father of N.,"G, N के पिता है।",R is the husband of P's sister.,"R, P की बहन का पति है।",E is the sister of H.,"E, H की बहन है।",P is the sister of H's father.,"P, H के पिता की बहन है।",option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Which of the numbers given below will replace the question mark (?) in the following series?
+59, 118, 94, 188, ?, 328, 304","निम्नलिखित श्रृंखला में प्रश्न-चिह्न (?) के स्थान पर नीचे दी गई संख्याओं में से कौन-सी संख्या आएगी?
+59, 118, 94, 188, ?, 328, 304",184,184,154,154,166,166,164,164,option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Which two signs and two numbers should be interchanged to make the following equation correct?
+25683 + 21748 = 51212 − 98643","निम्नलिखित समीकरण को सही करने के लिए इसके किन दो चिह्नों और दो संख्याओं को आपस में बदला जाना चाहिए?
+25683 + 21748 = 51212 − 98643","98643 and 25683, − and =","98643 और 25683, − और =","21748 and 98643, + and −","21748 और 98643, + और −","98643 and 25683, + and −","98643 और 25683, + और −","98643 and 25683, + and =","98643 और 25683, + और =",option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Select the correct mirror image of the given figure when the mirror is placed to the right of the figure.,"दर्पण को आकृति के दाईं ओर रखे जाने पर, दी गई आकृति का सही दर्पण प्रतिबिंब चयन करें।",@image,@image,@image,@image,@image,@image,@image,@image,option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Amit, Sonu, Vipin, Rahul, Himanshi, Akshay and Ayush sit around a circle facing the centre. Ayush is second to the left of Vipin, who is immediately to the left of Akshay. Amit is third to the left of Himanshi. Sonu is between Rahul and Himanshi. Who is immediately to the left of Akshay?","अमित, सोनू, विपिन, राहुल, हिमांशी, अक्षय और आयुष एक वृत्त के परितः केंद्र की ओर मुख करके बैठे हैं। आयुष, विपिन के बाईं ओर दूसरे स्थान पर है, जो अक्षय के बाईं ओर बगल में है। अमित, हिमांशी के बाईं ओर तीसरे स्थान पर है। सोनू, राहुल और हिमांशी के बीच में है। अक्षय के बाईं ओर बगल में कौन है?",Vipin,विपिन,Amit,अमित,Himanshi,हिमांशी,Ayush,आयुष,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Select the figure from the following options that will replace the question mark (?) to complete the given pattern.,निम्नलिखित विकल्पों में से उस आकृति का चयन कीजिए जो प्रश्नवाचक चिह्न (?) को प्रतिस्थापित करते हुए दिए गए पैटर्न को पूरा करेगी।,@image,@image,@image,@image,@image,@image,@image,@image,option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"If, in ΔABC, ∠A = 4∠B = ∠C, then ∠B + ∠C = ?","यदि, ΔABC में, ∠A = 4∠B = ∠C है तो ∠B+∠C= ?",60°,60°,100°,100°,80°,80°,40°,40°,option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"By which number should the fourth proportional to 6, 8 and 24 be multiplied to obtain the third proportional to 16 and 32?","16 और 32 का तृतीयानुपाती ज्ञात करने के लिए, 6, 8 और 24 के चतुर्थानुपाती को किस संख्या से गुणा किया जाना चाहिए?",5,5,4,4,2,2,3,3,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"A can complete 2/3 of a work in 10 days, while B can complete 1/5 of the same work in 6 days. A and B working together can complete the work in _____ days.","A 10 दिन में काम का 2/3 भाग पूरा कर सकता है, जबकि B उसी काम का 1/5वां भाग 6 दिन में पूरा कर सकता है। A और B एक साथ कार्य करते हुए काम _____में पूरा कर सकते हैं।",10 days,10 दिन,11 days,11 दिन,12 days,12 दिन,9 days,9 दिन,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"The difference between two numbers is 6 and the sum of the squares of these numbers is 1476. If the least common multiple (LCM) of these two numbers is 120, what will be their highest common factor (HCF)?","दो संख्याओं का अंतर 6 है और इन संख्याओं के वर्गों का योग 1476 है। यदि इन दोनों संख्याओं का लघुत्तम समापवर्त्य (LCM) 120 है, तो उनका महत्तम समापवर्तक (HCF) क्या होगा?",6,6,12,12,10,10,8,8,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Study the following bar graph carefully and answer the question given below.
+The following bar graph shows the sales of Bluetooth earphones on online marketplace platforms during different years.
+If sales increase by 20% from 2021 to 2022, find the average sales for the five-year period 2018-2022.","निम्नलिखित बार ग्राफ का ध्यानपूर्वक अध्ययन करें और नीचे दिए गए प्रश्न का उत्तर दें।
+निम्नलिखित बार ग्राफ विभिन्न वर्षों के दौरान ऑनलाइन बाजार स्थानों पर ब्लूटूथ ईयरफोन की बिक्री को दर्शाता है।
+यदि 2021 से 2022 में बिक्री में 20% की वृद्धि होती है, तो पांच साल की अवधि 2018-2022 की औसत बिक्री ज्ञात करें।",79.45 lakh,79.45 लाख,86.03 lakh,86.03 लाख,92.02 lakh,92.02 लाख,82.16 lakh,82.16 लाख,option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"A policeman saw a thief at a distance of 150 m. When the policeman started chasing the thief, the thief also started running. If the thief's speed is 18 km/h and the policeman's speed is 36 km/h, how far would the thief have run before being caught?","किसी चोर को एक पुलिसकर्मी ने 150 m की दूरी से देखा। जब पुलिसकर्मी ने चोर का पीछा करना शुरू किया, तो चोर भी भागने लगा। यदि चोर की चाल 18 km/h है और पुलिसकर्मी की चाल 36 km/h है, तो पकड़े जाने से पहले चोर कितनी दूरी भाग चुका होगा?",100 m,100 m,120 m,120 m,150 m,150 m,130 m,130 m,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+S can finish a work in 20 days. S works for 4 days and then R joins S in the work and the remaining work is completed in 7 days. In how many days can R alone finish that work?,"S एक कार्य को 20 दिनों में समाप्त कर सकता है। S, 4 दिनों तक कार्य करता है और फिर R, S के साथ कार्य में लग जाता है और शेष कार्य 7 दिनों में समाप्त हो जाता है। R अकेला उस कार्य को कितने दिनों में समाप्त कर सकता है?",140/9,140/9,130/7,130/7,130/9,130/9,120/7,120/7,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"The radius of a solid iron hemisphere is 42 cm. Find its volume (in cm³).
+(Use π = 22/7)","लोहे के एक ठोस अर्धगोले की त्रिज्या 42 cm है। इसका आयतन (cm³ में) ज्ञात करें।
+(π = 22/7 का प्रयोग करें)",155232,155232,151232,151232,152232,152232,156232,156232,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+A cylinder of radius 7 cm and height 10 cm is cut horizontally into two equal parts to obtain two identical cylinders. What is the percentage increase in the total surface area?,त्रिज्या 7 cm और ऊंचाई 10 cm के एक बेलन को दो समान बेलन प्राप्त करने के लिए क्षैतिज रूप से दो बराबर भागों में काटा जाता है। कुल पृष्ठीय क्षेत्रफल में प्रतिशत वृद्धि क्या है?,29.43%,29.43%,38.23%,38.23%,41.18%,41.18%,34.29%,34.29%,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"A shopkeeper bought a scooter for ₹24,000 and a car for ₹2,40,000. He sold the scooter at a loss of 25% and the car at a profit of 10%. Find his net profit or loss percentage.","एक दुकानदार ने ₹24,000 में एक स्कूटर और ₹2,40,000 में एक कार खरीदी। उसने स्कूटर को 25% की हानि पर और कार को 10% के लाभ पर बेचा। उसका शुद्ध लाभ या हानि प्रतिशत ज्ञात करें।",6 9/11% profit,6 9/11% लाभ,6% profit,6% लाभ,7% loss,7% हानि,7 9/11% loss,7 9/11% हानि,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"ABC and PQR are two similar triangles in which C = R and whose areas are 48 cm² and 64 cm² respectively. If PQ = 8 cm, what is the value of AB?","ABC और PQR दो समरूप त्रिभुज हैं, जिनमें C = R है और जिनके क्षेत्रफल क्रमशः 48 cm² और 64 cm² हैं। यदि PQ = 8 cm है, तो AB का मान क्या है?",7 cm,7 cm,√56 cm,√56 cm,√48 cm,√48 cm,9 cm,9 cm,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Two men A and B travel a distance of 42 km from place X to place Y at speeds of 6 km/h and 8 km/h respectively. B reaches Y, returns immediately and meets A at place Z. Find the distance from X to Z.","दो पुरुष A और B क्रमशः 6 km/h और 8 km/h की चाल से से X स्थान से Y स्थान तक 42 km की दूरी तय करते हैं। B, Y पर पहुंचता है, तुरंत लौटता है और A से Z स्थान पर मिलता है। X से Z की दूरी ज्ञात कीजिए।",64 km,64 km,63 km,63 km,36 km,36 km,18 km,18 km,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"A shopping mall offered customers the following discount schemes.
+Scheme-1: Two successive discounts of 15%.
+Scheme-2: 20% discount followed by 10% discount.
+Scheme-3: Successive discounts of 17% and 13%.
+Scheme-4: 30% discount
+Under which of the given schemes will the selling price be the lowest?","एक शॉपिंग मॉल ने ग्राहकों को छूट की निम्न स्कीमें प्रदान की।
+स्कीम-1: 15% की दो क्रमागत छूटें।
+स्कीम-2: 20% छूट के बाद 10% छूट।
+स्कीम-3: 17% और 13% के क्रमागत छूटें।
+स्कीम-4: 30% छूट
+दी गई स्कीमों में से किस स्कीम के तहत विक्रय मूल्य न्यूनतम होगा?",Scheme-4,स्कीम- 4,Scheme-3,स्कीम- 3,Scheme-1,स्कीम- 1,Scheme-2,स्कीम- 2,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"The following pie chart shows the time spent by a person throughout a day (24 hours).
+Approximately how many degrees should the central angle of the Rest sector be?","निम्नलिखित पाई-चार्ट में एक व्यक्ति द्वारा पूरे दिन (24 घंटे) में बिताए गए समय को दर्शाया गया है।
+आराम (Rest) त्रिज्यखंड का केंद्रीय कोण लगभग कितनी डिग्री का होना चाहिए?",111°,111°,92°,92°,122°,122°,102°,102°,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Which of the following has the greatest number of factors?,निम्नलिखित में से किसके भाजक सबसे अधिक है?,91,91,112,112,84,84,216,216,option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"In an election between two candidates A and B, A received 60% of the total valid votes. Find the number of valid votes cast in favour of candidate B if 15% of the total 5,00,000 votes were declared invalid.","दो उम्मीदवारों A और B के बीच एक चुनाव में, A ने कुल वैध मतों का 60% प्राप्त किया। उम्मीदवार B के पक्ष में डाले गए वैध मतों की संख्या ज्ञात कीजिए, यदि कुल 5,00,000 मतों में से 15% अवैध घोषित किए गए थे।","1,62,000","1,62,000","1,70,000","1,70,000","1,73,000","1,73,000","1,81,200","1,81,200",option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"A trader has 162 kg of walnuts, a part of which he sells at 7% profit and the rest at 16% profit. He earns a profit of 12% on the whole transaction. What quantity was sold at 16% profit?","एक व्यापारी के पास 162 kg वाल नट हैं, जिसका एक भाग वह 7% लाभ पर और शेष 16% लाभ पर बेचता है। उसे पूरे लेनदेन पर 12% का लाभ होता है। 16% लाभ पर बेची गई मात्रा क्या है?",90 kg,90 kg,85 kg,85 kg,75 kg,75 kg,102 kg,102 kg,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"If x⁴ + (1/x⁴) = 322 and x > 1, what is the value of x³ − (1/x³)?","यदि x⁴ + (1/x⁴) = 322 और x > 1 है, तो x³ − (1/x³) का मान क्या है?",76,76,74,74,78,78,72,72,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"A person covers half his journey by train at 70 km/h, half of the remaining journey by bus at 40 km/h and the remaining journey by bicycle at 10 km/h. Find his average speed during the entire journey.","एक व्यक्ति अपनी आधी यात्रा 70 km/h की चाल से ट्रेन द्वारा, शेष यात्रा का आधा 40 km/h की चाल से बस द्वारा और शेष यात्रा 10 km/h की चाल से साइकिल द्वारा तय करता है। पूरी यात्रा के दौरान उसकी औसत चाल ज्ञात कीजिए।",20.65 km/h,20.65 km/h,41.67 km/h,41.67 km/h,26.05 km/h,26.05 km/h,47.5 km/h,47.5 km/h,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Select the prime number from the given options.,दिए गए विकल्पों में से अभाज्य संख्या का चयन कीजिए।,121,121,343,343,289,289,113,113,option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"In an election between two candidates, the first receives 85% of the total valid votes. If 10% of 1,35,000 votes are invalid, how many votes were cast in favour of the second candidate?","दो उम्मीदवारों के बीच एक चुनाव में पहले को कुल वैध मतों का 85% प्राप्त होता है। यदि 1,35,000 मतों में से 10% मत अवैध हैं, तो दूसरे उम्मीदवार के पक्ष में कितने मत पड़े?",16425,16425,23435,23435,18225,18225,21485,21485,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"If 2a - 3b = 8 and ab = 3, find the value of 4a² + 9b².","यदि 2a - 3b = 8 और ab = 3 है, तो 4a² + 9b² का मान ज्ञात कीजिए।",80,80,125,125,110,110,100,100,option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"The population of a city is increasing at an annual rate of 2%. If the current population of the city is 1 lakh, what will its population be after 2 years?","एक शहर की जनसंख्या 2% की वार्षिक दर से बढ़ रही है। यदि शहर की वर्तमान जनसंख्या 1 लाख है, तो 2 वर्ष बाद जनसंख्या कितनी होगी?","1,02,000","1,02,000","1,04,000","1,04,000","1,02,100","1,02,100","1,04,040","1,04,040",option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"In 40 L of a mixture, the ratio of milk to water is 3 : 2. On replacing 10 L of the mixture with 10 L of milk, the ratio of milk to water in the new mixture will be:","एक मिश्रण के 40 L में, दूध और पानी का अनुपात 3 : 2 है। 10 L मिश्रण को 10 L दूध से प्रतिस्थापित करने पर नए मिश्रण में दूध और पानी का अनुपात निम्न होगा:",7 : 4,7 : 4,5 : 2,5 : 2,7 : 3,7 : 3,5 : 4,5 : 4,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"In a 500-metre race between Bhavana and Jugnu, Bhavana starts running 125 metres ahead of Jugnu, yet Jugnu reaches the finish line first, 75 metres ahead of Bhavana, and wins the race. What is the ratio of the speeds of Jugnu and Bhavana?","भावना और जुगनू के बीच 500 मीटर की एक रेस में भावना, जुगनू से 125 मीटर आगे से दौड़ना शुरू करती है, फिर भी जुगनू रेस के अंतिम बिंदु पर, भावना से 75 मीटर आगे रहते हुए, पहले पहुंचकर रेस जीत लेता है। जुगनू और भावना की चालों का अनुपात क्या है?",3 : 4,3 : 4,4 : 3,4 : 3,5 : 3,5 : 3,3 : 5,3 : 5,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the most appropriate synonym of the given word.
+
+Resurrect","दिए गए शब्द का सबसे उपयुक्त समानार्थी चुनें।
+
+Resurrect (पुनर्जीवित करना)",Suppress,Suppress (दबाना),Drag,Drag (घसीटना),Assure,Assure (आश्वस्त करना),Recharge,Recharge (फिर से ऊर्जा देना),option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the option that can be used as a one-word substitute for the given group of words.
+
+A group of artists, dancers or acrobats","दिए गए शब्द-समूह के लिए एक शब्द के रूप में प्रयुक्त होने वाला विकल्प चुनें।
+
+कलाकारों, नर्तकों या कलाबाज़ों का एक समूह",Shoal,Shoal (मछलियों का झुंड),Troupe,Troupe (कलाकारों की मंडली),Union,Union (संघ),Swarm,Swarm (कीटों का झुंड),option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the most appropriate ANTONYM of the given word.
+Plentiful","दिए गए शब्द का सबसे उपयुक्त विलोम चुनें।
+Plentiful (प्रचुर)",Abundant,Abundant (प्रचुर),Lots,Lots (बहुत अधिक),Scary,Scary (डरावना),Scarce,Scarce (दुर्लभ/अल्प),option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the most appropriate option to substitute the underlined segment in the given sentence.
+
+<u>Newton found out that</u> the force of gravitation makes the apples fall.","दिए गए वाक्य के रेखांकित अंश के स्थान पर सबसे उपयुक्त विकल्प चुनें।
+
+<u>Newton found out that</u> the force of gravitation makes the apples fall.
+हिंदी अर्थ: न्यूटन ने पता लगाया कि गुरुत्वाकर्षण बल के कारण सेब गिरते हैं।",Newton studying that,Newton studying that (न्यूटन अध्ययन करते हुए कि),Newton discovered that,Newton discovered that (न्यूटन ने खोज की कि),Newton registered that,Newton registered that (न्यूटन ने दर्ज किया कि),Newton finding that,Newton finding that (न्यूटन पता लगाते हुए कि),option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Select the INCORRECTLY spelt word.,गलत वर्तनी वाला शब्द चुनें।,Foreigner,Foreigner (विदेशी),Fragrance,Fragrance (सुगंध),Exceptionable,Exceptionable (आपत्तिजनक),Commisson,Commisson (कमीशन; मूल विकल्प की वर्तनी),option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the option that can be used as a one-word substitute for the underlined group of words in the following sentence.
+
+The <u>bees kept</u> near the kindergarten caused much ado among the parent community.","निम्नलिखित वाक्य के रेखांकित शब्द-समूह के लिए एक शब्द के रूप में प्रयुक्त होने वाला विकल्प चुनें।
+
+The <u>bees kept</u> near the kindergarten caused much ado among the parent community.
+हिंदी अर्थ: किंडरगार्टन के पास रखी गई मधुमक्खियों के कारण अभिभावकों के बीच बहुत हलचल हुई।",asylum,asylum (शरणस्थल),apiary,apiary (मधुमक्खी पालन स्थल),decanter,decanter (पेय रखने का पात्र),aviary,aviary (पक्षीशाला),option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the most appropriate collocation to fill in the blank.
+I will _____ next week from my busy schedule.","रिक्त स्थान भरने के लिए सबसे उपयुक्त शब्द-संयोजन चुनें।
+I will _____ next week from my busy schedule.
+हिंदी अर्थ: मैं अगले सप्ताह अपने व्यस्त कार्यक्रम से _____।",fill break,fill break (विराम भरना),on vacation,on vacation (छुट्टी पर),take a break,take a break (विराम लेना),be break,be break (विराम होना),option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Identify the erroneous part in the given sentence and select the most appropriate option to ensure a meaningful sentence.
+
+The feud escalated to the next generation as the fighting for the family estate continued.","दिए गए वाक्य में त्रुटिपूर्ण अंश पहचानें और वाक्य को अर्थपूर्ण बनाने के लिए सबसे उपयुक्त विकल्प चुनें।
+
+The feud escalated to the next generation as the fighting for the family estate continued.
+हिंदी अर्थ: पारिवारिक संपत्ति के लिए लड़ाई जारी रहने के कारण विवाद अगली पीढ़ी तक बढ़ गया।",The feud escalated to the next generation as the fight over the family estate continued.,पारिवारिक संपत्ति को लेकर लड़ाई जारी रहने के कारण विवाद अगली पीढ़ी तक बढ़ गया।,The feud escalated to the next generation as the fighting about the family estate continued.,पारिवारिक संपत्ति के बारे में लड़ाई जारी रहने के कारण विवाद अगली पीढ़ी तक बढ़ गया।,The feud escalates to the next generation as the fighting about the family estate continued.,"पारिवारिक संपत्ति के बारे में लड़ाई जारी रही, इसलिए विवाद अगली पीढ़ी तक बढ़ता है।",The feud escalated to the next generation as the fight for the family estate continued.,पारिवारिक संपत्ति के लिए लड़ाई जारी रहने के कारण विवाद अगली पीढ़ी तक बढ़ गया।,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the option that expresses the given sentence in active voice.
+
+The question papers printed for the examinations by the departments were safely locked by the office staff.","दिए गए वाक्य को कर्तृवाच्य में व्यक्त करने वाला विकल्प चुनें।
+
+The question papers printed for the examinations by the departments were safely locked by the office staff.
+हिंदी अर्थ: विभागों द्वारा परीक्षाओं के लिए छपवाए गए प्रश्नपत्र कार्यालय कर्मचारियों द्वारा सुरक्षित रूप से ताले में बंद किए गए।",The question papers printed were safely locked for the examinations by the departments.,छपे प्रश्नपत्र विभागों द्वारा परीक्षाओं के लिए सुरक्षित रूप से ताले में बंद किए गए।,The departments locked the question papers printed for the examinations by the office staff.,विभागों ने कार्यालय कर्मचारियों द्वारा परीक्षाओं के लिए छपवाए गए प्रश्नपत्र ताले में बंद किए।,The office staff safely locked the question papers printed by the departments for the examinations.,कार्यालय कर्मचारियों ने विभागों द्वारा परीक्षाओं के लिए छपवाए गए प्रश्नपत्र सुरक्षित रूप से ताले में बंद किए।,The departments printed the question papers to be locked by the office staff.,विभागों ने कार्यालय कर्मचारियों द्वारा ताले में बंद किए जाने के लिए प्रश्नपत्र छापे।,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the option that expresses the given sentence in passive voice.
+
+The mistress appointed him monitor.","दिए गए वाक्य को कर्मवाच्य में व्यक्त करने वाला विकल्प चुनें।
+
+The mistress appointed him monitor.
+हिंदी अर्थ: अध्यापिका ने उसे मॉनिटर नियुक्त किया।",He appointed mistress as monitor.,उसने अध्यापिका को मॉनिटर नियुक्त किया।,He had been appointed as monitor.,उसे मॉनिटर नियुक्त किया गया था।,He was appointed monitor by the mistress.,उसे अध्यापिका द्वारा मॉनिटर नियुक्त किया गया।,Monitor had been appointed as mistress.,मॉनिटर को अध्यापिका नियुक्त किया गया था।,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the most appropriate ANTONYM of the given word.
+Spiritual","दिए गए शब्द का सबसे उपयुक्त विलोम चुनें।
+Spiritual (आध्यात्मिक)",Aesthetic,Aesthetic (सौंदर्यपरक),Virtuous,Virtuous (सदाचारी),Irreverent,Irreverent (अश्रद्धालु),Sensuous,Sensuous (इंद्रियपरक),option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the most appropriate ANTONYM of the word ‘PROCEEDING’ from the given sentence.
+
+Dolokhov halted when he noticed the black shape of a guy crossing the road and asked where the commander and officers were.","दिए गए वाक्य से ‘PROCEEDING’ (आगे बढ़ना) शब्द का सबसे उपयुक्त विलोम चुनें।
+
+Dolokhov halted when he noticed the black shape of a guy crossing the road and asked where the commander and officers were.
+हिंदी अर्थ: सड़क पार करते एक व्यक्ति की काली आकृति देखकर दोलोखोव रुक गया और उसने पूछा कि कमांडर और अधिकारी कहाँ थे।",Halted,Halted (रुक गया),Shape,Shape (आकृति),Asked,Asked (पूछा),Crossing,Crossing (पार करना),option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the option that expresses the given sentence in passive voice.
+
+The rules forbid passengers to cross the railway bridge.","दिए गए वाक्य को कर्मवाच्य में व्यक्त करने वाला विकल्प चुनें।
+
+The rules forbid passengers to cross the railway bridge.
+हिंदी अर्थ: नियम यात्रियों को रेलवे पुल पार करने से मना करते हैं।",Passengers are forbidden by the rules to cross the railway bridge.,यात्रियों को नियमों द्वारा रेलवे पुल पार करने से मना किया जाता है।,Railway bridge is forbidden for the passengers to cross.,रेलवे पुल यात्रियों के पार करने के लिए निषिद्ध है।,Forbidden are the passengers to cross the railway bridge.,यात्रियों को रेलवे पुल पार करने से मना किया गया है।,"Forbidden by the rules, the passengers cannot cross railway bridge.",नियमों द्वारा निषिद्ध होने के कारण यात्री रेलवे पुल पार नहीं कर सकते।,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the most appropriate meaning of the given idiom.
+
+Sitting shotgun","दिए गए मुहावरे का सबसे उपयुक्त अर्थ चुनें।
+
+Sitting shotgun",Someone who is cherished above all others,कोई जो अन्य सभी से अधिक प्रिय हो,Someone who is left-handed,कोई जो बाएँ हाथ से काम करता हो,Riding in the front passenger seat of a car,कार की आगे वाली यात्री सीट पर बैठकर यात्रा करना,A scamp,एक शरारती व्यक्ति,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the option that can be used as a one-word substitute for the given group of words.
+
+Something that happens often or that lasts for a long time","दिए गए शब्द-समूह के लिए एक शब्द के रूप में प्रयुक्त होने वाला विकल्प चुनें।
+
+कुछ ऐसा जो अक्सर होता हो या लंबे समय तक बना रहता हो",Perennial,Perennial (चिरस्थायी),Fleeting,Fleeting (क्षणिक),Dated,Dated (पुराना पड़ चुका),Archaic,Archaic (पुरातन),option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the most appropriate meaning of the given idiom.
+The ball is in your court","दिए गए मुहावरे का सबसे उपयुक्त अर्थ चुनें।
+The ball is in your court",To refuse entry to some prohibited places,कुछ निषिद्ध स्थानों में प्रवेश से मना करना,To refer to the person who is responsible for the next move,अगला कदम उठाने के लिए जिम्मेदार व्यक्ति की ओर संकेत करना,To take care of the passing time,बीतते समय का ध्यान रखना,To teach how to reach perfection,पूर्णता तक पहुँचने का तरीका सिखाना,option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the option that can be used as a one-word substitute for the given group of words.
+
+Study of the change in number of births, deaths, diseases etc in a community over a period of time","दिए गए शब्द-समूह के लिए एक शब्द के रूप में प्रयुक्त होने वाला विकल्प चुनें।
+
+समय की एक अवधि में किसी समुदाय में जन्मों, मृत्युओं, रोगों आदि की संख्या में बदलाव का अध्ययन",Demography,Demography (जनसांख्यिकी),Density,Density (घनत्व),History,History (इतिहास),Sociology,Sociology (समाजशास्त्र),option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Select the INCORRECTLY spelt word.,गलत वर्तनी वाला शब्द चुनें।,Arrangement,Arrangement (व्यवस्था),Acceptable,Acceptable (स्वीकार्य),Accomodation,Accomodation (आवास; मूल विकल्प की वर्तनी),Allotment,Allotment (आवंटन),option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the most appropriate option that can substitute the underlined segment in the given sentence.
+A person who hates all mankind <u>is called a philanthropist.</u>","दिए गए वाक्य के रेखांकित अंश को प्रतिस्थापित करने वाला सबसे उपयुक्त विकल्प चुनें।
+A person who hates all mankind <u>is called a philanthropist.</u>
+हिंदी अर्थ: समस्त मानवजाति से घृणा करने वाला व्यक्ति परोपकारी कहलाता है।",is called an egoist,अहंवादी कहलाता है,is called a misanthrope,मानवद्वेषी कहलाता है,is called an insolvent,दिवालिया कहलाता है,is called a bipolar,द्विध्रुवी कहलाता है,option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Select the most appropriate synonym of the given word.
+
+Gobble","दिए गए शब्द का सबसे उपयुक्त समानार्थी चुनें।
+
+Gobble (जल्दी-जल्दी निगलना)",Spit,Spit (थूकना),Smack,Smack (चटखारा लेना/थप्पड़ मारना),Gulp,Gulp (गटकना),Greet,Greet (अभिवादन करना),option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Select the most appropriate option to fill in blank number 1.,रिक्त स्थान संख्या 1 भरने के लिए सबसे उपयुक्त विकल्प चुनें।,Entreats,Entreats (विनती करता है),Treats,Treats (व्यवहार करता है),Requests,Requests (अनुरोध करता है),Commands,Commands (आदेश देता है),option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Select the most appropriate option to fill in blank number 2.,रिक्त स्थान संख्या 2 भरने के लिए सबसे उपयुक्त विकल्प चुनें।,impose,impose (थोपना),take,take (लेना),do,do (करना),make,make (बनाना),option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Select the most appropriate option to fill in blank number 3.,रिक्त स्थान संख्या 3 भरने के लिए सबसे उपयुक्त विकल्प चुनें।,speak on,speak on (पर बोलना),forge,forge (गढ़ना),assault,assault (हमला करना),forgive,forgive (क्षमा करना),option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Select the most appropriate option to fill in blank number 4.,रिक्त स्थान संख्या 4 भरने के लिए सबसे उपयुक्त विकल्प चुनें।,asset,asset (संपत्ति),pressure,pressure (दबाव),victory,victory (विजय),vacuum,vacuum (निर्वात),option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Select the most appropriate option to fill in blank number 5.,रिक्त स्थान संख्या 5 भरने के लिए सबसे उपयुक्त विकल्प चुनें।,taught,taught (सिखाया),asked,asked (प्रार्थना की/पूछा),seeded,seeded (बीज बोया),served,served (सेवा की),option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Name the first Indian woman to win two Olympic medals.,दो ओलंपिक पदक जीतने वाली पहली भारतीय महिला का नाम बताएं।,Mirabai Chanu,मीराबाई चानू,Lovlina Borgohain,लवलीना बोरगोहेन,P V Sindhu,पी वी सिंधु,Anshu Malik,अंशु मलिक,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Which of the following rulers of the Tuluva dynasty was the author of 'Amuktamalyada'?,तुलुव राजवंश के निम्नलिखित शासकों में से 'अमुक्तमाल्यद' का लेखक कौन था?,Achyuta Raya,अच्युत राय,Krishnadevaraya,कृष्णदेवराय,Tuluva Narasa Nayaka,तुलुव नरस नायक,Sadashiva Raya,सदाशिव राय,option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+How many storeys are there in the Qutb Minar?,कुतुब मीनार में कितनी मंजिलें मौजूद हैं?,3,3,6,6,5,5,4,4,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+________ was awarded the Nobel Peace Prize in 1970 for his contribution to agricultural development and solving the world's food problem at that time.,________ को 1970 में कृषि विकास में उनके योगदान और उस समय की विश्व खाद्य समस्या को हल करने के लिए नोबेल शांति पुरस्कार दिया गया।,Dr. Norman Borlaug,डॉ. नॉर्मन बोरलॉग,Dr. William Gaud,डॉ. विलियम गॉड,Dr. Norman Rockefeller,डॉ. नॉर्मन रॉकफेलर,Dr. William Borlaug,डॉ. विलियम बोरलॉग,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Who won the silver medal in the German Open 2022 badminton tournament?,जर्मन ओपन 2022 बैडमिंटन टूर्नामेंट में रजत पदक किसने जीता?,Varun Kapur,वरुण कपूर,Tasnim Mir,तस्नीम मीर,Rohan Gurbani,रोहन गुरबानी,Lakshya Sen,लक्ष्य सेन,option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Which of the following Articles of the Constitution of India mentions the procedure by which any part of the Constitution can be amended?,भारत के संविधान के निम्नलिखित में से किस अनुच्छेद में उस प्रक्रिया का उल्लेख है जिसके द्वारा संविधान के किसी भी भाग में संशोधन किया जा सकता है?,Article 368,अनुच्छेद 368,Article 190,अनुच्छेद 190,Article 100,अनुच्छेद 100,Article 234,अनुच्छेद 234,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Which of the following is NOT a basic feature of Hindu temples?,निम्नलिखित में से कौन सी हिंदू मंदिरों की मूलभूत विशेषता नहीं है?,Vimana,विमान,Mandapa,मंडप,Charbagh,चारबाग,Garbhagriha,गर्भगृह,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Which javelin star, a three-time Paralympic medallist (two gold and one silver), was honoured with the Padma Bhushan on 26 January 2022?",तीन बार के पैरालंपिक पदक विजेता (दो स्वर्ण और एक रजत) किस जेवलिन स्टार को 26 जनवरी 2022 को पद्म भूषण से सम्मानित किया गया?,Pramod Bhagat,प्रमोद भगत,Sumit Antil,सुमित अंतिल,Brahmanand Sankhwalkar,ब्रह्मानंद संखवालकर,Devendra Jhajharia,देवेंद्र झाझरिया,option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Urdu is the national language of Pakistan but for all practical purposes, ________ is considered the official language of Pakistan.","उर्दू पाकिस्तान की राष्ट्रीय भाषा है लेकिन सभी व्यावहारिक उद्देश्यों के लिए, ________ को पाकिस्तान की आधिकारिक भाषा माना जाता है।",Arabic,अरबी,English,अंग्रेज़ी,Hindi,हिन्दी,Saraiki,सराइकी,option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"Which of the following carry out the distribution of microcredit?
+(a) Scheduled commercial banks
+(b) Self-help groups
+(c) Cooperative banks
+(d) Non-banking financial companies (NBFCs)","लघु-ऋण (microcredit) के वितरण का कार्य निम्न में से किनके द्वारा किया जाता है?
+(a) अनुसूचित वाणिज्यिक बैंकों
+(b) स्वयं सहायता समूहों
+(c) सहकारी बैंकों
+(d) गैर-बैंकिंग वित्तीय कंपनियों (NBFCs)",Both b and c,b और c दोनों,"All of a, b, c and d","a, b, c और d सभी",Both a and c,a और c दोनों,Only d,केवल d,option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"After the introduction of economic reform policies in 1991, industrial licensing was NOT abolished in which of the following sectors?","1991 में आर्थिक सुधार नीतियों की शुरुआत के बाद, निम्नलिखित में से किस क्षेत्र में औद्योगिक लाइसेंसिंग को समाप्त नहीं किया गया था?",Cosmetics,कॉस्मेटिक्स,Beverages,पेय पदार्थ,Cigarettes,सिगरेट,Hosiery,होजरी,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"In the initial phase of the Green Revolution, hybrid seeds were used in which of the following crops?",हरित क्रांति के प्रारंभिक चरण में निम्नलिखित में से किस फसल में संकर बीजों का उपयोग किया गया था?,Pearl millet,बाजरा,Oilseeds,तिलहन,Wheat,गेहूँ,Maize,मकई,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Identify the element whose atomic number is 3.,उस तत्व की पहचान करें जिसका परमाणु क्रमांक 3 है।,Calcium,कैल्शियम,Sodium,सोडियम,Lithium,लीथियम,Magnesium,मैग्नीशियम,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Which of the following courts can issue writs for the protection of fundamental rights?,निम्नलिखित में से कौन सा न्यायालय मौलिक अधिकारों के संरक्षण के लिए रिट जारी कर सकता है?,District Court,जिला न्यायालय,Subordinate Court,अधीनस्थ न्यायालय,Special Court,विशेष न्यायालय,High Court,उच्च न्यायालय,option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Which medal did Mirabai Chanu win at the Singapore Weightlifting International on 25 February 2022?,मीराबाई चानू ने 25 फरवरी 2022 को सिंगापुर वेटलिफ्टिंग इंटरनेशनल में कौन सा पदक जीता?,Silver,रजत,Bronze,कांस्य,Gold,स्वर्ण,Platinum,प्लेटिनम,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Which of the following ports in India is a landlocked port and is also well protected?,भारत में निम्नलिखित में से कौन सा बंदरगाह भूमिबद्ध (लैंडलॉक) बंदरगाह है और अच्छी तरह से संरक्षित भी है?,Visakhapatnam,विशाखापत्तनम,Mangalore,मंगलूरू,Kandla,कांडला,Chennai,चेन्नई,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Where is the famous Panch Mahal located?,प्रसिद्ध पंच महल कहाँ स्थित है?,Delhi,दिल्ली,Lucknow,लखनऊ,Fatehpur Sikri,फतेहपुर सीकरी,Varanasi,वाराणसी,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"In November 2021, the Finance Ministry approved an interest rate of ______ for 2020-21 on Employees' Provident Fund (EPF) deposits.","नवंबर 2021 में, वित्त मंत्रालय ने कर्मचारियों के भविष्य निधि (EPF) जमा पर 2020-21 के लिए ______ की ब्याज दर को मंजूरी दी।",7.25%,7.25%,8%,8%,8.5%,8.5%,7.5%,7.5%,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+The feature 'procedure established by law' in the Indian Constitution was borrowed from the constitution of which country?,"भारतीय संविधान की विशेषता ""विधि द्वारा स्थापित प्रक्रिया"" किस देश के संविधान से ली गई थी?",Japanese Constitution,जापानी संविधान,British Constitution,ब्रिटिश संविधान,French Constitution,फ्रांसीसी संविधान,Australian Constitution,ऑस्ट्रेलियाई संविधान,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"In January 2022, how many years did the Gram Ujala scheme complete?","जनवरी 2022 में, ग्राम उजाला योजना को कितने वर्ष पूरे हुए?",7 years,7 वर्ष,5 years,5 वर्ष,6 years,6 वर्ष,4 years,4 वर्ष,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+By which Act was dyarchy in the provinces abolished?,प्रांतों में द्वैध शासन व्यवस्था को किस अधिनियम द्वारा समाप्त किया गया?,"Indian Councils Act, 1909","भारतीय परिषद अधिनियम, 1909","Independence Act, 1947","स्वातंत्र्य अधिनियम, 1947","Government of India Act, 1919","भारत सरकार अधिनियम, 1919","Government of India Act, 1935","भारत सरकार अधिनियम, 1935",option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"According to the Rabatak inscription, the third ruler of the Kushan dynasty was __________.",रबातक अभिलेख के अनुसार कुषाण वंश का तीसरा शासक __________ था।,Vashishka,वशिष्क,Kanishka,कनिष्क,Vima Kadphises,विम कडफिसेस,Kujula Kadphises,कुजुल कडफिसेस,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+The SAMRIDH scheme in India is designed for the growth of ______.,"भारत में समृद्ध (SAMRIDH) योजना, ______ की संवृद्धि के लिए डिजाइन की गई है।",Economic capacity of Scheduled Castes/Scheduled Tribes,अनुसूचित जातियों/अनुसूचित जनजातियों की आर्थिक क्षमता,Start-up accelerator ecosystem in India,भारत में स्टार्ट-अप एक्सीलेरेटर पारिस्थितिकी तंत्र,Economic capacity of women,महिलाओं की आर्थिक क्षमता,Economic capacity of BPL families,बीपीएल (BPL) परिवारों की आर्थिक क्षमता,option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Which book is commonly referred to by chemists as a collection of recommendations on organic chemical nomenclature published at irregular intervals by the International Union of Pure and Applied Chemistry (IUPAC)?,इंटरनेशनल यूनियन ऑफ प्योर एंड एप्लाइड केमिस्ट्री (IUPAC) द्वारा अनियमित अंतराल पर प्रकाशित कार्बनिक रासायनिक नामकरण पर सिफारिशों के संग्रह के रूप में रसायनज्ञों द्वारा आमतौर पर किस पुस्तक से संदर्भ लिया जाता है?,Blue Book,ब्लू बुक,Red Book,रेड बुक,Green Book,ग्रीन बुक,Orange Book,ऑरेंज बुक,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Who is the ICC Women's Cricketer of the Year 2021 declared by the International Cricket Council?,अंतर्राष्ट्रीय क्रिकेट परिषद द्वारा घोषित वर्ष 2021 की ICC महिला क्रिकेटर कौन हैं?,Tammy Beaumont,टैमी ब्यूमोंट,Smriti Mandhana,स्मृति मंधाना,Lizelle Lee,लिज़ेल ली,Alyssa Healy,एलिसा हीली,option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"In computer networking, MODEM stands for Modulation – Demodulation; the Modulation is the process of ______.
+I. Converting digital data into analog data
+II. Converting analog data into digital data","कंप्यूटर नेटवर्किंग में MODEM का पूर्ण रूप Modulation – Demodulation है; मॉड्यूलेशन ______ की प्रक्रिया है।
+I. डिजिटल डेटा को एनालॉग डेटा में बदलना
+II. एनालॉग डेटा को डिजिटल डेटा में बदलना",Only II,केवल II,Only I,केवल I,Both I and II,I और II दोनों,Neither I nor II,न तो I और न ही II,option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Which among the following is (1’s) complement of (1001)₂?,निम्नलिखित में से (1001)₂ का (1’s) पूरक कौन-सा है?,(0011)₂,(0011)₂,(1100)₂,(1100)₂,(0110)₂,(0110)₂,(1000)₂,(1000)₂,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"What is the output of the following java language code?
+public class Main
+{    public static void main(String[] args){
+     String str1 = ""xyz"";
+ String str2 = ""the"";
+ String str3 = ""abc"";
+ System.out.println(str1.concat((str2)));
+}}","निम्नलिखित java भाषा कोड का आउटपुट क्या है?
+public class Main
+{    public static void main(String[] args){
+     String str1 = ""xyz"";
+ String str2 = ""the"";
+ String str3 = ""abc"";
+ System.out.println(str1.concat((str2)));
+}}",abcxyz,abcxyz,xyzthe,xyzthe,abcthe,abcthe,thexyz,thexyz,option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"In Computer Memory, a CD-ROM jukebox is also named as ______.",कंप्यूटर मेमोरी में CD-ROM ज्यूकबॉक्स को ______ भी कहा जाता है।,tape robot,टेप रोबोट,automatic tape library,ऑटोमैटिक टेप लाइब्रेरी,optical disk library,ऑप्टिकल डिस्क लाइब्रेरी,tape jukebox,टेप ज्यूकबॉक्स,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"In which type of computer network, each computer has the same capabilities for processing the data and providing access to resources?",किस प्रकार के कंप्यूटर नेटवर्क में प्रत्येक कंप्यूटर की डेटा प्रोसेस करने और संसाधनों तक पहुँच प्रदान करने की क्षमताएँ समान होती हैं?,Personal Area Network,पर्सनल एरिया नेटवर्क,Master-Slave Network,मास्टर-स्लेव नेटवर्क,Client-Server Network,क्लाइंट-सर्वर नेटवर्क,Peer-to-Peer Network,पीयर-टू-पीयर नेटवर्क,option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"In projections, origin of the Cartesian coordinates is shifted in such a way that the total map area falls in Quadrant I. This is achieved by adding certain values to the x and y coordinates. The value added to x coordinate is called ______.",प्रक्षेपों में कार्तीय निर्देशांकों के मूलबिंदु को इस प्रकार खिसकाया जाता है कि पूरा मानचित्र क्षेत्र प्रथम चतुर्थांश में आ जाए। यह x और y निर्देशांकों में कुछ मान जोड़कर किया जाता है। x निर्देशांक में जोड़ा गया मान ______ कहलाता है।,False Southing,फॉल्स साउथिंग,False Easting,फॉल्स ईस्टिंग,False Northing,फॉल्स नॉर्थिंग,False Westing,फॉल्स वेस्टिंग,option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Which of the following is incorrect statement about Java language in comparison with C language?,C भाषा की तुलना में Java भाषा के बारे में निम्नलिखित में से कौन-सा कथन गलत है?,Java adds new operators such as instanceof and >>>.,Java instanceof और >>> जैसे नए ऑपरेटर जोड़ती है।,Java supports an explicit pointer type.,Java एक स्पष्ट पॉइंटर प्रकार का समर्थन करती है।,Java does not have a preprocessor.,Java में प्रीप्रोसेसर नहीं होता है।,"Java does not define the type modifiers keywords auto, extern, signed and unsigned.","Java प्रकार संशोधक कीवर्ड auto, extern, signed और unsigned को परिभाषित नहीं करती है।",option_b,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+______ Network used multi-point connection in which single communication line is shared by all nodes in computer network.,______ नेटवर्क में मल्टी-पॉइंट कनेक्शन का उपयोग होता है जिसमें कंप्यूटर नेटवर्क के सभी नोड एक ही संचार लाइन साझा करते हैं।,Star,स्टार,Ring,रिंग,Mesh,मेश,Bus,बस,option_d,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+Which of the following computer component for transfers data between the central processing unit and other parts of the computer?,निम्नलिखित में से कौन-सा कंप्यूटर घटक केंद्रीय प्रसंस्करण इकाई और कंप्यूटर के अन्य भागों के बीच डेटा स्थानांतरित करता है?,Bus Interface Unit,बस इंटरफेस यूनिट,Monitor,मॉनिटर,Registers,रजिस्टर,Read Only Memory/Random Access Memory,रीड ओनली मेमोरी/रैंडम एक्सेस मेमोरी,option_a,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,
+"In Database Management System, data dictionaries known as meta data stores which type of information?",डेटाबेस मैनेजमेंट सिस्टम में मेटा डेटा कहलाने वाली डेटा डिक्शनरी किस प्रकार की जानकारी संग्रहीत करती हैं?,Information of Storage,स्टोरेज की जानकारी,Stored Data,संग्रहीत डेटा,Administrative information,प्रशासनिक जानकारी,Data of Information,जानकारी का डेटा,option_c,,,Computer Science and Information Technology,कंप्यूटर विज्ञान और सूचना प्रौद्योगिकी,,,,,

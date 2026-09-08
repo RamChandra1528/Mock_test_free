@@ -28,6 +28,7 @@ import {
 } from "../../components/ui";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { useToast } from "../../contexts/ToastContext";
+import { buildQuestionPayload } from "../../features/admin/questionPayload";
 import { api } from "../../lib/api";
 import { resolveMediaUrl, uploadImage } from "../../lib/media";
 
@@ -555,16 +556,21 @@ function QuestionEditor({
   const toast = useToast();
   const { language, localize } = useLanguage();
   const initialExam = exams.find((exam) => exam.id === defaultExamId);
-  const makeDefaults = () =>
+  const makeDefaults = (): QuestionForm =>
     existing
       ? {
-          ...existing,
+          examId: existing.examId,
           sectionId: existing.sectionId ?? "",
           subjectId: existing.subjectId ?? "",
           topicId: existing.topicId ?? "",
+          text: existing.text,
           textHi: existing.textHi ?? "",
           imageUrl: existing.imageUrl ?? "",
+          explanation: existing.explanation ?? "",
           explanationHi: existing.explanationHi ?? "",
+          difficulty: existing.difficulty,
+          marks: Number(existing.marks),
+          negativeMarks: Number(existing.negativeMarks),
           options: existing.options.map(
             ({ label, text, textHi, imageUrl, isCorrect }) => ({
               label,
@@ -596,22 +602,7 @@ function QuestionEditor({
     subjects.find((subject) => subject.id === values.subjectId)?.topics ?? [];
   const save = useMutation({
     mutationFn: (form: QuestionForm) => {
-      const payload = {
-        ...form,
-        sectionId: form.sectionId || undefined,
-        subjectId: form.subjectId || undefined,
-        topicId: form.topicId || undefined,
-        textHi: form.textHi.trim() || undefined,
-        imageUrl: form.imageUrl || undefined,
-        explanationHi: form.explanationHi.trim() || undefined,
-        options: form.options.map((option) => ({
-          ...option,
-          textHi: option.textHi?.trim() || undefined,
-          imageUrl: option.imageUrl || undefined,
-        })),
-        marks: Number(form.marks),
-        negativeMarks: Number(form.negativeMarks),
-      };
+      const payload = buildQuestionPayload(form);
       return existing?.id
         ? api.put(`/admin/questions/${existing.id}`, payload)
         : api.post("/admin/questions", payload);

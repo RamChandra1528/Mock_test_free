@@ -27,6 +27,7 @@ import { Badge, ErrorState, Loading, PageHeader } from "../../components/ui";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { useToast } from "../../contexts/ToastContext";
 import { api } from "../../lib/api";
+import { buildImportQuestionPayload } from "../../features/admin/importQuestionPayload";
 
 type ImportedQuestion = {
   id: string;
@@ -266,7 +267,7 @@ export function ImportReviewPage() {
     }: {
       qid: string;
       data: Partial<ImportedQuestion>;
-    }) => api.put(`/admin/import/${id}/questions/${qid}`, data),
+    }) => api.put(`/admin/import/${id}/questions/${qid}`, buildImportQuestionPayload(data)),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["import-review", id] });
       toast.show("Imported question saved");
@@ -404,14 +405,22 @@ function ImportedQuestionCard({
 }: {
   question: ImportedQuestion;
   saving: boolean;
-  onSave: (q: ImportedQuestion) => void;
+  onSave: (q: Partial<ImportedQuestion>) => void;
   onDelete: () => void;
   subjects: { id: string; name: string; nameHi?: string | null }[];
 }) {
-  const [q, setQ] = useState(initial);
-  useEffect(() => setQ(initial), [initial]);
+  const normalize = (question: ImportedQuestion) => ({
+    ...question,
+    marks: Number(question.marks) >= 0.01 ? Number(question.marks) : 1,
+    negativeMarks: Number(question.negativeMarks) >= 0 ? Number(question.negativeMarks) : 0,
+  });
+  const [q, setQ] = useState(() => normalize(initial));
+  useEffect(() => setQ(normalize(initial)), [initial]);
   return (
-    <article className="card overflow-hidden">
+    <form className="card overflow-hidden" onSubmit={(event) => {
+      event.preventDefault();
+      onSave({ ...q, status: "PENDING" });
+    }}>
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#e7e9e3] bg-[#fafbf8] px-5 py-3">
         <div className="flex items-center gap-2">
           <span className="grid h-8 w-8 place-items-center rounded-lg bg-forest text-xs font-extrabold text-white">
@@ -429,19 +438,20 @@ function ImportedQuestionCard({
         <div className="flex gap-2">
           <button
             className="btn-secondary !px-3 !py-2"
+            type="button"
             disabled={saving}
-            onClick={() => onSave({ ...q, status: "SKIPPED" })}
+            onClick={() => onSave({ status: "SKIPPED" })}
           >
             Skip
           </button>
-          <button className="btn-danger !px-3 !py-2" onClick={onDelete}>
+          <button type="button" className="btn-danger !px-3 !py-2" onClick={onDelete}>
             <Trash2 className="h-4 w-4" />
             Delete
           </button>
           <button
             className="btn-primary !px-3 !py-2"
             disabled={saving}
-            onClick={() => onSave(q)}
+            type="submit"
           >
             <Save className="h-4 w-4" />
             Save
@@ -638,7 +648,9 @@ function ImportedQuestionCard({
               <input
                 className="input"
                 type="number"
-                step=".25"
+                step="any"
+                min="0.01"
+                required
                 value={q.marks}
                 onChange={(e) => setQ({ ...q, marks: Number(e.target.value) })}
               />
@@ -648,7 +660,9 @@ function ImportedQuestionCard({
               <input
                 className="input"
                 type="number"
-                step=".25"
+                step="any"
+                min="0"
+                required
                 value={q.negativeMarks}
                 onChange={(e) =>
                   setQ({ ...q, negativeMarks: Number(e.target.value) })
@@ -658,7 +672,7 @@ function ImportedQuestionCard({
           </div>
         </div>
       </div>
-    </article>
+    </form>
   );
 }
 

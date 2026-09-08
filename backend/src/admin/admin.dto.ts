@@ -1,4 +1,4 @@
-import { Type } from "class-transformer";
+import { Exclude, Transform, Type } from "class-transformer";
 import {
   Difficulty,
   DuplicateAction,
@@ -56,13 +56,25 @@ export class CreateExamDto {
   @IsOptional() @Type(() => Number) @IsInt() @Min(1) attemptLimit?: number;
   @IsBoolean() randomizeQuestions = false;
   @IsBoolean() randomizeOptions = false;
-  @IsBoolean() showResultImmediately = true;
+  @IsBoolean() showResultImmediately = false;
   @IsBoolean() allowAnswerReview = true;
   @IsBoolean() requireExplanations = false;
   @IsBoolean() allowResume = true;
 }
 
 export class UpdateExamDto {
+  // Compatibility with open clients that submit the full exam detail response.
+  // These fields must never reach Prisma or override the route's exam ID.
+  @Exclude({ toClassOnly: true }) declare id?: string;
+  @Exclude({ toClassOnly: true }) declare examId?: string;
+  @Exclude({ toClassOnly: true }) declare status?: string;
+  @Exclude({ toClassOnly: true }) declare createdAt?: string;
+  @Exclude({ toClassOnly: true }) declare updatedAt?: string;
+  @Exclude({ toClassOnly: true }) declare publishedAt?: string;
+  @Exclude({ toClassOnly: true }) declare category?: unknown;
+  @Exclude({ toClassOnly: true }) declare subject?: unknown;
+  @Exclude({ toClassOnly: true }) declare sections?: unknown;
+  @Exclude({ toClassOnly: true }) declare _count?: unknown;
   @IsOptional() @IsString() @MinLength(3) @MaxLength(180) title?: string;
   @IsOptional() @IsString() @MaxLength(180) titleHi?: string;
   @IsOptional() @IsString() description?: string;
@@ -149,6 +161,15 @@ export class BulkQuestionDto {
 }
 
 export class UpdateImportedQuestionDto {
+  // Older review clients submit the entire preview record. Never persist its
+  // server-owned fields; the URL and database remain authoritative.
+  @Exclude({ toClassOnly: true }) declare id?: string;
+  @Exclude({ toClassOnly: true }) declare importId?: string;
+  @Exclude({ toClassOnly: true }) declare warnings?: unknown;
+  @Exclude({ toClassOnly: true }) declare duplicateOfId?: string;
+  @Exclude({ toClassOnly: true }) declare order?: number;
+  @Exclude({ toClassOnly: true }) declare createdAt?: string;
+  @Exclude({ toClassOnly: true }) declare updatedAt?: string;
   @IsOptional() @IsString() text?: string;
   @IsOptional() @IsString() textHi?: string;
   @IsOptional() @IsString() optionA?: string;
@@ -167,7 +188,16 @@ export class UpdateImportedQuestionDto {
   @IsOptional() @IsString() topicName?: string;
   @IsOptional() @IsString() topicNameHi?: string;
   @IsOptional() @IsEnum(Difficulty) difficulty?: Difficulty;
-  @IsOptional() @Type(() => Number) @IsNumber() @Min(0.01) marks?: number;
+  @IsOptional()
+  @Type(() => Number)
+  @Transform(({ value, obj }) =>
+    // The old CSV parser stored blank marks as zero, and old clients send that
+    // value back with preview metadata. Repair only that legacy request shape.
+    value === 0 && typeof obj.id === "string" && typeof obj.importId === "string"
+      ? 1
+      : value,
+  )
+  @IsNumber() @Min(0.01) marks?: number;
   @IsOptional() @Type(() => Number) @IsNumber() @Min(0) negativeMarks?: number;
   @IsOptional() @IsEnum(QuestionStatus) status?: QuestionStatus;
   @IsOptional() @IsEnum(DuplicateAction) duplicateAction?: DuplicateAction;

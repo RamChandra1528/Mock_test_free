@@ -1,6 +1,34 @@
 import { ImportService, parseQuestionText } from "./import.service";
 
 describe("question import parser", () => {
+  it("persists repeated saves, skips and restores an imported question", async () => {
+    let stored = { id: "question", importId: "import", text: "Original", status: "PENDING", marks: 1 };
+    const prisma = {
+      importedQuestion: {
+        findFirst: jest.fn(async () => stored),
+        update: jest.fn(async ({ data }) => (stored = { ...stored, ...data })),
+        findMany: jest.fn(async () => [stored]),
+      },
+      paperImport: { update: jest.fn() },
+    };
+    const service = new ImportService(prisma as any, { get: jest.fn().mockReturnValue("uploads") } as any);
+    await service.updateQuestion("import", "question", { text: "First edit", marks: 2 });
+    await service.updateQuestion("import", "question", { text: "Second edit", negativeMarks: 0.25 });
+    expect(stored).toMatchObject({ text: "Second edit", marks: 2, negativeMarks: 0.25 });
+    await service.updateQuestion("import", "question", { status: "SKIPPED" });
+    await service.updateQuestion("import", "question", { status: "SKIPPED" });
+    expect(stored.status).toBe("SKIPPED");
+    await service.updateQuestion("import", "question", { status: "PENDING" });
+    expect(stored.status).toBe("PENDING");
+  });
+
+  it.each([undefined, null, "", "   "])("defaults blank imported marks (%p) to one", (marks) => {
+    const service = new ImportService({} as any, { get: jest.fn().mockReturnValue("uploads") } as any);
+    const [question] = (service as any).fromRows([{ question: "Question", marks, negative_marks: marks }]);
+    expect(question.marks).toBe(1);
+    expect(question.negativeMarks).toBe(0);
+  });
+
   it("extracts numbered questions, options, answer and explanation", () => {
     const [question] = parseQuestionText(
       "Q1. What is 2 + 2?\nA. 2\nB. 3\nC. 4\nD. 5\nAnswer: C\nExplanation: Two plus two is four.",
@@ -60,6 +88,31 @@ describe("question import parser", () => {
       optionBHi: "चार",
       explanationHi: "दो और दो चार होता है।",
       subjectNameHi: "गणित",
+    });
+  });
+
+  it("imports UTF-8 BOM CSV files exported by spreadsheet applications", async () => {
+    const service = new ImportService(
+      {} as any,
+      { get: jest.fn().mockReturnValue("uploads") } as any,
+    );
+    const csv = [
+      "\uFEFFquestion,question_hi,option_a,option_a_hi,option_b,option_b_hi,option_c,option_c_hi,option_d,option_d_hi,correct_answer",
+      '"What is 2 + 2?","दो और दो कितने होते हैं?",3,तीन,4,चार,5,पाँच,6,छह,option_b',
+    ].join("\n");
+
+    const [question] = await (service as any).extract(
+      ".csv",
+      "unused.csv",
+      Buffer.from(csv, "utf8"),
+    );
+
+    expect(question).toMatchObject({
+      text: "What is 2 + 2?",
+      textHi: "दो और दो कितने होते हैं?",
+      optionA: "3",
+      optionBHi: "चार",
+      correctAnswer: "B",
     });
   });
 

@@ -230,6 +230,28 @@ export class AdminService {
     });
     return flattenExamSettings(updated);
   }
+  async declareResult(id: string) {
+    const exam = await this.prisma.exam.findUnique({
+      where: { id }, include: { settings: true },
+    });
+    if (!exam) throw new NotFoundException("Exam not found");
+    if (exam.status === "DRAFT")
+      throw new BadRequestException("Publish the exam before declaring results");
+    if (exam.settings?.showResultImmediately ?? true)
+      return { success: true, resultAvailable: true };
+    const completed = await this.prisma.attempt.count({
+      where: { examId: id, status: { not: "IN_PROGRESS" } },
+    });
+    if (!completed)
+      throw new BadRequestException("No submitted attempts are available to declare");
+    await this.prisma.examSettings.upsert({
+      where: { examId: id },
+      create: { examId: id, showResultImmediately: true },
+      update: { showResultImmediately: true },
+    });
+    return { success: true, resultAvailable: true };
+  }
+
   async deleteExam(id: string) {
     const exam = await this.exam(id);
     if (exam._count.attempts > 0)
