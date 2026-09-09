@@ -10,6 +10,7 @@ import {
   Min,
   MinLength,
   IsEnum,
+  IsIn,
 } from "class-validator";
 import { Language } from "@prisma/client";
 
@@ -48,4 +49,8 @@ export class UpdateProfileDto {
 
 export class UpdateLanguageDto {
   @IsEnum(Language) preferredLanguage!: Language;
+}
+
+export class ExplainQuestionDto {
+  @IsIn(["en", "hi"]) language: "en" | "hi" = "en";
 }

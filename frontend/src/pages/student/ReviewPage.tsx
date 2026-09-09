@@ -1,6 +1,5 @@
 import {
   ArrowLeft,
-  ArrowRight,
   Bookmark,
   CheckCircle2,
   MinusCircle,
@@ -14,6 +13,7 @@ import { api } from "../../lib/api";
 import { MarkdownContent } from "../../components/MarkdownContent";
 import { resolveMediaUrl } from "../../lib/media";
 import { useLanguage } from "../../contexts/LanguageContext";
+import { QuestionAiExplanation } from "../../features/exam/QuestionAiExplanation";
 
 type ReviewQuestion = {
   id: string;
@@ -42,7 +42,6 @@ export function ReviewPage() {
   const { attemptId } = useParams();
   const { language, localize, t } = useLanguage();
   const [filter, setFilter] = useState("ALL");
-  const [index, setIndex] = useState(0);
   const query = useQuery({
     queryKey: ["review", attemptId],
     queryFn: () =>
@@ -50,9 +49,7 @@ export function ReviewPage() {
         .get<{
           exam: { title: string; titleHi?: string | null };
           questions: ReviewQuestion[];
-        }>(
-          `/student/attempts/${attemptId}/review`,
-        )
+        }>(`/student/attempts/${attemptId}/review`)
         .then((r) => r.data),
   });
   const filtered = useMemo(
@@ -75,7 +72,6 @@ export function ReviewPage() {
       />
     );
   if (query.error) return <ErrorState error={query.error} />;
-  const question = filtered[Math.min(index, filtered.length - 1)];
   return (
     <div className="mx-auto max-w-6xl">
       <Link
@@ -104,7 +100,6 @@ export function ReviewPage() {
               className={`rounded-xl px-3 py-2 text-xs font-extrabold ${filter === f ? "bg-forest text-white" : "border border-[#dce0d9] bg-white text-[#5d6a64]"}`}
               onClick={() => {
                 setFilter(f);
-                setIndex(0);
               }}
             >
               {filterLabel(f, language)}
@@ -112,137 +107,134 @@ export function ReviewPage() {
           ))}
         </div>
       </div>
-      {question ? (
+      {filtered.length > 0 ? (
         <div className="grid gap-5 lg:grid-cols-[1fr_250px]">
-          <article className="card overflow-hidden">
-            <div
-              className={`flex items-center justify-between border-b px-6 py-4 ${question.status === "CORRECT" ? "border-emerald-100 bg-emerald-50" : question.status === "WRONG" ? "border-rose-100 bg-rose-50" : "border-[#e5e7e2] bg-[#f5f6f2]"}`}
-            >
-              <div className="flex items-center gap-3">
-                {question.status === "CORRECT" ? (
-                  <CheckCircle2 className="text-emerald-700" />
-                ) : question.status === "WRONG" ? (
-                  <XCircle className="text-rose-700" />
-                ) : (
-                  <MinusCircle className="text-[#6e7974]" />
-                )}
-                <span className="font-display font-extrabold">
-                  {t("question")} {question.order}
-                </span>
-                <Badge>{localize(question.subject, question.subjectHi)}</Badge>
-              </div>
-              <b
-                className={
-                  question.marksAwarded > 0
-                    ? "text-emerald-700"
-                    : question.marksAwarded < 0
-                      ? "text-rose-700"
-                      : ""
-                }
+          <div className="min-w-0 space-y-5">
+            {filtered.map((question) => (
+              <article
+                key={`${attemptId}-${question.id}`}
+                id={`question-${question.id}`}
+                aria-label={`${t("question")} ${question.order}`}
+                className="card scroll-mt-6 overflow-hidden"
               >
-                {question.marksAwarded > 0 ? "+" : ""}
-                {question.marksAwarded} {t("marks").toLowerCase()}
-              </b>
-            </div>
-            <div className="p-6 sm:p-8">
-              <h2 className="font-display text-xl font-bold leading-8">
-                <MarkdownContent>
-                  {localize(question.text, question.textHi)}
-                </MarkdownContent>
-              </h2>
-              {question.imageUrl && (
-                <img
-                  src={resolveMediaUrl(question.imageUrl)}
-                  alt="Question"
-                  className="mt-4 max-h-72 rounded-xl object-contain"
-                />
-              )}
-              <div className="mt-7 grid gap-3">
-                {question.options.map((o) => {
-                  const selected = o.id === question.selectedOptionId;
-                  return (
-                    <div
-                      key={o.id}
-                      className={`flex items-start gap-3 rounded-xl border p-4 ${o.isCorrect ? "border-emerald-300 bg-emerald-50" : selected ? "border-rose-300 bg-rose-50" : "border-[#e2e5de]"}`}
-                    >
-                      <span
-                        className={`grid h-7 w-7 shrink-0 place-items-center rounded-lg text-xs font-extrabold ${o.isCorrect ? "bg-emerald-600 text-white" : selected ? "bg-rose-600 text-white" : "bg-[#eef0eb]"}`}
-                      >
-                        {o.label}
-                      </span>
-                      <span className="pt-1 text-sm font-semibold">
-                        <MarkdownContent>
-                          {localize(o.text, o.textHi)}
-                        </MarkdownContent>
-                        {o.imageUrl && (
-                          <img
-                            src={resolveMediaUrl(o.imageUrl)}
-                            alt={`Option ${o.label}`}
-                            className="mt-2 max-h-28 rounded-lg object-contain"
-                          />
-                        )}
-                      </span>
-                      <span className="ml-auto text-[10px] font-extrabold uppercase">
-                        {o.isCorrect
-                          ? selected
-                            ? `${t("yourAnswer")} · ${t("correctAnswer")}`
-                            : t("correctAnswer")
-                          : selected
-                            ? t("yourAnswer")
-                            : ""}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="mt-7 rounded-2xl border border-[#d7e5de] bg-mint/50 p-5">
-                <p className="eyebrow">{t("explanation")}</p>
-                <div className="mt-2 text-sm leading-6 text-[#50635a]">
-                  <MarkdownContent>
-                    {localize(
-                      question.explanation,
-                      question.explanationHi,
-                    ) ||
-                      (language === "hi"
-                        ? "इस प्रश्न के लिए कोई व्याख्या उपलब्ध नहीं है।"
-                        : "No explanation was provided for this question.")}
-                  </MarkdownContent>
+                <div
+                  className={`flex items-center justify-between border-b px-6 py-4 ${question.status === "CORRECT" ? "border-emerald-100 bg-emerald-50" : question.status === "WRONG" ? "border-rose-100 bg-rose-50" : "border-[#e5e7e2] bg-[#f5f6f2]"}`}
+                >
+                  <div className="flex items-center gap-3">
+                    {question.status === "CORRECT" ? (
+                      <CheckCircle2 className="text-emerald-700" />
+                    ) : question.status === "WRONG" ? (
+                      <XCircle className="text-rose-700" />
+                    ) : (
+                      <MinusCircle className="text-[#6e7974]" />
+                    )}
+                    <span className="font-display font-extrabold">
+                      {t("question")} {question.order}
+                    </span>
+                    <Badge>
+                      {localize(question.subject, question.subjectHi)}
+                    </Badge>
+                  </div>
+                  <b
+                    className={
+                      question.marksAwarded > 0
+                        ? "text-emerald-700"
+                        : question.marksAwarded < 0
+                          ? "text-rose-700"
+                          : ""
+                    }
+                  >
+                    {question.marksAwarded > 0 ? "+" : ""}
+                    {question.marksAwarded} {t("marks").toLowerCase()}
+                  </b>
                 </div>
-              </div>
-            </div>
-            <div className="flex justify-between border-t border-[#e8e9e4] p-4">
-              <button
-                className="btn-secondary"
-                disabled={index === 0}
-                onClick={() => setIndex(index - 1)}
-              >
-                <ArrowLeft className="h-4 w-4" />
-                {t("previous")}
-              </button>
-              <button
-                className="btn-primary"
-                disabled={index >= filtered.length - 1}
-                onClick={() => setIndex(index + 1)}
-              >
-                {t("next")}
-                <ArrowRight className="h-4 w-4" />
-              </button>
-            </div>
-          </article>
-          <aside className="card h-fit p-4">
+                <div className="p-6 sm:p-8">
+                  <h2 className="font-display text-xl font-bold leading-8">
+                    <MarkdownContent>
+                      {localize(question.text, question.textHi)}
+                    </MarkdownContent>
+                  </h2>
+                  {question.imageUrl && (
+                    <img
+                      src={resolveMediaUrl(question.imageUrl)}
+                      alt="Question"
+                      className="mt-4 max-h-72 rounded-xl object-contain"
+                    />
+                  )}
+                  <div className="mt-7 grid gap-3">
+                    {question.options.map((o) => {
+                      const selected = o.id === question.selectedOptionId;
+                      return (
+                        <div
+                          key={o.id}
+                          className={`flex items-start gap-3 rounded-xl border p-4 ${o.isCorrect ? "border-emerald-300 bg-emerald-50" : selected ? "border-rose-300 bg-rose-50" : "border-[#e2e5de]"}`}
+                        >
+                          <span
+                            className={`grid h-7 w-7 shrink-0 place-items-center rounded-lg text-xs font-extrabold ${o.isCorrect ? "bg-emerald-600 text-white" : selected ? "bg-rose-600 text-white" : "bg-[#eef0eb]"}`}
+                          >
+                            {o.label}
+                          </span>
+                          <span className="pt-1 text-sm font-semibold">
+                            <MarkdownContent>
+                              {localize(o.text, o.textHi)}
+                            </MarkdownContent>
+                            {o.imageUrl && (
+                              <img
+                                src={resolveMediaUrl(o.imageUrl)}
+                                alt={`Option ${o.label}`}
+                                className="mt-2 max-h-28 rounded-lg object-contain"
+                              />
+                            )}
+                          </span>
+                          <span className="ml-auto text-[10px] font-extrabold uppercase">
+                            {o.isCorrect
+                              ? selected
+                                ? `${t("yourAnswer")} · ${t("correctAnswer")}`
+                                : t("correctAnswer")
+                              : selected
+                                ? t("yourAnswer")
+                                : ""}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="mt-7 rounded-2xl border border-[#d7e5de] bg-mint/50 p-5">
+                    <p className="eyebrow">{t("explanation")}</p>
+                    <div className="mt-2 text-sm leading-6 text-[#50635a]">
+                      <MarkdownContent>
+                        {localize(
+                          question.explanation,
+                          question.explanationHi,
+                        ) ||
+                          (language === "hi"
+                            ? "इस प्रश्न के लिए कोई व्याख्या उपलब्ध नहीं है।"
+                            : "No explanation was provided for this question.")}
+                      </MarkdownContent>
+                    </div>
+                  </div>
+                  <QuestionAiExplanation
+                    attemptId={attemptId!}
+                    questionId={question.id}
+                  />
+                </div>
+              </article>
+            ))}
+          </div>
+          <aside className="card h-fit p-4 lg:sticky lg:top-6">
             <p className="text-xs font-extrabold uppercase tracking-widest text-[#75827b]">
               {language === "hi" ? "प्रश्न नेविगेटर" : "Question navigator"}
             </p>
             <div className="mt-4 grid grid-cols-5 gap-2">
-              {filtered.map((q, i) => (
-                <button
+              {filtered.map((q) => (
+                <a
                   aria-label={`${t("question")} ${q.order}`}
                   key={q.id}
-                  onClick={() => setIndex(i)}
-                  className={`grid aspect-square place-items-center rounded-lg text-xs font-extrabold ${i === index ? "ring-2 ring-forest ring-offset-2" : ""} ${q.status === "CORRECT" ? "bg-emerald-100 text-emerald-800" : q.status === "WRONG" ? "bg-rose-100 text-rose-800" : "bg-[#ebede8] text-[#69766f]"}`}
+                  href={`#question-${q.id}`}
+                  className={`grid aspect-square place-items-center rounded-lg text-xs font-extrabold focus:ring-2 focus:ring-forest focus:ring-offset-2 ${q.status === "CORRECT" ? "bg-emerald-100 text-emerald-800" : q.status === "WRONG" ? "bg-rose-100 text-rose-800" : "bg-[#ebede8] text-[#69766f]"}`}
                 >
                   {q.order}
-                </button>
+                </a>
               ))}
             </div>
           </aside>

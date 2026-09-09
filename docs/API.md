@@ -25,11 +25,14 @@ Base URL: `http://localhost:3000/api`. Login establishes the HTTP-only `mockmast
 | POST   | `/student/attempts/:id/submit`  | Lock and score an attempt on the server                  |
 | GET    | `/student/attempts/:id/result`  | Overall and section-wise result                          |
 | GET    | `/student/attempts/:id/review`  | Post-submission answer key and explanation review        |
+| POST   | `/student/attempts/:id/review/questions/:questionId/explanation` | Explain one question with AI; body `{ "language": "en" }` or `{ "language": "hi" }` (default `en`) |
 | GET    | `/student/attempts`             | Attempt history                                          |
 | GET    | `/student/performance`          | Score, activity, subject, topic, and weak-area analytics |
 | GET    | `/student/profile`              | Safe account profile                                     |
 | PATCH  | `/student/profile`              | Update the current student's full name                   |
 | PATCH  | `/student/profile/language`     | Persist the current student's `EN`/`HI` preference       |
+
+AI explanation responses contain `{ "questionId": "uuid", "language": "en", "explanation": "Markdown text" }`. The server loads all question context from the owned, submitted attempt; clients cannot supply or override answers. Existing result-release and answer-review restrictions apply. Unknown questions return 404. Unavailable configuration/images, exhausted API credits, invalid provider credentials, unavailable models, and connection failures return 503 with distinct safe messages. Temporary provider rate limits return 429, provider timeouts return 504, and other provider failures return 502. The endpoint is also throttled to 10 requests/minute per client IP (429). Provider credentials, raw error messages, and question content are never included in error diagnostics. AI output never changes the answer key, original explanation, or score.
 
 Answer save body:
 

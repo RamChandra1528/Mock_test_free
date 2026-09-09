@@ -682,12 +682,13 @@ export class StudentService {
     };
   }
 
-  async review(userId: string, attemptId: string) {
+  async review(userId: string, attemptId: string, questionId?: string) {
     const attempt = await this.ownedAttempt(userId, attemptId, {
       exam: {
         include: {
           settings: true,
           questions: {
+            ...(questionId ? { where: { id: questionId } } : {}),
             orderBy: { order: "asc" },
             include: {
               options: { orderBy: { label: "asc" } },
@@ -696,7 +697,7 @@ export class StudentService {
           },
         },
       },
-      answers: true,
+      answers: questionId ? { where: { questionId } } : true,
     });
     if (attempt.status === "IN_PROGRESS")
       throw new ForbiddenException(
