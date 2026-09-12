@@ -446,7 +446,13 @@ export class AdminService {
       (await this.prisma.question.count({ where: { examId: dto.examId } })) + 1;
     const { options, ...question } = dto;
     return this.prisma.question.create({
-      data: { ...question, order, options: { create: options } },
+      data: {
+        ...question,
+        order,
+        // `text` is non-null in the database, so image-only options are
+        // stored with an empty text value.
+        options: { create: this.prepareOptions(options) },
+      },
       include: { options: true },
     });
   }
@@ -467,7 +473,7 @@ export class AdminService {
       await tx.questionOption.deleteMany({ where: { questionId: id } });
       return tx.question.update({
         where: { id },
-        data: { ...question, options: { create: options } },
+        data: { ...question, options: { create: this.prepareOptions(options) } },
         include: { options: true },
       });
     });
@@ -567,6 +573,14 @@ export class AdminService {
       );
     if (dto.options.filter((o) => o.isCorrect).length !== 1)
       throw new BadRequestException("Exactly one option must be correct");
+    if (dto.options.some((option) => !option.text?.trim() && !option.imageUrl?.trim()))
+      throw new BadRequestException(
+        "Each option must contain text, an image, or both",
+      );
+  }
+
+  private prepareOptions(options: CreateQuestionDto["options"]) {
+    return options.map((option) => ({ ...option, text: option.text?.trim() ?? "" }));
   }
   private async validateQuestionRelations(dto: CreateQuestionDto) {
     await this.ensureDraftExam(dto.examId);

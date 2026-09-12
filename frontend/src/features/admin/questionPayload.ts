@@ -1,6 +1,6 @@
 type QuestionPayloadOption = {
   label: string;
-  text: string;
+  text?: string;
   textHi?: string;
   imageUrl?: string;
   isCorrect: boolean;
@@ -38,7 +38,7 @@ export function buildQuestionPayload(form: QuestionPayloadForm) {
     negativeMarks: Number(form.negativeMarks),
     options: form.options.map((option) => ({
       label: option.label,
-      text: option.text,
+      text: option.text?.trim() || undefined,
       textHi: option.textHi?.trim() || undefined,
       imageUrl: option.imageUrl || undefined,
       isCorrect: option.isCorrect,

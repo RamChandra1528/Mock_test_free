@@ -119,7 +119,9 @@ export class UpdateExamDto {
 
 export class OptionDto {
   @IsString() @MaxLength(5) label!: string;
-  @IsString() @MinLength(1) text!: string;
+  // An option can be text-only, image-only, or contain both. The service
+  // verifies that at least one of text and imageUrl is present.
+  @IsOptional() @IsString() text?: string;
   @IsOptional() @IsString() textHi?: string;
   @IsOptional() @IsString() imageUrl?: string;
   @IsBoolean() isCorrect!: boolean;

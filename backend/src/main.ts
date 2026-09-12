@@ -14,6 +14,12 @@ async function bootstrap() {
   app.use(helmet());
   app.useStaticAssets(resolve(config.get("UPLOAD_DIR", "uploads"), "public"), {
     prefix: "/uploads/",
+    // The React app runs on a different local origin in development
+    // (localhost:5173 vs localhost:3000). Helmet's default same-origin
+    // resource policy otherwise makes browsers block uploaded question images.
+    setHeaders: (response) => {
+      response.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+    },
   });
   app.enableCors({
     origin: config.get("FRONTEND_URL", "http://localhost:5173"),

@@ -157,11 +157,13 @@ export function ReviewPage() {
                     </MarkdownContent>
                   </h2>
                   {question.imageUrl && (
-                    <img
-                      src={resolveMediaUrl(question.imageUrl)}
-                      alt="Question"
-                      className="mt-4 max-h-72 rounded-xl object-contain"
-                    />
+                    <figure className="mt-4 w-full">
+                      <img
+                        src={resolveMediaUrl(question.imageUrl)}
+                        alt="Question"
+                        className="block h-auto w-full max-w-2xl rounded-xl border border-[#dfe3dc] object-contain"
+                      />
+                    </figure>
                   )}
                   <div className="mt-7 grid gap-3">
                     {question.options.map((o) => {
@@ -176,7 +178,7 @@ export function ReviewPage() {
                           >
                             {o.label}
                           </span>
-                          <span className="pt-1 text-sm font-semibold">
+                          <div className="min-w-0 flex-1 pt-1 text-sm font-semibold">
                             <MarkdownContent>
                               {localize(o.text, o.textHi)}
                             </MarkdownContent>
@@ -184,10 +186,10 @@ export function ReviewPage() {
                               <img
                                 src={resolveMediaUrl(o.imageUrl)}
                                 alt={`Option ${o.label}`}
-                                className="mt-2 max-h-28 rounded-lg object-contain"
+                                className="mt-3 max-h-52 max-w-full rounded-lg border border-[#dfe3dc] object-contain"
                               />
                             )}
-                          </span>
+                          </div>
                           <span className="ml-auto text-[10px] font-extrabold uppercase">
                             {o.isCorrect
                               ? selected

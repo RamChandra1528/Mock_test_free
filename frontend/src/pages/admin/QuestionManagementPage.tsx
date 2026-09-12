@@ -466,11 +466,13 @@ export function QuestionManagementPage() {
           )}
         </div>
         {preview?.imageUrl && (
-          <img
-            className="mt-4 max-h-72 rounded-xl object-contain"
-            src={resolveMediaUrl(preview.imageUrl)}
-            alt="Question"
-          />
+          <figure className="mt-4 w-full">
+            <img
+              className="block h-auto w-full max-w-2xl rounded-xl border border-[#dfe3dc] object-contain"
+              src={resolveMediaUrl(preview.imageUrl)}
+              alt="Question"
+            />
+          </figure>
         )}
         <div className="mt-5 space-y-2">
           {preview?.options.map((option) => (
@@ -637,7 +639,8 @@ function QuestionEditor({
       <div className="max-h-[70vh] space-y-4 overflow-y-auto pr-2">
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#dce2dc] bg-[#f6f8f4] p-3">
           <p className="text-xs font-bold leading-5 text-[#64726b]">
-            English is required. Hindi is optional and falls back to English.
+            Question text is required. Each option needs text, an image, or both.
+            Hindi is optional and falls back to English.
           </p>
           <LanguageToggle compact />
         </div>
@@ -719,8 +722,13 @@ function QuestionEditor({
                 <div className="grid min-w-0 flex-1 gap-2 sm:grid-cols-2">
                   <input
                     className="input"
-                    placeholder={`Option ${option.label} (English, required)`}
-                    {...register(`options.${index}.text`, { required: true })}
+                    placeholder={`Option ${option.label} text (optional with image)`}
+                    {...register(`options.${index}.text`, {
+                      validate: (value) =>
+                        value.trim() || values.options?.[index]?.imageUrl
+                          ? true
+                          : "Add option text or an image",
+                    })}
                   />
                   <input
                     className="input"
@@ -733,7 +741,7 @@ function QuestionEditor({
               <div className="mt-2 pl-12">
                 <MediaField
                   compact
-                  label={`Option ${option.label} image`}
+                  label={`Option ${option.label} image (can be used without text)`}
                   value={option.imageUrl}
                   onChange={(url) => setValue(`options.${index}.imageUrl`, url)}
                 />
@@ -789,6 +797,15 @@ function QuestionEditor({
                 "Question preview will appear here."}
             </MarkdownContent>
           </div>
+          {values.imageUrl && (
+            <figure className="mt-3 w-full">
+              <img
+                className="block h-auto w-full max-w-2xl rounded-xl border border-[#dfe3dc] object-contain"
+                src={resolveMediaUrl(values.imageUrl)}
+                alt="Question preview"
+              />
+            </figure>
+          )}
           <div className="mt-3 grid gap-2 sm:grid-cols-2">
             {values.options?.map((option) => (
               <div
@@ -796,7 +813,14 @@ function QuestionEditor({
                 key={`preview-${option.label}`}
               >
                 <b className="mr-2">{option.label}.</b>
-                {localize(option.text, option.textHi) || "—"}
+                {localize(option.text, option.textHi) || ""}
+                {option.imageUrl && (
+                  <img
+                    className="mt-2 max-h-32 rounded-lg border border-[#dfe3dc] object-contain"
+                    src={resolveMediaUrl(option.imageUrl)}
+                    alt={`Option ${option.label}`}
+                  />
+                )}
               </div>
             ))}
           </div>

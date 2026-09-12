@@ -48,6 +48,31 @@ describe("AdminService question creation", () => {
       }),
     ).rejects.toBeInstanceOf(BadRequestException);
   });
+  it("accepts an image-only option and persists empty text", async () => {
+    prisma.question.count.mockResolvedValue(0);
+    prisma.question.create.mockResolvedValue({ id: "q-image" });
+    const imageOnly = {
+      ...dto,
+      options: dto.options.map((option, index) =>
+        index === 0
+          ? { ...option, text: undefined, imageUrl: "/uploads/options/a.png" }
+          : option,
+      ),
+    };
+
+    await expect(service.createQuestion(imageOnly)).resolves.toEqual({ id: "q-image" });
+    expect(prisma.question.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          options: {
+            create: expect.arrayContaining([
+              expect.objectContaining({ label: "A", text: "", imageUrl: "/uploads/options/a.png" }),
+            ]),
+          },
+        }),
+      }),
+    );
+  });
 });
 
 describe("AdminService student management", () => {

@@ -98,11 +98,13 @@ export function ExamPreviewPage() {
                   </MarkdownContent>
                 </h1>
                 {q.imageUrl && (
-                  <img
-                    className="mt-5 max-h-80 rounded-xl object-contain"
-                    src={resolveMediaUrl(q.imageUrl)}
-                    alt="Question illustration"
-                  />
+                  <figure className="mt-5 w-full">
+                    <img
+                      className="block h-auto w-full max-w-2xl rounded-xl border border-[#dfe3dc] object-contain"
+                      src={resolveMediaUrl(q.imageUrl)}
+                      alt="Question illustration"
+                    />
+                  </figure>
                 )}
                 <div className="mt-7 grid gap-3">
                   {q.options.map((o) => (

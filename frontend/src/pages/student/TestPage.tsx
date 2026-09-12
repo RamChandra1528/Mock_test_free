@@ -335,11 +335,13 @@ export function TestPage() {
                 </MarkdownContent>
               </h1>
               {question.imageUrl && (
-                <img
-                  className="mt-5 max-h-80 rounded-xl object-contain"
-                  src={resolveMediaUrl(question.imageUrl)}
-                  alt={t("questionIllustration")}
-                />
+                <figure className="mt-5 w-full">
+                  <img
+                    className="block h-auto w-full max-w-2xl rounded-xl border border-[#dfe3dc] object-contain"
+                    src={resolveMediaUrl(question.imageUrl)}
+                    alt={t("questionIllustration")}
+                  />
+                </figure>
               )}
               <fieldset className="mt-7 grid gap-3">
                 <legend className="sr-only">{t("answerOptions")}</legend>
@@ -365,18 +367,18 @@ export function TestPage() {
                     >
                       {option.label}
                     </span>
-                    <span className="pt-1 text-sm font-semibold leading-6 sm:text-base">
+                    <div className="min-w-0 flex-1 pt-1 text-sm font-semibold leading-6 sm:text-base">
                       <MarkdownContent>
                         {localize(option.text, option.textHi)}
                       </MarkdownContent>
-                    </span>
-                    {option.imageUrl && (
-                      <img
-                        src={resolveMediaUrl(option.imageUrl)}
-                        alt={t("optionIllustration")}
-                        className="ml-auto max-h-24 max-w-40 object-contain"
-                      />
-                    )}
+                      {option.imageUrl && (
+                        <img
+                          src={resolveMediaUrl(option.imageUrl)}
+                          alt={t("optionIllustration")}
+                          className="mt-3 max-h-52 max-w-full rounded-lg border border-[#dfe3dc] object-contain"
+                        />
+                      )}
+                    </div>
                   </label>
                 ))}
               </fieldset>
