@@ -451,6 +451,7 @@ export function QuestionManagementPage() {
         open={!!preview}
         title={`Preview question ${preview?.order ?? ""}`}
         onClose={() => setPreview(null)}
+        scrollable
       >
         <div className="mb-4 flex items-center justify-between gap-3 rounded-xl bg-[#f4f6f2] p-3">
           <p className="text-xs font-bold text-[#66736d]">
@@ -602,6 +603,26 @@ function QuestionEditor({
   });
   const topics =
     subjects.find((subject) => subject.id === values.subjectId)?.topics ?? [];
+  const pasteOptionImage = async (
+    event: React.ClipboardEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    const image = Array.from(event.clipboardData.items)
+      .find((item) => item.kind === "file" && item.type.startsWith("image/"))
+      ?.getAsFile();
+    if (!image) return;
+    event.preventDefault();
+    try {
+      const url = await uploadImage(image);
+      setValue(`options.${index}.imageUrl`, url, {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+      toast.show(`Image added to option ${values.options?.[index]?.label ?? ""}`);
+    } catch (error) {
+      toast.show((error as Error).message, "error");
+    }
+  };
   const save = useMutation({
     mutationFn: (form: QuestionForm) => {
       const payload = buildQuestionPayload(form);
@@ -619,6 +640,7 @@ function QuestionEditor({
     <Modal
       open={open}
       wide
+      fullScreen
       title={existing?.id ? "Edit question" : "Add question"}
       onClose={onClose}
       footer={
@@ -636,7 +658,7 @@ function QuestionEditor({
         </>
       }
     >
-      <div className="max-h-[70vh] space-y-4 overflow-y-auto pr-2">
+      <div className="space-y-4 pr-2">
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#dce2dc] bg-[#f6f8f4] p-3">
           <p className="text-xs font-bold leading-5 text-[#64726b]">
             Question text is required. Each option needs text, an image, or both.
@@ -729,6 +751,7 @@ function QuestionEditor({
                           ? true
                           : "Add option text or an image",
                     })}
+                    onPaste={(event) => void pasteOptionImage(event, index)}
                   />
                   <input
                     className="input"
@@ -750,7 +773,8 @@ function QuestionEditor({
           ))}
         </div>
         <p className="text-xs text-[#7b8881]">
-          Click an option letter to set the single correct answer.
+          Click an option letter to set the single correct answer. You can also
+          paste an image directly into an option text field with Ctrl+V.
         </p>
         <div>
           <span className="label">Explanation (English)</span>

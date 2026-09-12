@@ -95,6 +95,8 @@ export function Modal({
   onClose,
   footer,
   wide = false,
+  scrollable = false,
+  fullScreen = false,
 }: {
   open: boolean;
   title: string;
@@ -102,7 +104,10 @@ export function Modal({
   onClose: () => void;
   footer?: ReactNode;
   wide?: boolean;
+  scrollable?: boolean;
+  fullScreen?: boolean;
 }) {
+  const constrained = scrollable || fullScreen;
   const dialog = useRef<HTMLDivElement>(null);
   const titleId = useId();
   const onCloseRef = useRef(onClose);
@@ -153,9 +158,9 @@ export function Modal({
     >
       <div
         ref={dialog}
-        className={`w-full rounded-2xl bg-white shadow-2xl ${wide ? "max-w-4xl" : "max-w-lg"}`}
+        className={`w-full rounded-2xl bg-white shadow-2xl ${constrained ? "flex max-h-[calc(100dvh-2rem)] flex-col" : ""} ${fullScreen ? "h-[calc(100dvh-2rem)] max-w-none" : wide ? "max-w-4xl" : "max-w-lg"}`}
       >
-        <div className="flex items-center justify-between border-b border-[#ecece6] px-6 py-5">
+        <div className="flex shrink-0 items-center justify-between border-b border-[#ecece6] px-6 py-5">
           <h2 id={titleId} className="font-display text-xl font-bold">
             {title}
           </h2>
@@ -167,9 +172,17 @@ export function Modal({
             <X />
           </button>
         </div>
-        <div className="p-6">{children}</div>
+        <div
+          className={
+            constrained
+              ? "min-h-0 flex-1 overflow-y-auto overscroll-contain p-6"
+              : "p-6"
+          }
+        >
+          {children}
+        </div>
         {footer && (
-          <div className="flex justify-end gap-3 border-t border-[#ecece6] px-6 py-4">
+          <div className="shrink-0 flex justify-end gap-3 border-t border-[#ecece6] px-6 py-4">
             {footer}
           </div>
         )}
