@@ -3,12 +3,15 @@ import {
   Difficulty,
   DuplicateAction,
   ExamStatus,
+  Language,
   QuestionStatus,
+  UserStatus,
 } from "@prisma/client";
 import {
   ArrayMinSize,
   IsArray,
   IsBoolean,
+  IsEmail,
   IsEnum,
   IsInt,
   IsNumber,
@@ -26,6 +29,14 @@ export class PageQueryDto {
   @IsOptional() @Type(() => Number) @IsInt() @Min(1) page = 1;
   @IsOptional() @Type(() => Number) @IsInt() @Min(1) @Max(100) limit = 20;
   @IsOptional() @IsString() search?: string;
+}
+
+/** Fields an administrator is allowed to maintain on a student account. */
+export class UpdateStudentDto {
+  @IsOptional() @IsString() @MinLength(2) @MaxLength(120) fullName?: string;
+  @IsOptional() @IsEmail() @MaxLength(190) email?: string;
+  @IsOptional() @IsEnum(UserStatus) status?: UserStatus;
+  @IsOptional() @IsEnum(Language) preferredLanguage?: Language;
 }
 
 export class ExamQueryDto extends PageQueryDto {

@@ -11,6 +11,7 @@ import { Role } from "@prisma/client";
 import { Throttle } from "@nestjs/throttler";
 import { AuthUser, CurrentUser, Roles } from "../auth/auth.decorators";
 import {
+  AskPaperAssistantDto,
   AttemptHistoryQueryDto,
   ExamListQueryDto,
   ExplainQuestionDto,
@@ -20,6 +21,7 @@ import {
 } from "./student.dto";
 import { StudentService } from "./student.service";
 import { QuestionExplanationService } from "./question-explanation.service";
+import { PaperAssistantService } from "./paper-assistant.service";
 
 @Roles(Role.STUDENT)
 @Controller("student")
@@ -27,6 +29,7 @@ export class StudentController {
   constructor(
     private readonly student: StudentService,
     private readonly explanations: QuestionExplanationService,
+    private readonly paperAssistant: PaperAssistantService,
   ) {}
   @Get("categories") categories() {
     return this.student.categories();
@@ -104,6 +107,15 @@ export class StudentController {
     @Body() dto: ExplainQuestionDto,
   ) {
     return this.explanations.explain(user.id, id, questionId, dto.language);
+  }
+  @Post("attempts/:id/review/assistant")
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
+  askPaperAssistant(
+    @CurrentUser() user: AuthUser,
+    @Param("id") id: string,
+    @Body() dto: AskPaperAssistantDto,
+  ) {
+    return this.paperAssistant.ask(user.id, id, dto.message, dto.language);
   }
   @Get("profile") profile(@CurrentUser() user: AuthUser) {
     return this.student.profile(user.id);

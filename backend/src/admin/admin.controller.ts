@@ -32,6 +32,7 @@ import {
   UpdateExamDto,
   UpdateImportedQuestionDto,
   UpdateQuestionDto,
+  UpdateStudentDto,
 } from "./admin.dto";
 import { ImportService } from "./import.service";
 import { MediaService } from "./media.service";
@@ -180,11 +181,20 @@ export class AdminController {
   @Get("students/:id") student(@Param("id") id: string) {
     return this.admin.student(id);
   }
+  @Put("students/:id") updateStudent(
+    @Param("id") id: string,
+    @Body() dto: UpdateStudentDto,
+  ) {
+    return this.admin.updateStudent(id, dto);
+  }
   @Patch("students/:id/status/:status") setStatus(
     @Param("id") id: string,
     @Param("status", new ParseEnumPipe(UserStatus)) status: UserStatus,
   ) {
     return this.admin.setStudentStatus(id, status);
+  }
+  @Delete("students/:id") deleteStudent(@Param("id") id: string) {
+    return this.admin.deleteStudent(id);
   }
   @Get("attempts") attempts(@Query() query: PageQueryDto) {
     return this.admin.attempts(query);

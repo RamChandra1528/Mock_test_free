@@ -1,8 +1,11 @@
 import {
   BarChart3,
   CheckCircle2,
+  Eye,
   FileClock,
+  Pencil,
   Search,
+  Trash2,
   UserCheck,
   UserX,
   Users,
@@ -24,6 +27,7 @@ import {
   Empty,
   ErrorState,
   Loading,
+  Modal,
   PageHeader,
   Pagination,
 } from "../../components/ui";
@@ -36,12 +40,22 @@ type Student = {
   fullName: string;
   email: string;
   status: "ACTIVE" | "INACTIVE";
+  preferredLanguage: "EN" | "HI";
   createdAt: string;
+  updatedAt: string;
   _count: { attempts: number };
 };
 export function StudentsAdminPage() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+  const [editing, setEditing] = useState<Student | null>(null);
+  const [deleting, setDeleting] = useState<Student | null>(null);
+  const [form, setForm] = useState({
+    fullName: "",
+    email: "",
+    status: "ACTIVE" as Student["status"],
+    preferredLanguage: "EN" as Student["preferredLanguage"],
+  });
   const qc = useQueryClient();
   const toast = useToast();
   const query = useQuery({
@@ -62,12 +76,40 @@ export function StudentsAdminPage() {
     },
     onError: (e) => toast.show(e.message, "error"),
   });
+  const save = useMutation({
+    mutationFn: () => api.put(`/admin/students/${editing!.id}`, form),
+    onSuccess: () => {
+      toast.show("Student information updated");
+      setEditing(null);
+      qc.invalidateQueries({ queryKey: ["admin-students"] });
+      qc.invalidateQueries({ queryKey: ["admin-student", editing?.id] });
+    },
+    onError: (e) => toast.show(e.message, "error"),
+  });
+  const remove = useMutation({
+    mutationFn: () => api.delete(`/admin/students/${deleting!.id}`),
+    onSuccess: () => {
+      toast.show("Student account deleted");
+      setDeleting(null);
+      qc.invalidateQueries({ queryKey: ["admin-students"] });
+    },
+    onError: (e) => toast.show(e.message, "error"),
+  });
+  const startEditing = (student: Student) => {
+    setEditing(student);
+    setForm({
+      fullName: student.fullName,
+      email: student.email,
+      status: student.status,
+      preferredLanguage: student.preferredLanguage,
+    });
+  };
   return (
     <>
       <PageHeader
         eyebrow="Student management"
         title="Students"
-        description="Search student accounts, review activity volume, and control access."
+        description="View account information, update access, and manage student records from one place."
       />
       <div className="card mb-5 p-4">
         <label className="relative block">
@@ -95,8 +137,9 @@ export function StudentsAdminPage() {
                 <th>Student</th>
                 <th>Status</th>
                 <th>Attempts</th>
+                <th>Language</th>
                 <th>Joined</th>
-                <th>Access</th>
+                <th className="text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -124,33 +167,66 @@ export function StudentsAdminPage() {
                     </Badge>
                   </td>
                   <td>{s._count.attempts}</td>
+                  <td>{s.preferredLanguage === "HI" ? "Hindi" : "English"}</td>
                   <td>{dateLabel(s.createdAt)}</td>
                   <td>
-                    <button
-                      className={
-                        s.status === "ACTIVE"
-                          ? "btn-danger !px-3 !py-2"
-                          : "btn-secondary !px-3 !py-2"
-                      }
-                      onClick={() =>
-                        status.mutate({
-                          id: s.id,
-                          next: s.status === "ACTIVE" ? "INACTIVE" : "ACTIVE",
-                        })
-                      }
-                    >
-                      {s.status === "ACTIVE" ? (
-                        <>
+                    <div className="flex justify-end gap-2">
+                      <Link
+                        to={`/admin/students/${s.id}`}
+                        className="btn-secondary !px-3 !py-2"
+                        aria-label={`View ${s.fullName}`}
+                        title="View activity"
+                      >
+                        <Eye className="h-4 w-4" />
+                        <span className="hidden xl:inline">View</span>
+                      </Link>
+                      <button
+                        className="btn-secondary !px-3 !py-2"
+                        onClick={() => startEditing(s)}
+                        aria-label={`Edit ${s.fullName}`}
+                      >
+                        <Pencil className="h-4 w-4" />
+                        <span className="hidden xl:inline">Edit</span>
+                      </button>
+                      <button
+                        className={
+                          s.status === "ACTIVE"
+                            ? "btn-danger !px-3 !py-2"
+                            : "btn-secondary !px-3 !py-2"
+                        }
+                        disabled={status.isPending}
+                        onClick={() =>
+                          status.mutate({
+                            id: s.id,
+                            next: s.status === "ACTIVE" ? "INACTIVE" : "ACTIVE",
+                          })
+                        }
+                        aria-label={`${s.status === "ACTIVE" ? "Deactivate" : "Activate"} ${s.fullName}`}
+                      >
+                        {s.status === "ACTIVE" ? (
                           <UserX className="h-4 w-4" />
-                          Deactivate
-                        </>
-                      ) : (
-                        <>
+                        ) : (
                           <UserCheck className="h-4 w-4" />
-                          Activate
-                        </>
-                      )}
-                    </button>
+                        )}
+                        <span className="hidden xl:inline">
+                          {s.status === "ACTIVE" ? "Deactivate" : "Activate"}
+                        </span>
+                      </button>
+                      <button
+                        className="btn-danger !px-3 !py-2"
+                        disabled={s._count.attempts > 0}
+                        title={
+                          s._count.attempts > 0
+                            ? "Students with exam activity can be deactivated but not deleted"
+                            : "Delete student"
+                        }
+                        onClick={() => setDeleting(s)}
+                        aria-label={`Delete ${s.fullName}`}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                        <span className="hidden xl:inline">Delete</span>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -164,6 +240,140 @@ export function StudentsAdminPage() {
           description="Registered student accounts will appear here."
         />
       )}
+      <Modal
+        open={Boolean(editing)}
+        title="Edit student information"
+        onClose={() => !save.isPending && setEditing(null)}
+        footer={
+          <>
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={() => setEditing(null)}
+              disabled={save.isPending}
+            >
+              Cancel
+            </button>
+            <button
+              form="student-edit-form"
+              className="btn-primary"
+              disabled={
+                save.isPending || !form.fullName.trim() || !form.email.trim()
+              }
+            >
+              {save.isPending ? "Saving…" : "Save changes"}
+            </button>
+          </>
+        }
+      >
+        <form
+          id="student-edit-form"
+          className="grid gap-4"
+          onSubmit={(event) => {
+            event.preventDefault();
+            save.mutate();
+          }}
+        >
+          <label>
+            <span className="label">Full name</span>
+            <input
+              className="input"
+              value={form.fullName}
+              onChange={(event) =>
+                setForm((current) => ({
+                  ...current,
+                  fullName: event.target.value,
+                }))
+              }
+              autoComplete="name"
+              required
+            />
+          </label>
+          <label>
+            <span className="label">Email address</span>
+            <input
+              className="input"
+              type="email"
+              value={form.email}
+              onChange={(event) =>
+                setForm((current) => ({ ...current, email: event.target.value }))
+              }
+              autoComplete="email"
+              required
+            />
+          </label>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <label>
+              <span className="label">Account status</span>
+              <select
+                className="input"
+                value={form.status}
+                onChange={(event) =>
+                  setForm((current) => ({
+                    ...current,
+                    status: event.target.value as Student["status"],
+                  }))
+                }
+              >
+                <option value="ACTIVE">Active</option>
+                <option value="INACTIVE">Inactive</option>
+              </select>
+            </label>
+            <label>
+              <span className="label">Preferred language</span>
+              <select
+                className="input"
+                value={form.preferredLanguage}
+                onChange={(event) =>
+                  setForm((current) => ({
+                    ...current,
+                    preferredLanguage: event.target
+                      .value as Student["preferredLanguage"],
+                  }))
+                }
+              >
+                <option value="EN">English</option>
+                <option value="HI">Hindi</option>
+              </select>
+            </label>
+          </div>
+          <p className="text-xs text-[#708078]">
+            Joined {editing ? dateLabel(editing.createdAt) : ""}. Use inactive
+            status to immediately remove account access.
+          </p>
+        </form>
+      </Modal>
+      <Modal
+        open={Boolean(deleting)}
+        title="Delete student account?"
+        onClose={() => !remove.isPending && setDeleting(null)}
+        footer={
+          <>
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={() => setDeleting(null)}
+              disabled={remove.isPending}
+            >
+              Keep account
+            </button>
+            <button
+              type="button"
+              className="btn-danger"
+              onClick={() => remove.mutate()}
+              disabled={remove.isPending}
+            >
+              <Trash2 className="h-4 w-4" />
+              {remove.isPending ? "Deleting…" : "Delete account"}
+            </button>
+          </>
+        }
+      >
+        <p className="text-sm leading-6 text-[#52625b]">
+          This permanently deletes <b>{deleting?.fullName}</b> and their login.
+          This action is only available for accounts with no exam activity.
+        </p>
+      </Modal>
     </>
   );
 }

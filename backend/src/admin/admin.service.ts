@@ -16,6 +16,7 @@ import {
   TopicDto,
   UpdateExamDto,
   UpdateQuestionDto,
+  UpdateStudentDto,
 } from "./admin.dto";
 
 @Injectable()
@@ -748,7 +749,9 @@ export class AdminService {
           fullName: true,
           email: true,
           status: true,
+          preferredLanguage: true,
           createdAt: true,
+          updatedAt: true,
           _count: { select: { attempts: true } },
         },
       }),
@@ -773,6 +776,61 @@ export class AdminService {
       select: { id: true, status: true },
     });
   }
+  async updateStudent(id: string, dto: UpdateStudentDto) {
+    const student = await this.prisma.user.findFirst({
+      where: { id, role: { code: "STUDENT" } },
+      select: { id: true },
+    });
+    if (!student) throw new NotFoundException("Student not found");
+
+    const fullName = dto.fullName?.trim();
+    if (dto.fullName !== undefined && (!fullName || fullName.length < 2)) {
+      throw new BadRequestException("Student name must contain at least 2 characters");
+    }
+    const email = dto.email?.trim().toLowerCase();
+    if (email) {
+      const existing = await this.prisma.user.findUnique({
+        where: { email },
+        select: { id: true },
+      });
+      if (existing && existing.id !== id) {
+        throw new BadRequestException("An account with this email already exists");
+      }
+    }
+    return this.prisma.user.update({
+      where: { id },
+      data: {
+        ...(fullName ? { fullName } : {}),
+        ...(email ? { email } : {}),
+        ...(dto.status ? { status: dto.status } : {}),
+        ...(dto.preferredLanguage
+          ? { preferredLanguage: dto.preferredLanguage }
+          : {}),
+      },
+      select: {
+        id: true,
+        fullName: true,
+        email: true,
+        status: true,
+        preferredLanguage: true,
+        updatedAt: true,
+      },
+    });
+  }
+  async deleteStudent(id: string) {
+    const student = await this.prisma.user.findFirst({
+      where: { id, role: { code: "STUDENT" } },
+      select: { id: true, _count: { select: { attempts: true } } },
+    });
+    if (!student) throw new NotFoundException("Student not found");
+    if (student._count.attempts > 0) {
+      throw new BadRequestException(
+        "This student has exam activity and cannot be deleted. Deactivate the account instead.",
+      );
+    }
+    await this.prisma.user.delete({ where: { id } });
+    return { success: true };
+  }
   async student(id: string) {
     const user = await this.prisma.user.findFirst({
       where: { id, role: { code: "STUDENT" } },
@@ -781,7 +839,9 @@ export class AdminService {
         fullName: true,
         email: true,
         status: true,
+        preferredLanguage: true,
         createdAt: true,
+        updatedAt: true,
       },
     });
     if (!user) throw new NotFoundException("Student not found");

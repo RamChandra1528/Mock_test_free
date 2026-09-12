@@ -50,6 +50,58 @@ describe("AdminService question creation", () => {
   });
 });
 
+describe("AdminService student management", () => {
+  const studentId = "00000000-0000-4000-8000-000000000001";
+  const prisma = {
+    user: {
+      findFirst: jest.fn(),
+      findUnique: jest.fn(),
+      update: jest.fn(),
+      delete: jest.fn(),
+    },
+  } as any;
+  const service = new AdminService(prisma);
+
+  beforeEach(() => jest.clearAllMocks());
+
+  it("normalizes email and only updates an existing student", async () => {
+    prisma.user.findFirst.mockResolvedValue({ id: studentId });
+    prisma.user.findUnique.mockResolvedValue(null);
+    prisma.user.update.mockResolvedValue({ id: studentId });
+
+    await service.updateStudent(studentId, {
+      fullName: "  Ada Lovelace  ",
+      email: " ADA@EXAMPLE.COM ",
+      status: "INACTIVE",
+      preferredLanguage: "HI",
+    });
+
+    expect(prisma.user.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: studentId },
+        data: {
+          fullName: "Ada Lovelace",
+          email: "ada@example.com",
+          status: "INACTIVE",
+          preferredLanguage: "HI",
+        },
+      }),
+    );
+  });
+
+  it("refuses to delete a student with exam activity", async () => {
+    prisma.user.findFirst.mockResolvedValue({
+      id: studentId,
+      _count: { attempts: 1 },
+    });
+
+    await expect(service.deleteStudent(studentId)).rejects.toThrow(
+      "cannot be deleted",
+    );
+    expect(prisma.user.delete).not.toHaveBeenCalled();
+  });
+});
+
 describe("AdminService exam creation", () => {
   it("persists exam configuration in the related settings record", async () => {
     const prisma = {

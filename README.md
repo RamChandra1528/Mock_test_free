@@ -218,6 +218,10 @@ The suite checks authentication behavior, JWT-safe responses, nested exam settin
 - Add multi-select question types only after extending both scoring rules and option validation.
 - Add browser E2E coverage (Playwright), observability, backups, and horizontal API workers for high traffic.
 
+### Moni paper assistant
+
+On a released answer-review page, students can use the separate **Moni** assistant section to ask about that completed paper’s questions, answers, and topics. Moni is not available during a live attempt. The browser sends only the student's question; the server reloads the owned review context and applies the same result-release and review-permission checks as question explanations. Responses are not persisted.
+
 ## Screenshot placeholders
 
 - Landing page: `docs/screenshots/landing.png`

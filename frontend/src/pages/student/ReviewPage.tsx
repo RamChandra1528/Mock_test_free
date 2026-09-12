@@ -14,6 +14,7 @@ import { MarkdownContent } from "../../components/MarkdownContent";
 import { resolveMediaUrl } from "../../lib/media";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { QuestionAiExplanation } from "../../features/exam/QuestionAiExplanation";
+import { MoniPaperAssistant } from "../../features/exam/MoniPaperAssistant";
 
 type ReviewQuestion = {
   id: string;
@@ -107,6 +108,7 @@ export function ReviewPage() {
           ))}
         </div>
       </div>
+      <MoniPaperAssistant attemptId={attemptId!} />
       {filtered.length > 0 ? (
         <div className="grid gap-5 lg:grid-cols-[1fr_250px]">
           <div className="min-w-0 space-y-5">
