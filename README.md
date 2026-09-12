@@ -70,12 +70,6 @@ MySQL is the database used by the application. Prisma is the typed data-access l
 
 2. Copy `.env.example` to `.env`, then replace `DATABASE_URL` and `JWT_SECRET`.
 
-   For Review Paper's **Ask AI**, also set `OPENAI_API_KEY` in the server environment and restart the backend. `OPENAI_EXPLANATION_MODEL` defaults to `gpt-4.1-mini` and can be changed to a Responses API model with text and image input. Keep the key server-side; never use a `VITE_` variable for it. Docker Compose forwards these settings from `.env`.
-
-   If Ask AI reports exhausted API credits or a billing limit, check the OpenAI API organization's billing balance and limits for the project associated with the configured key. Provider errors such as `insufficient_quota` / `credit_balance_exhausted` require billing attention; repeatedly clicking Retry will not resolve them. Once credits are available, retry the question. Credential, model-access, rate-limit, timeout, and connection errors have separate inline messages. See [OpenAI error codes](https://developers.openai.com/api/docs/guides/error-codes).
-
-   Review displays separate question cards. Each Ask AI request sends only that question's text, options, images, selected answer, answer key (when present), and existing explanation to OpenAI using the [Responses API](https://developers.openai.com/api/docs/guides/text) with `store: false`. Answers appear under the originating question in the selected English/Hindi language. Generated responses are cached in browser memory for up to one hour while inactive, not saved to the database. The endpoint enforces existing review permissions, limits requests to 10 per minute per client IP, deduplicates simultaneous identical requests within a backend process, and times out provider calls after 60 seconds. Missing configuration or provider failures appear inline with a retry button. No AI request occurs just by opening review.
-
 3. Create an empty MySQL database named `mockmaster`.
 
    MySQL 8.4+ and MySQL 26.x installations should use a `caching_sha2_password` account. From a MySQL administrator session, create the local development account with:
@@ -214,13 +208,9 @@ The suite checks authentication behavior, JWT-safe responses, nested exam settin
 - Terminate TLS at a reverse proxy and rotate all example credentials/secrets.
 - Replace local upload storage with object storage and malware scanning.
 - Add refresh-token rotation, password reset, email verification, and an audit log if the deployment requires long-lived sessions.
-- Run imports in a durable queue for large documents; add OCR and an optional AI extraction implementation behind the existing abstraction.
+- Run imports in a durable queue for large documents; add OCR for scanned papers.
 - Add multi-select question types only after extending both scoring rules and option validation.
 - Add browser E2E coverage (Playwright), observability, backups, and horizontal API workers for high traffic.
-
-### Moni paper assistant
-
-On a released answer-review page, students can use the separate **Moni** assistant section to ask about that completed paper’s questions, answers, and topics. Moni is not available during a live attempt. The browser sends only the student's question; the server reloads the owned review context and applies the same result-release and review-permission checks as question explanations. Responses are not persisted.
 
 ## Screenshot placeholders
 
