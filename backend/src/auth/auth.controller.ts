@@ -21,7 +21,7 @@ export class AuthController {
   ) {
     const result = await this.auth.register(dto);
     this.setSessionCookie(response, result.token);
-    return { user: result.user };
+    return { user: result.user, dailyReward: result.dailyReward };
   }
   @Public()
   @Throttle({ default: { limit: 10, ttl: 60_000 } })
@@ -32,7 +32,7 @@ export class AuthController {
   ) {
     const result = await this.auth.login(dto);
     this.setSessionCookie(response, result.token);
-    return { user: result.user };
+    return { user: result.user, dailyReward: result.dailyReward };
   }
   @Post("logout") logout(@Res({ passthrough: true }) response: Response) {
     response.clearCookie("mockmaster_access", this.cookieOptions());

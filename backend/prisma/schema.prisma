@@ -60,6 +60,21 @@ enum Language {
   HI
 }
 
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum AcademicEventType {
+  EXAM
+  ASSIGNMENT
+  CLASS
+  HOLIDAY
+  ANNOUNCEMENT
+  OTHER
+}
+
 model User {
   id                String         @id @default(uuid()) @db.Char(36)
   fullName          String         @db.VarChar(120)
@@ -72,6 +87,12 @@ model User {
   attempts          Attempt[]
   imports           PaperImport[]
   statistics        UserStatistic?
+  dailyLoginRewards StudentDailyLoginReward[]
+  calendarNotes     StudentCalendarNote[]
+  stickyNotes       StudentStickyNote[]
+  calendarGoals     StudentCalendarGoal?
+  calendarTasks     StudentCalendarTask[]
+  createdEvents     AcademicEvent[]
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
 
@@ -102,9 +123,102 @@ model UserStatistic {
   highestScore    Decimal  @default(0) @db.Decimal(6, 2)
   lowestScore     Decimal  @default(0) @db.Decimal(6, 2)
   averageAccuracy Decimal  @default(0) @db.Decimal(6, 2)
+  points          Int      @default(0)
+  currentStreak   Int      @default(0)
+  longestStreak   Int      @default(0)
+  lastRewardDate  DateTime? @db.Date
   updatedAt       DateTime @updatedAt
 
   @@map("user_statistics")
+}
+
+model StudentDailyLoginReward {
+  id         String   @id @default(uuid()) @db.Char(36)
+  userId     String   @db.Char(36)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rewardDate DateTime @db.Date
+  points     Int      @default(10)
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, rewardDate])
+  @@index([rewardDate])
+  @@map("student_daily_login_rewards")
+}
+
+model StudentCalendarNote {
+  id        String   @id @default(uuid()) @db.Char(36)
+  userId    String   @db.Char(36)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date      DateTime @db.Date
+  title     String   @default("Note") @db.VarChar(120)
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, date])
+  @@map("student_calendar_notes")
+}
+
+model StudentStickyNote {
+  id        String   @id @default(uuid()) @db.Char(36)
+  userId    String   @db.Char(36)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String   @default("Quick note") @db.VarChar(120)
+  content   String   @db.Text
+  color     String   @default("yellow") @db.VarChar(20)
+  positionX Int      @default(0)
+  positionY Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, updatedAt])
+  @@map("student_sticky_notes")
+}
+
+model StudentCalendarGoal {
+  id            String   @id @default(uuid()) @db.Char(36)
+  userId        String   @unique @db.Char(36)
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  overallTarget String?  @db.Text
+  longTermGoal  String?  @db.Text
+  shortTermGoal String?  @db.Text
+  todayGoal     String?  @db.Text
+  updatedAt     DateTime @updatedAt
+
+  @@map("student_calendar_goals")
+}
+
+model StudentCalendarTask {
+  id          String       @id @default(uuid()) @db.Char(36)
+  userId      String       @db.Char(36)
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String       @db.VarChar(180)
+  description String?      @db.Text
+  dueDate     DateTime?    @db.Date
+  priority    TaskPriority @default(MEDIUM)
+  completed   Boolean      @default(false)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([userId, dueDate])
+  @@map("student_calendar_tasks")
+}
+
+model AcademicEvent {
+  id          String            @id @default(uuid()) @db.Char(36)
+  createdById String            @db.Char(36)
+  createdBy   User              @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  title       String            @db.VarChar(180)
+  eventType   AcademicEventType @default(OTHER)
+  startAt     DateTime
+  endAt       DateTime?
+  description String?           @db.Text
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([startAt, endAt])
+  @@index([createdById])
+  @@map("academic_events")
 }
 
 model Category {

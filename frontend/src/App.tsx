@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Loading } from "./components/ui";
 import { AppLayout } from "./layouts/AppLayout";
+import { GlobalRemindersTicker } from "./components/GlobalRemindersTicker";
 
 const page = <T extends Record<string, React.ComponentType<any>>>(
   loader: () => Promise<T>,
@@ -44,9 +45,17 @@ const PerformancePage = page(
   () => import("./pages/student/PerformancePage"),
   "PerformancePage",
 );
+const LeaderboardPage = page(
+  () => import("./pages/student/LeaderboardPage"),
+  "LeaderboardPage",
+);
 const ProfilePage = page(
   () => import("./pages/student/ProfilePage"),
   "ProfilePage",
+);
+const StudentCalendarPage = page(
+  () => import("./pages/student/CalendarPage"),
+  "StudentCalendarPage",
 );
 const AdminDashboard = page(
   () => import("./pages/admin/AdminDashboard"),
@@ -112,6 +121,10 @@ const StudentDetailPage = page(
   () => import("./pages/admin/DetailAnalyticsPages"),
   "StudentDetailPage",
 );
+const AdminCalendarPage = page(
+  () => import("./pages/admin/CalendarPage"),
+  "AdminCalendarPage",
+);
 
 export function App() {
   return (
@@ -121,7 +134,10 @@ export function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route element={<ProtectedRoute role="STUDENT" />}>
-          <Route path="/student/test/:attemptId" element={<TestPage />} />
+          <Route
+            path="/student/test/:attemptId"
+            element={<StudentTestPage />}
+          />
           <Route element={<AppLayout role="STUDENT" />}>
             <Route
               path="/student"
@@ -137,6 +153,8 @@ export function App() {
             />
             <Route path="/student/attempts" element={<AttemptsPage />} />
             <Route path="/student/performance" element={<PerformancePage />} />
+            <Route path="/student/leaderboard" element={<LeaderboardPage />} />
+            <Route path="/student/calendar" element={<StudentCalendarPage />} />
             <Route path="/student/profile" element={<ProfilePage />} />
           </Route>
         </Route>
@@ -179,6 +197,7 @@ export function App() {
             <Route path="/admin/students/:id" element={<StudentDetailPage />} />
             <Route path="/admin/attempts" element={<AttemptsAdminPage />} />
             <Route path="/admin/analytics" element={<AdminAnalyticsPage />} />
+            <Route path="/admin/calendar" element={<AdminCalendarPage />} />
             <Route path="/admin/categories" element={<CategoriesPage />} />
             <Route path="/admin/subjects" element={<SubjectsPage />} />
             <Route path="/admin/settings" element={<AdminSettingsPage />} />
@@ -187,5 +206,14 @@ export function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
+  );
+}
+
+function StudentTestPage() {
+  return (
+    <>
+      <GlobalRemindersTicker />
+      <TestPage />
+    </>
   );
 }

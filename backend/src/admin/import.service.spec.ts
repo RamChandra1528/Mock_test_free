@@ -125,7 +125,9 @@ describe("question import parser", () => {
         upsert: jest.fn().mockResolvedValue({ id: "topic" }),
       },
       question: { create: jest.fn().mockResolvedValue({ id: "question" }) },
-      importedQuestion: { update: jest.fn().mockResolvedValue({}) },
+      importedQuestion: {
+        updateMany: jest.fn().mockResolvedValue({ count: 1 }),
+      },
       paperImport: { update: jest.fn().mockResolvedValue({}) },
     };
     const prisma = {

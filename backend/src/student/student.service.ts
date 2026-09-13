@@ -6,7 +6,7 @@ import {
   Logger,
   NotFoundException,
 } from "@nestjs/common";
-import { AttemptStatus, Difficulty, Prisma } from "@prisma/client";
+import { AttemptStatus, Difficulty, Prisma, Role } from "@prisma/client";
 import { createHash } from "crypto";
 import { PrismaService } from "../prisma/prisma.service";
 import {
@@ -17,6 +17,10 @@ import {
   UpdateProfileDto,
 } from "./student.dto";
 import { calculateScore } from "./scoring";
+import {
+  leaderboardDateRange,
+  type LeaderboardPeriod,
+} from "../common/engagement-period";
 
 @Injectable()
 export class StudentService {
@@ -44,7 +48,7 @@ export class StudentService {
   }
 
   async dashboard(userId: string) {
-    const [available, attempts] = await Promise.all([
+    const [available, attempts, engagement] = await Promise.all([
       this.prisma.exam.findMany({
         where: { status: "PUBLISHED" },
         orderBy: { publishedAt: "desc" },
@@ -85,6 +89,14 @@ export class StudentService {
           },
         },
       }),
+      this.prisma.userStatistic.findUnique({
+        where: { userId },
+        select: {
+          points: true,
+          currentStreak: true,
+          longestStreak: true,
+        },
+      }),
     ]);
     const released = attempts.filter((a) => a.exam.settings?.showResultImmediately ?? true);
     const scores = released.map((a) => Number(a.percentage));
@@ -99,9 +111,74 @@ export class StudentService {
         bestScore: scores.length ? Math.max(...scores) : 0,
         averageAccuracy: avg(released.map((a) => Number(a.accuracy))),
         totalQuestionsAttempted: totalAnswered,
+        totalPracticeTimeSeconds: attempts.reduce(
+          (sum, attempt) => sum + (attempt.timeTakenSeconds ?? 0),
+          0,
+        ),
+      },
+      engagement: {
+        points: engagement?.points ?? 0,
+        currentStreak: engagement?.currentStreak ?? 0,
+        longestStreak: engagement?.longestStreak ?? 0,
+        dailyRewardPoints: 10,
       },
       availableExams: available.map(toExamCard),
       recentAttempts: attempts.slice(0, 6).map(toAttemptRow),
+    };
+  }
+
+  async leaderboard(userId: string, period: LeaderboardPeriod) {
+    const { start, end } = leaderboardDateRange(period);
+    const students = await this.prisma.user.findMany({
+      where: { status: "ACTIVE", role: { code: Role.STUDENT } },
+      select: {
+        id: true,
+        fullName: true,
+        statistics: {
+          select: {
+            points: true,
+            currentStreak: true,
+            longestStreak: true,
+          },
+        },
+        dailyLoginRewards: {
+          where: { rewardDate: { gte: start, lt: end } },
+          select: { points: true },
+        },
+      },
+    });
+    const sorted = students
+      .map((student) => ({
+        id: student.id,
+        fullName: student.fullName,
+        periodPoints: student.dailyLoginRewards.reduce(
+          (sum, reward) => sum + reward.points,
+          0,
+        ),
+        totalPoints: student.statistics?.points ?? 0,
+        currentStreak: student.statistics?.currentStreak ?? 0,
+        longestStreak: student.statistics?.longestStreak ?? 0,
+      }))
+      .sort(
+        (left, right) =>
+          right.periodPoints - left.periodPoints ||
+          right.totalPoints - left.totalPoints ||
+          left.fullName.localeCompare(right.fullName),
+      );
+    let rank = 0;
+    let previousPoints: number | undefined;
+    const items = sorted.map((student, index) => {
+      if (student.periodPoints !== previousPoints) rank = index + 1;
+      previousPoints = student.periodPoints;
+      return { ...student, rank, isCurrentUser: student.id === userId };
+    });
+
+    return {
+      period,
+      periodStart: start.toISOString(),
+      periodEnd: end.toISOString(),
+      currentUser: items.find((student) => student.id === userId) ?? null,
+      items,
     };
   }
 

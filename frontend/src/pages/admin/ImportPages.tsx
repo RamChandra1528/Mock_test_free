@@ -281,7 +281,9 @@ export function ImportReviewPage() {
   });
   const confirm = useMutation({
     mutationFn: () =>
-      api.post(`/admin/import/${id}/confirm`, { examId }).then((r) => r.data),
+      api
+        .post(`/admin/import/${id}/confirm`, { examId }, { timeout: 120_000 })
+        .then((r) => r.data),
     onSuccess: () => {
       toast.show("Questions added to the exam");
       navigate(`/admin/exams/${examId}/questions`);

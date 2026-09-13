@@ -244,109 +244,130 @@ export class ImportService {
       where: { examId: dto.examId },
       _max: { order: true },
     });
-    await this.prisma.$transaction(async (tx) => {
-      for (const [index, q] of selected.entries()) {
-        const subject = q.subjectName
-          ? await tx.subject.upsert({
-              where: { name: q.subjectName },
-              update: { nameHi: q.subjectNameHi ?? undefined },
-              create: { name: q.subjectName, nameHi: q.subjectNameHi },
-            })
-          : null;
-        const topic =
-          subject && q.topicName
-            ? await tx.topic.upsert({
-                where: {
-                  subjectId_name: { subjectId: subject.id, name: q.topicName },
-                },
-                update: { nameHi: q.topicNameHi ?? undefined },
-                create: {
-                  subjectId: subject.id,
-                  name: q.topicName,
-                  nameHi: q.topicNameHi,
-                },
+    await this.prisma.$transaction(
+      async (tx) => {
+        // A large paper often repeats the same subject and topic hundreds of
+        // times. Cache their upserts so the import does not issue two extra
+        // database queries for every question.
+        const subjects = new Map<string, { id: string }>();
+        const topics = new Map<string, { id: string }>();
+        let nextOrder = (max._max.order ?? 0) + 1;
+
+        for (const q of selected) {
+          const subjectName = q.subjectName?.trim();
+          const topicName = q.topicName?.trim();
+          let subject = subjectName ? subjects.get(subjectName) : undefined;
+          if (subjectName && !subject) {
+            subject = await tx.subject.upsert({
+              where: { name: subjectName },
+              update: { nameHi: q.subjectNameHi?.trim() || undefined },
+              create: {
+                name: subjectName,
+                nameHi: q.subjectNameHi?.trim() || undefined,
+              },
+            });
+            subjects.set(subjectName, subject);
+          }
+
+          const topicKey =
+            subject && topicName ? `${subject.id}:${topicName}` : undefined;
+          let topic = topicKey ? topics.get(topicKey) : undefined;
+          if (subject && topicName && topicKey && !topic) {
+            topic = await tx.topic.upsert({
+              where: {
+                subjectId_name: { subjectId: subject.id, name: topicName },
+              },
+              update: { nameHi: q.topicNameHi?.trim() || undefined },
+              create: {
+                subjectId: subject.id,
+                name: topicName,
+                nameHi: q.topicNameHi?.trim() || undefined,
+              },
+            });
+            topics.set(topicKey, topic);
+          }
+          const options = (
+            [
+              ["A", q.optionA!, q.optionAHi],
+              ["B", q.optionB!, q.optionBHi],
+              ["C", q.optionC!, q.optionCHi],
+              ["D", q.optionD!, q.optionDHi],
+            ] as Array<[string, string, string | null]>
+          ).map(([label, text, textHi]) => ({
+            label,
+            text,
+            textHi,
+            isCorrect: label === q.correctAnswer!.toUpperCase(),
+          }));
+          if (q.duplicateAction === "REPLACE" && q.duplicateOfId) {
+            const existing = await tx.question.findUnique({
+              where: { id: q.duplicateOfId },
+              select: { exam: { select: { status: true } } },
+            });
+            if (!existing)
+              throw new BadRequestException(
+                `The duplicate matched by question ${q.order} no longer exists. Choose Keep.`,
+              );
+            if (existing.exam.status !== "DRAFT")
+              throw new BadRequestException(
+                `Question ${q.order} matches a published exam and cannot replace it. Choose Keep or Skip.`,
+              );
+            if (
+              await tx.attemptAnswer.count({
+                where: { questionId: q.duplicateOfId },
               })
-            : null;
-        const options = (
-          [
-            ["A", q.optionA!, q.optionAHi],
-            ["B", q.optionB!, q.optionBHi],
-            ["C", q.optionC!, q.optionCHi],
-            ["D", q.optionD!, q.optionDHi],
-          ] as Array<[string, string, string | null]>
-        ).map(([label, text, textHi]) => ({
-          label,
-          text,
-          textHi,
-          isCorrect: label === q.correctAnswer!.toUpperCase(),
-        }));
-        if (q.duplicateAction === "REPLACE" && q.duplicateOfId) {
-          const existing = await tx.question.findUnique({
-            where: { id: q.duplicateOfId },
-            select: { exam: { select: { status: true } } },
-          });
-          if (!existing)
-            throw new BadRequestException(
-              `The duplicate matched by question ${q.order} no longer exists. Choose Keep.`,
-            );
-          if (existing.exam.status !== "DRAFT")
-            throw new BadRequestException(
-              `Question ${q.order} matches a published exam and cannot replace it. Choose Keep or Skip.`,
-            );
-          if (
-            await tx.attemptAnswer.count({
+            )
+              throw new BadRequestException(
+                `Question ${q.order} matches a question with attempt history and cannot replace it. Choose Keep or Skip.`,
+              );
+            await tx.questionOption.deleteMany({
               where: { questionId: q.duplicateOfId },
-            })
-          )
-            throw new BadRequestException(
-              `Question ${q.order} matches a question with attempt history and cannot replace it. Choose Keep or Skip.`,
-            );
-          await tx.questionOption.deleteMany({
-            where: { questionId: q.duplicateOfId },
-          });
-          await tx.question.update({
-            where: { id: q.duplicateOfId },
-            data: {
-              subjectId: subject?.id,
-              topicId: topic?.id,
-              text: q.text,
-              textHi: q.textHi,
-              explanation: q.explanation,
-              explanationHi: q.explanationHi,
-              difficulty: q.difficulty,
-              marks: q.marks,
-              negativeMarks: q.negativeMarks,
-              options: { create: options },
-            },
-          });
-        } else {
-          await tx.question.create({
-            data: {
-              examId: dto.examId,
-              subjectId: subject?.id,
-              topicId: topic?.id,
-              text: q.text,
-              textHi: q.textHi,
-              explanation: q.explanation,
-              explanationHi: q.explanationHi,
-              difficulty: q.difficulty,
-              marks: q.marks,
-              negativeMarks: q.negativeMarks,
-              order: (max._max.order ?? 0) + index + 1,
-              options: { create: options },
-            },
-          });
+            });
+            await tx.question.update({
+              where: { id: q.duplicateOfId },
+              data: {
+                subjectId: subject?.id,
+                topicId: topic?.id,
+                text: q.text,
+                textHi: q.textHi,
+                explanation: q.explanation,
+                explanationHi: q.explanationHi,
+                difficulty: q.difficulty,
+                marks: q.marks,
+                negativeMarks: q.negativeMarks,
+                options: { create: options },
+              },
+            });
+          } else {
+            await tx.question.create({
+              data: {
+                examId: dto.examId,
+                subjectId: subject?.id,
+                topicId: topic?.id,
+                text: q.text,
+                textHi: q.textHi,
+                explanation: q.explanation,
+                explanationHi: q.explanationHi,
+                difficulty: q.difficulty,
+                marks: q.marks,
+                negativeMarks: q.negativeMarks,
+                order: nextOrder++,
+                options: { create: options },
+              },
+            });
+          }
         }
-        await tx.importedQuestion.update({
-          where: { id: q.id },
+        await tx.importedQuestion.updateMany({
+          where: { id: { in: selected.map((question) => question.id) } },
           data: { status: "APPROVED" },
         });
-      }
-      await tx.paperImport.update({
-        where: { id: importId },
-        data: { status: "CONFIRMED", examId: dto.examId },
-      });
-    });
+        await tx.paperImport.update({
+          where: { id: importId },
+          data: { status: "CONFIRMED", examId: dto.examId },
+        });
+      },
+      { maxWait: 10_000, timeout: 120_000 },
+    );
     return { success: true, imported: selected.length, examId: dto.examId };
   }
 

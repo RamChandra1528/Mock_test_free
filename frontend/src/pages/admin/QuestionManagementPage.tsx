@@ -117,6 +117,7 @@ export function QuestionManagementPage() {
   const [editor, setEditor] = useState<Question | "new" | null>(null);
   const [preview, setPreview] = useState<Question | null>(null);
   const [deleting, setDeleting] = useState<Question | null>(null);
+  const [confirmingBulkDelete, setConfirmingBulkDelete] = useState(false);
   const meta = useQuery({
     queryKey: ["question-meta"],
     queryFn: async () => {
@@ -171,6 +172,7 @@ export function QuestionManagementPage() {
       api.post("/admin/questions/bulk-delete", { ids: [...selected] }),
     onSuccess: (response) => {
       toast.show(`${response.data.deleted} questions deleted`);
+      setConfirmingBulkDelete(false);
       refresh();
     },
     onError: (error) => toast.show(error.message, "error"),
@@ -179,6 +181,19 @@ export function QuestionManagementPage() {
   if (meta.error || query.error)
     return <ErrorState error={meta.error ?? query.error} />;
   const exam = meta.data!.exams.find((item) => item.id === routeExamId);
+  const visibleQuestionIds = query.data!.items.map((question) => question.id);
+  const allVisibleSelected =
+    visibleQuestionIds.length > 0 &&
+    visibleQuestionIds.every((id) => selected.has(id));
+  const toggleVisibleSelection = () => {
+    setSelected((current) => {
+      const next = new Set(current);
+      if (allVisibleSelected)
+        visibleQuestionIds.forEach((id) => next.delete(id));
+      else visibleQuestionIds.forEach((id) => next.add(id));
+      return next;
+    });
+  };
   const updateFilter = (key: keyof typeof filters, value: string) => {
     setFilters((current) => ({ ...current, [key]: value }));
     setPage(1);
@@ -300,19 +315,40 @@ export function QuestionManagementPage() {
             <option>HARD</option>
           </select>
         </div>
-        {selected.size > 0 && (
-          <div className="mt-4 flex items-center justify-between rounded-xl bg-rose-50 p-3">
-            <span className="text-sm font-extrabold text-rose-800">
-              {selected.size} selected
-            </span>
-            <button
-              className="btn-danger !py-2"
-              disabled={bulkDelete.isPending}
-              onClick={() => bulkDelete.mutate()}
-            >
-              <Trash2 className="h-4 w-4" />
-              Bulk delete
-            </button>
+        {query.data!.items.length > 0 && (
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#e2e7e2] bg-[#fafcf9] p-3">
+            <label className="flex cursor-pointer items-center gap-2 text-sm font-extrabold text-[#385047]">
+              <input
+                type="checkbox"
+                className="h-5 w-5 accent-[#173f35]"
+                checked={allVisibleSelected}
+                onChange={toggleVisibleSelection}
+              />
+              {allVisibleSelected
+                ? "Clear this page selection"
+                : `Select all ${visibleQuestionIds.length} on this page`}
+            </label>
+            {selected.size > 0 && (
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="text-sm font-extrabold text-rose-800">
+                  {selected.size} selected
+                </span>
+                <button
+                  className="text-xs font-extrabold text-[#596b62] hover:underline"
+                  onClick={() => setSelected(new Set())}
+                >
+                  Clear all
+                </button>
+                <button
+                  className="btn-danger !py-2"
+                  disabled={bulkDelete.isPending}
+                  onClick={() => setConfirmingBulkDelete(true)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Delete selected
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -345,10 +381,7 @@ export function QuestionManagementPage() {
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap gap-2">
                     <Badge>
-                      {localize(
-                        question.exam.title,
-                        question.exam.titleHi,
-                      )}
+                      {localize(question.exam.title, question.exam.titleHi)}
                     </Badge>
                     <Badge
                       tone={
@@ -500,15 +533,14 @@ export function QuestionManagementPage() {
             </div>
           ))}
         </div>
-        {preview &&
-          localize(preview.explanation, preview.explanationHi) && (
+        {preview && localize(preview.explanation, preview.explanationHi) && (
           <div className="mt-5 rounded-xl bg-mint p-4 text-sm">
             <b>Explanation:</b>
             <MarkdownContent>
               {localize(preview.explanation, preview.explanationHi)}
             </MarkdownContent>
           </div>
-          )}
+        )}
       </Modal>
       <Modal
         open={!!deleting}
@@ -533,6 +565,34 @@ export function QuestionManagementPage() {
         <p className="text-sm leading-6 text-[#64726b]">
           Question {deleting?.order} will be permanently removed. Exams with
           attempt history are protected.
+        </p>
+      </Modal>
+      <Modal
+        open={confirmingBulkDelete}
+        title={`Delete ${selected.size} selected question${selected.size === 1 ? "" : "s"}?`}
+        onClose={() => setConfirmingBulkDelete(false)}
+        footer={
+          <>
+            <button
+              className="btn-secondary"
+              onClick={() => setConfirmingBulkDelete(false)}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn-danger"
+              disabled={bulkDelete.isPending}
+              onClick={() => bulkDelete.mutate()}
+            >
+              <Trash2 className="h-4 w-4" />
+              Delete selected
+            </button>
+          </>
+        }
+      >
+        <p className="text-sm leading-6 text-[#64726b]">
+          This permanently removes {selected.size} selected question
+          {selected.size === 1 ? "" : "s"}. This cannot be undone.
         </p>
       </Modal>
     </>
@@ -618,7 +678,9 @@ function QuestionEditor({
         shouldDirty: true,
         shouldValidate: true,
       });
-      toast.show(`Image added to option ${values.options?.[index]?.label ?? ""}`);
+      toast.show(
+        `Image added to option ${values.options?.[index]?.label ?? ""}`,
+      );
     } catch (error) {
       toast.show((error as Error).message, "error");
     }
@@ -661,8 +723,8 @@ function QuestionEditor({
       <div className="space-y-4 pr-2">
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#dce2dc] bg-[#f6f8f4] p-3">
           <p className="text-xs font-bold leading-5 text-[#64726b]">
-            Question text is required. Each option needs text, an image, or both.
-            Hindi is optional and falls back to English.
+            Question text is required. Each option needs text, an image, or
+            both. Hindi is optional and falls back to English.
           </p>
           <LanguageToggle compact />
         </div>
@@ -682,9 +744,7 @@ function QuestionEditor({
           </select>
         </label>
         <div>
-          <span className="label">
-            Question text (English, required)
-          </span>
+          <span className="label">Question text (English, required)</span>
           <Controller
             control={control}
             name="text"

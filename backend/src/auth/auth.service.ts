@@ -8,6 +8,12 @@ import * as bcrypt from "bcrypt";
 import { PrismaService } from "../prisma/prisma.service";
 import { Language, Role } from "@prisma/client";
 import { LoginDto, RegisterDto } from "./auth.dto";
+import {
+  indiaCalendarDate,
+  previousCalendarDate,
+} from "../common/engagement-period";
+
+const DAILY_LOGIN_POINTS = 10;
 
 @Injectable()
 export class AuthService {
@@ -71,9 +77,66 @@ export class AuthService {
     role: string;
     preferredLanguage: Language;
   }) {
+    const dailyReward =
+      user.role === Role.STUDENT
+        ? await this.awardDailyLogin(user.id)
+        : undefined;
     return {
       token: await this.jwt.signAsync({ sub: user.id, role: user.role }),
       user,
+      dailyReward,
     };
+  }
+
+  private awardDailyLogin(userId: string) {
+    const rewardDate = indiaCalendarDate();
+    return this.prisma.$transaction(async (tx) => {
+      const inserted = await tx.studentDailyLoginReward.createMany({
+        data: [{ userId, rewardDate, points: DAILY_LOGIN_POINTS }],
+        skipDuplicates: true,
+      });
+      const current = await tx.userStatistic.findUnique({ where: { userId } });
+
+      if (!inserted.count) {
+        return {
+          awardedPoints: 0,
+          totalPoints: current?.points ?? 0,
+          currentStreak: current?.currentStreak ?? 0,
+          longestStreak: current?.longestStreak ?? 0,
+        };
+      }
+
+      const wasYesterday =
+        current?.lastRewardDate?.getTime() ===
+        previousCalendarDate(rewardDate).getTime();
+      const currentStreak = wasYesterday ? current.currentStreak + 1 : 1;
+      const longestStreak = Math.max(
+        currentStreak,
+        current?.longestStreak ?? 0,
+      );
+      const statistics = await tx.userStatistic.upsert({
+        where: { userId },
+        create: {
+          userId,
+          points: DAILY_LOGIN_POINTS,
+          currentStreak,
+          longestStreak,
+          lastRewardDate: rewardDate,
+        },
+        update: {
+          points: { increment: DAILY_LOGIN_POINTS },
+          currentStreak,
+          longestStreak,
+          lastRewardDate: rewardDate,
+        },
+      });
+
+      return {
+        awardedPoints: DAILY_LOGIN_POINTS,
+        totalPoints: statistics.points,
+        currentStreak: statistics.currentStreak,
+        longestStreak: statistics.longestStreak,
+      };
+    });
   }
 }

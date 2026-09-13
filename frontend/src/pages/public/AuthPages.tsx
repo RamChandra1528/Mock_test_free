@@ -35,6 +35,15 @@ const registerSchema = z
   });
 type LoginValues = z.infer<typeof loginSchema>;
 type RegisterValues = z.infer<typeof registerSchema>;
+type AuthResponse = {
+  user: User;
+  dailyReward?: {
+    awardedPoints: number;
+    totalPoints: number;
+    currentStreak: number;
+    longestStreak: number;
+  };
+};
 
 function AuthShell({
   title,
@@ -133,9 +142,16 @@ export function LoginPage() {
     );
   const submit = handleSubmit(async (values) => {
     try {
-      const { data } = await api.post<{ user: User }>("/auth/login", values);
+      const { data } = await api.post<AuthResponse>("/auth/login", values);
       login(data.user);
-      toast.show(bi("Welcome back!", "वापसी पर स्वागत है!"));
+      toast.show(
+        data.dailyReward?.awardedPoints
+          ? bi(
+              `+${data.dailyReward.awardedPoints} points! ${data.dailyReward.currentStreak}-day login streak 🔥`,
+              `+${data.dailyReward.awardedPoints} अंक! ${data.dailyReward.currentStreak} दिन की लॉगिन स्ट्रीक 🔥`,
+            )
+          : bi("Welcome back!", "वापसी पर स्वागत है!"),
+      );
       navigate(
         data.user.role === "ADMIN" ? "/admin/dashboard" : "/student/dashboard",
       );
@@ -234,7 +250,7 @@ export function RegisterPage() {
     );
   const submit = handleSubmit(async (values) => {
     try {
-      const { data } = await api.post<{ user: User }>("/auth/register", {
+      const { data } = await api.post<AuthResponse>("/auth/register", {
         fullName: values.fullName,
         email: values.email,
         password: values.password,
@@ -242,7 +258,14 @@ export function RegisterPage() {
         preferredLanguage: language === "hi" ? "HI" : "EN",
       });
       login(data.user);
-      toast.show(bi("Your account is ready", "आपका खाता तैयार है"));
+      toast.show(
+        data.dailyReward?.awardedPoints
+          ? bi(
+              `Account ready — +${data.dailyReward.awardedPoints} welcome points!`,
+              `खाता तैयार — +${data.dailyReward.awardedPoints} स्वागत अंक!`,
+            )
+          : bi("Your account is ready", "आपका खाता तैयार है"),
+      );
       navigate("/student/dashboard");
     } catch (error) {
       toast.show((error as Error).message, "error");

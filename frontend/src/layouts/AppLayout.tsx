@@ -1,6 +1,7 @@
 import {
   BarChart3,
   BookOpenCheck,
+  CalendarDays,
   ChevronRight,
   FileClock,
   FileUp,
@@ -11,6 +12,7 @@ import {
   Settings,
   Shapes,
   Trophy,
+  Medal,
   UserRound,
   Users,
   X,
@@ -19,17 +21,17 @@ import { useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Logo } from "../components/Logo";
 import { LanguageToggle } from "../components/LanguageToggle";
+import { GlobalRemindersTicker } from "../components/GlobalRemindersTicker";
 import { useAuth } from "../contexts/AuthContext";
-import {
-  useLanguage,
-  type TranslationKey,
-} from "../contexts/LanguageContext";
+import { useLanguage, type TranslationKey } from "../contexts/LanguageContext";
 
 const studentLinks = [
   ["/student/dashboard", "dashboard", LayoutDashboard],
   ["/student/exams", "mockTests", BookOpenCheck],
   ["/student/attempts", "myAttempts", FileClock],
   ["/student/performance", "performance", Trophy],
+  ["/student/leaderboard", "leaderboard", Medal],
+  ["/student/calendar", "calendar", CalendarDays],
   ["/student/profile", "profile", UserRound],
 ] as const;
 const adminLinks = [
@@ -40,6 +42,7 @@ const adminLinks = [
   ["/admin/students", "Students", Users],
   ["/admin/attempts", "Attempts", FileClock],
   ["/admin/analytics", "Analytics", BarChart3],
+  ["/admin/calendar", "Calendar", CalendarDays],
   ["/admin/categories", "Categories", Gauge],
   ["/admin/subjects", "Subjects", Shapes],
   ["/admin/settings", "Settings", Settings],
@@ -55,11 +58,10 @@ export function AppLayout({ role }: { role: "ADMIN" | "STUDENT" }) {
   const links =
     role === "ADMIN"
       ? adminLinks
-      : studentLinks.map(([path, key, Icon]) => [
-          path,
-          t(key as TranslationKey),
-          Icon,
-        ] as const);
+      : studentLinks.map(
+          ([path, key, Icon]) =>
+            [path, t(key as TranslationKey), Icon] as const,
+        );
   const active =
     links.find(([path]) => location.pathname.startsWith(path))?.[1] ??
     "Dashboard";
@@ -135,6 +137,7 @@ export function AppLayout({ role }: { role: "ADMIN" | "STUDENT" }) {
         </button>
       </aside>
       <div className="lg:pl-[270px]">
+        {role === "STUDENT" && <GlobalRemindersTicker />}
         <header className="sticky top-0 z-20 flex h-16 items-center border-b border-[#e4e6df] bg-cream/90 px-4 backdrop-blur-md sm:px-7">
           <button
             className="mr-3 rounded-xl border border-[#dde0da] bg-white p-2 lg:hidden"

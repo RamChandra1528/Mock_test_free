@@ -4,10 +4,26 @@ import * as bcrypt from "bcrypt";
 import { AuthService } from "./auth.service";
 
 describe("AuthService", () => {
-  const prisma = { user: { findUnique: jest.fn(), create: jest.fn() } } as any;
+  const tx = {
+    studentDailyLoginReward: { createMany: jest.fn() },
+    userStatistic: { findUnique: jest.fn(), upsert: jest.fn() },
+  };
+  const prisma = {
+    user: { findUnique: jest.fn(), create: jest.fn() },
+    $transaction: jest.fn((callback) => callback(tx)),
+  } as any;
   const jwt = { signAsync: jest.fn().mockResolvedValue("signed-token") } as any;
   const service = new AuthService(prisma, jwt);
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => {
+    jest.clearAllMocks();
+    tx.studentDailyLoginReward.createMany.mockResolvedValue({ count: 1 });
+    tx.userStatistic.findUnique.mockResolvedValue(null);
+    tx.userStatistic.upsert.mockResolvedValue({
+      points: 10,
+      currentStreak: 1,
+      longestStreak: 1,
+    });
+  });
 
   it("rejects mismatched registration passwords", async () => {
     await expect(
@@ -70,5 +86,42 @@ describe("AuthService", () => {
       user: { email: "a@example.com", preferredLanguage: Language.HI },
     });
     expect(result.user).not.toHaveProperty("passwordHash");
+    expect(result.dailyReward).toMatchObject({
+      awardedPoints: 10,
+      totalPoints: 10,
+      currentStreak: 1,
+    });
+  });
+
+  it("does not award login points twice on the same calendar day", async () => {
+    const passwordHash = await bcrypt.hash("Strong@123", 4);
+    prisma.user.findUnique.mockResolvedValue({
+      id: "1",
+      fullName: "A User",
+      email: "a@example.com",
+      passwordHash,
+      role: { code: "STUDENT" },
+      status: "ACTIVE",
+      preferredLanguage: Language.EN,
+    });
+    tx.studentDailyLoginReward.createMany.mockResolvedValue({ count: 0 });
+    tx.userStatistic.findUnique.mockResolvedValue({
+      points: 40,
+      currentStreak: 4,
+      longestStreak: 4,
+    });
+
+    const result = await service.login({
+      email: "a@example.com",
+      password: "Strong@123",
+    });
+
+    expect(result.dailyReward).toEqual({
+      awardedPoints: 0,
+      totalPoints: 40,
+      currentStreak: 4,
+      longestStreak: 4,
+    });
+    expect(tx.userStatistic.upsert).not.toHaveBeenCalled();
   });
 });

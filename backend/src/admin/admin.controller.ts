@@ -36,6 +36,14 @@ import {
 } from "./admin.dto";
 import { ImportService } from "./import.service";
 import { MediaService } from "./media.service";
+import { CalendarService } from "../calendar/calendar.service";
+import {
+  CalendarRangeDto,
+  CreateAcademicEventDto,
+  CreateCalendarNoteDto,
+  UpdateAcademicEventDto,
+  UpdateCalendarNoteDto,
+} from "../calendar/calendar.dto";
 
 @Roles(Role.ADMIN)
 @Controller("admin")
@@ -44,6 +52,7 @@ export class AdminController {
     private readonly admin: AdminService,
     private readonly imports: ImportService,
     private readonly media: MediaService,
+    private readonly calendar: CalendarService,
   ) {}
 
   @Get("dashboard") dashboard() {
@@ -198,6 +207,47 @@ export class AdminController {
   }
   @Get("attempts") attempts(@Query() query: PageQueryDto) {
     return this.admin.attempts(query);
+  }
+
+  @Get("calendar") calendarDashboard(
+    @CurrentUser() user: AuthUser,
+    @Query() query: CalendarRangeDto,
+  ) {
+    return this.calendar.adminCalendar(user.id, query);
+  }
+  @Post("calendar/notes") createCalendarNote(
+    @CurrentUser() user: AuthUser,
+    @Body() dto: CreateCalendarNoteDto,
+  ) {
+    return this.calendar.createNote(user.id, dto);
+  }
+  @Put("calendar/notes/:id") updateCalendarNote(
+    @CurrentUser() user: AuthUser,
+    @Param("id") id: string,
+    @Body() dto: UpdateCalendarNoteDto,
+  ) {
+    return this.calendar.updateNote(user.id, id, dto);
+  }
+  @Delete("calendar/notes/:id") deleteCalendarNote(
+    @CurrentUser() user: AuthUser,
+    @Param("id") id: string,
+  ) {
+    return this.calendar.deleteNote(user.id, id);
+  }
+  @Post("calendar/events") createCalendarEvent(
+    @CurrentUser() user: AuthUser,
+    @Body() dto: CreateAcademicEventDto,
+  ) {
+    return this.calendar.createEvent(user.id, dto);
+  }
+  @Put("calendar/events/:id") updateCalendarEvent(
+    @Param("id") id: string,
+    @Body() dto: UpdateAcademicEventDto,
+  ) {
+    return this.calendar.updateEvent(id, dto);
+  }
+  @Delete("calendar/events/:id") deleteCalendarEvent(@Param("id") id: string) {
+    return this.calendar.deleteEvent(id);
   }
 
   @Post("media")

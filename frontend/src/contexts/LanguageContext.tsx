@@ -16,6 +16,7 @@ export type Language = "en" | "hi";
 const STORAGE_KEY = "mockmaster_language";
 
 const copy = {
+  calendar: ["Calendar", "\u0915\u0948\u0932\u0947\u0902\u0921\u0930"],
   language: ["Language", "भाषा"],
   english: ["English", "अंग्रेज़ी"],
   hindi: ["Hindi", "हिन्दी"],
@@ -23,6 +24,7 @@ const copy = {
   mockTests: ["Mock Tests", "मॉक टेस्ट"],
   myAttempts: ["My Attempts", "मेरे प्रयास"],
   performance: ["Performance", "प्रदर्शन"],
+  leaderboard: ["Leaderboard", "लीडरबोर्ड"],
   profile: ["Profile", "प्रोफ़ाइल"],
   logout: ["Log out", "लॉग आउट"],
   student: ["Student", "विद्यार्थी"],

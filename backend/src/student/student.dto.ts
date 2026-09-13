@@ -10,6 +10,7 @@ import {
   Min,
   MinLength,
   IsEnum,
+  IsIn,
 } from "class-validator";
 import { Language } from "@prisma/client";
 
@@ -40,6 +41,12 @@ export class AttemptHistoryQueryDto {
   @IsOptional() @Type(() => Number) @IsInt() @Min(1) @Max(100) limit = 20;
   @IsOptional() @IsString() search?: string;
   @IsOptional() @IsString() sort?: "newest" | "score" | "accuracy";
+}
+
+export class LeaderboardQueryDto {
+  @IsOptional()
+  @IsIn(["daily", "weekly", "monthly"])
+  period: "daily" | "weekly" | "monthly" = "weekly";
 }
 
 export class UpdateProfileDto {

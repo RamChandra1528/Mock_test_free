@@ -22,6 +22,7 @@ describe("manual result declaration", () => {
         findFirst: jest.fn().mockResolvedValue(attempt),
         findMany: jest.fn().mockResolvedValue([attempt]),
       },
+      userStatistic: { findUnique: jest.fn().mockResolvedValue(null) },
     };
     return { settings, attempt, prisma, admin: new AdminService(prisma as any), student: new StudentService(prisma as any) };
   };

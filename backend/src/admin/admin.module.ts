@@ -5,6 +5,7 @@ import { AdminController } from "./admin.controller";
 import { AdminService } from "./admin.service";
 import { ImportService } from "./import.service";
 import { MediaService } from "./media.service";
+import { CalendarService } from "../calendar/calendar.service";
 
 @Module({
   imports: [
@@ -19,6 +20,6 @@ import { MediaService } from "./media.service";
     }),
   ],
   controllers: [AdminController],
-  providers: [AdminService, ImportService, MediaService],
+  providers: [AdminService, ImportService, MediaService, CalendarService],
 })
 export class AdminModule {}
