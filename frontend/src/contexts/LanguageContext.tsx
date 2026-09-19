@@ -25,6 +25,7 @@ const copy = {
   myAttempts: ["My Attempts", "मेरे प्रयास"],
   performance: ["Performance", "प्रदर्शन"],
   leaderboard: ["Leaderboard", "लीडरबोर्ड"],
+  resources: ["Resources", "संसाधन"],
   profile: ["Profile", "प्रोफ़ाइल"],
   logout: ["Log out", "लॉग आउट"],
   student: ["Student", "विद्यार्थी"],

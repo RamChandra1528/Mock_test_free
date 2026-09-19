@@ -15,7 +15,11 @@ import {
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Role, UserStatus } from "@prisma/client";
+import { randomUUID } from "crypto";
 import { Response } from "express";
+import { mkdirSync } from "fs";
+import { diskStorage } from "multer";
+import { join } from "path";
 import { CurrentUser, AuthUser, Roles } from "../auth/auth.decorators";
 import { AdminService } from "./admin.service";
 import {
@@ -23,6 +27,7 @@ import {
   ConfirmImportDto,
   CreateExamDto,
   CreateQuestionDto,
+  CreateStudyMaterialDto,
   ExamQueryDto,
   ExamSectionDto,
   PageQueryDto,
@@ -32,6 +37,7 @@ import {
   UpdateExamDto,
   UpdateImportedQuestionDto,
   UpdateQuestionDto,
+  UpdateStudyMaterialDto,
   UpdateStudentDto,
 } from "./admin.dto";
 import { ImportService } from "./import.service";
@@ -44,6 +50,8 @@ import {
   UpdateAcademicEventDto,
   UpdateCalendarNoteDto,
 } from "../calendar/calendar.dto";
+
+const materialUploadDir = join(process.cwd(), "uploads", "private", "materials-temp");
 
 @Roles(Role.ADMIN)
 @Controller("admin")
@@ -184,6 +192,25 @@ export class AdminController {
     return this.admin.deleteTopic(id);
   }
 
+  @Get("materials") materials() {
+    return this.admin.materials();
+  }
+  @Post("materials") createMaterial(
+    @CurrentUser() user: AuthUser,
+    @Body() dto: CreateStudyMaterialDto,
+  ) {
+    return this.admin.createMaterial(user.id, dto);
+  }
+  @Put("materials/:id") updateMaterial(
+    @Param("id") id: string,
+    @Body() dto: UpdateStudyMaterialDto,
+  ) {
+    return this.admin.updateMaterial(id, dto);
+  }
+  @Delete("materials/:id") deleteMaterial(@Param("id") id: string) {
+    return this.admin.deleteMaterial(id);
+  }
+
   @Get("students") students(@Query() query: PageQueryDto) {
     return this.admin.students(query);
   }
@@ -256,6 +283,22 @@ export class AdminController {
   )
   uploadMedia(@UploadedFile() file?: Express.Multer.File) {
     return this.media.saveImage(file);
+  }
+  @Post("materials/upload")
+  @UseInterceptors(
+    FileInterceptor("file", {
+      storage: diskStorage({
+        destination: (_request, _file, callback) => {
+          mkdirSync(materialUploadDir, { recursive: true });
+          callback(null, materialUploadDir);
+        },
+        filename: (_request, _file, callback) => callback(null, `${randomUUID()}.upload`),
+      }),
+      limits: { fileSize: 1024 * 1024 * 1024 },
+    }),
+  )
+  uploadMaterial(@UploadedFile() file?: Express.Multer.File) {
+    return this.media.savePdf(file);
   }
 
   @Post("import")

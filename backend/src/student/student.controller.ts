@@ -45,6 +45,12 @@ export class StudentController {
   @Get("subjects") subjects() {
     return this.student.subjects();
   }
+  @Get("materials") materials() {
+    return this.student.materials();
+  }
+  @Get("materials/:id") material(@Param("id") id: string) {
+    return this.student.material(id);
+  }
   @Get("dashboard") dashboard(@CurrentUser() user: AuthUser) {
     return this.student.dashboard(user.id);
   }

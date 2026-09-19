@@ -7,6 +7,7 @@ import {
   FileUp,
   Gauge,
   LayoutDashboard,
+  LibraryBig,
   LogOut,
   Menu,
   Settings,
@@ -31,6 +32,7 @@ const studentLinks = [
   ["/student/attempts", "myAttempts", FileClock],
   ["/student/performance", "performance", Trophy],
   ["/student/leaderboard", "leaderboard", Medal],
+  ["/student/resources", "resources", LibraryBig],
   ["/student/calendar", "calendar", CalendarDays],
   ["/student/profile", "profile", UserRound],
 ] as const;
@@ -39,6 +41,7 @@ const adminLinks = [
   ["/admin/exams", "Exams", BookOpenCheck],
   ["/admin/questions", "Question Bank", Shapes],
   ["/admin/import", "Import Paper", FileUp],
+  ["/admin/materials", "Book Publisher", LibraryBig],
   ["/admin/students", "Students", Users],
   ["/admin/attempts", "Attempts", FileClock],
   ["/admin/analytics", "Analytics", BarChart3],

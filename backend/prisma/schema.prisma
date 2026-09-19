@@ -93,6 +93,7 @@ model User {
   calendarGoals     StudentCalendarGoal?
   calendarTasks     StudentCalendarTask[]
   createdEvents     AcademicEvent[]
+  studyMaterials    StudyMaterial[]
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
 
@@ -219,6 +220,25 @@ model AcademicEvent {
   @@index([startAt, endAt])
   @@index([createdById])
   @@map("academic_events")
+}
+
+model StudyMaterial {
+  id          String   @id @default(uuid()) @db.Char(36)
+  title       String   @db.VarChar(180)
+  description String?  @db.Text
+  exam        String?  @db.VarChar(100)
+  imageUrl    String?  @db.VarChar(500)
+  fileUrl     String   @db.VarChar(500)
+  fileName    String   @db.VarChar(255)
+  published   Boolean  @default(false)
+  createdById String   @db.Char(36)
+  createdBy   User     @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([published, exam])
+  @@index([createdById])
+  @@map("study_materials")
 }
 
 model Category {

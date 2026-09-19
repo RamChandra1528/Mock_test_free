@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { randomUUID } from "crypto";
-import { mkdir, writeFile } from "fs/promises";
+import { mkdir, open, rename, unlink, writeFile } from "fs/promises";
 import { join } from "path";
 
 @Injectable()
@@ -22,6 +22,40 @@ export class MediaService {
     const name = `${randomUUID()}.${extension}`;
     await writeFile(join(this.publicDir, name), file.buffer);
     return { url: `/uploads/${name}`, fileName: file.originalname };
+  }
+
+  async savePdf(file?: Express.Multer.File) {
+    if (!file) throw new BadRequestException("Choose a PDF to upload");
+    const validPdf = file.path
+      ? await hasPdfSignature(file.path)
+      : file.buffer?.subarray(0, 5).equals(Buffer.from("%PDF-"));
+    if (!validPdf) {
+      if (file.path) await unlink(file.path).catch(() => undefined);
+      throw new BadRequestException("Only valid PDF files are supported");
+    }
+    await mkdir(this.publicDir, { recursive: true });
+    const name = `${randomUUID()}.pdf`;
+    const destination = join(this.publicDir, name);
+    if (file.path) {
+      await rename(file.path, destination).catch(async (error) => {
+        await unlink(file.path).catch(() => undefined);
+        throw error;
+      });
+    } else {
+      await writeFile(destination, file.buffer);
+    }
+    return { url: `/uploads/${name}`, fileName: file.originalname };
+  }
+}
+
+async function hasPdfSignature(path: string) {
+  const handle = await open(path, "r");
+  try {
+    const signature = Buffer.alloc(5);
+    await handle.read(signature, 0, signature.length, 0);
+    return signature.equals(Buffer.from("%PDF-"));
+  } finally {
+    await handle.close();
   }
 }
 

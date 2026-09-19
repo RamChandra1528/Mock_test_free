@@ -57,6 +57,18 @@ const StudentCalendarPage = page(
   () => import("./pages/student/CalendarPage"),
   "StudentCalendarPage",
 );
+const StudentResourcesPage = page(
+  () => import("./pages/student/ResourcesPage"),
+  "StudentResourcesPage",
+);
+const ResourcePdfViewerPage = page(
+  () => import("./pages/student/ResourcePdfViewerPage"),
+  "ResourcePdfViewerPage",
+);
+const StudyMaterialsPage = page(
+  () => import("./pages/admin/StudyMaterialsPage"),
+  "StudyMaterialsPage",
+);
 const AdminDashboard = page(
   () => import("./pages/admin/AdminDashboard"),
   "AdminDashboard",
@@ -155,6 +167,8 @@ export function App() {
             <Route path="/student/performance" element={<PerformancePage />} />
             <Route path="/student/leaderboard" element={<LeaderboardPage />} />
             <Route path="/student/calendar" element={<StudentCalendarPage />} />
+            <Route path="/student/resources" element={<StudentResourcesPage />} />
+            <Route path="/student/resources/:id/viewer" element={<ResourcePdfViewerPage />} />
             <Route path="/student/profile" element={<ProfilePage />} />
           </Route>
         </Route>
@@ -189,6 +203,7 @@ export function App() {
               element={<QuestionManagementPage />}
             />
             <Route path="/admin/import" element={<ImportPage />} />
+            <Route path="/admin/materials" element={<StudyMaterialsPage />} />
             <Route
               path="/admin/import/:id/review"
               element={<ImportReviewPage />}

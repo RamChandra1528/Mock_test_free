@@ -46,6 +46,37 @@ export class StudentService {
       select: { id: true, name: true, nameHi: true },
     });
   }
+  materials() {
+    return this.prisma.studyMaterial.findMany({
+      where: { published: true },
+      orderBy: { updatedAt: "desc" },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        exam: true,
+        imageUrl: true,
+        fileName: true,
+        updatedAt: true,
+      },
+    });
+  }
+  async material(id: string) {
+    const material = await this.prisma.studyMaterial.findFirst({
+      where: { id, published: true },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        exam: true,
+        fileName: true,
+        fileUrl: true,
+        updatedAt: true,
+      },
+    });
+    if (!material) throw new NotFoundException("Study material not found");
+    return material;
+  }
 
   async dashboard(userId: string) {
     const [available, attempts, engagement] = await Promise.all([

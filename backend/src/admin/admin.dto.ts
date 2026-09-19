@@ -156,6 +156,26 @@ export class TaxonomyDto {
   @IsOptional() @IsString() @MaxLength(255) description?: string;
 }
 
+export class CreateStudyMaterialDto {
+  @IsString() @MinLength(3) @MaxLength(180) title!: string;
+  @IsOptional() @IsString() description?: string;
+  @IsOptional() @IsString() @MaxLength(100) exam?: string;
+  @IsOptional() @IsString() @MaxLength(500) imageUrl?: string;
+  @IsString() @MaxLength(500) fileUrl!: string;
+  @IsString() @MaxLength(255) fileName!: string;
+  @IsOptional() @IsBoolean() published = false;
+}
+
+export class UpdateStudyMaterialDto {
+  @IsOptional() @IsString() @MinLength(3) @MaxLength(180) title?: string;
+  @IsOptional() @IsString() description?: string;
+  @IsOptional() @IsString() @MaxLength(100) exam?: string;
+  @IsOptional() @IsString() @MaxLength(500) imageUrl?: string;
+  @IsOptional() @IsString() @MaxLength(500) fileUrl?: string;
+  @IsOptional() @IsString() @MaxLength(255) fileName?: string;
+  @IsOptional() @IsBoolean() published?: boolean;
+}
+
 export class TopicDto {
   @IsString() @MinLength(2) @MaxLength(120) name!: string;
   @IsOptional() @IsString() @MaxLength(120) nameHi?: string;

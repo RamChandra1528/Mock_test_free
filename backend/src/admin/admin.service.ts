@@ -8,6 +8,7 @@ import { PrismaService } from "../prisma/prisma.service";
 import {
   CreateExamDto,
   CreateQuestionDto,
+  CreateStudyMaterialDto,
   ExamQueryDto,
   ExamSectionDto,
   PageQueryDto,
@@ -16,6 +17,7 @@ import {
   TopicDto,
   UpdateExamDto,
   UpdateQuestionDto,
+  UpdateStudyMaterialDto,
   UpdateStudentDto,
 } from "./admin.dto";
 
@@ -627,6 +629,29 @@ export class AdminService {
       orderBy: { name: "asc" },
       include: { _count: { select: { exams: true } } },
     });
+  }
+  materials() {
+    return this.prisma.studyMaterial.findMany({
+      orderBy: { updatedAt: "desc" },
+      include: { createdBy: { select: { fullName: true } } },
+    });
+  }
+  createMaterial(userId: string, dto: CreateStudyMaterialDto) {
+    return this.prisma.studyMaterial.create({
+      data: { ...dto, createdById: userId },
+      include: { createdBy: { select: { fullName: true } } },
+    });
+  }
+  updateMaterial(id: string, dto: UpdateStudyMaterialDto) {
+    return this.prisma.studyMaterial.update({
+      where: { id },
+      data: dto,
+      include: { createdBy: { select: { fullName: true } } },
+    });
+  }
+  async deleteMaterial(id: string) {
+    await this.prisma.studyMaterial.delete({ where: { id } });
+    return { success: true };
   }
   createCategory(dto: TaxonomyDto) {
     return this.prisma.category.create({ data: dto });

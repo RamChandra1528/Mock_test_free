@@ -11,7 +11,18 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const config = app.get(ConfigService);
   app.setGlobalPrefix("api");
-  app.use(helmet());
+  // Uploaded PDFs are displayed by the frontend's in-app iframe. Allow only
+  // the configured frontend origin to embed responses from this server.
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          frameAncestors: ["'self'", config.get("FRONTEND_URL", "http://localhost:5173")],
+        },
+      },
+      frameguard: false,
+    }),
+  );
   app.useStaticAssets(resolve(config.get("UPLOAD_DIR", "uploads"), "public"), {
     prefix: "/uploads/",
     // The React app runs on a different local origin in development
