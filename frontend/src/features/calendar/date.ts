@@ -1,4 +1,4 @@
-export const dateKey = (value: Date | string) => {
+ export const dateKey = (value: Date | string) => {
   const date = typeof value === "string" ? new Date(value) : value;
   return date.toISOString().slice(0, 10);
 };

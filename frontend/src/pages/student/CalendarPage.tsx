@@ -178,10 +178,21 @@ export function StudentCalendarPage() {
     }: {
       id?: string;
       values: Omit<CalendarTask, "id" | "createdAt" | "updatedAt">;
-    }) =>
-      id
-        ? api.patch(`/student/calendar/tasks/${id}`, values)
-        : api.post("/student/calendar/tasks", values),
+    }) => {
+      if (id) {
+        return api
+          .patch(`/student/calendar/tasks/${id}`, values)
+          .then(() => undefined);
+      }
+      return api
+        .post("/student/calendar/tasks", {
+          title: values.title,
+          description: values.description,
+          dueDate: values.dueDate,
+          priority: values.priority,
+        })
+        .then(() => undefined);
+    },
     onSuccess: () => {
       toast.show("Task saved");
       setTaskEditor(null);

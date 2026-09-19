@@ -58,10 +58,7 @@ services:
       args:
         VITE_API_URL: http://localhost:3000/api
     restart: unless-stopped
-    ports:
-      - "5173:80"
-    depends_on:
-      - backend
+    
 
 volumes:
   mockmaster_mysql:
