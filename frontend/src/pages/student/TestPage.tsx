@@ -434,7 +434,7 @@ export function TestPage() {
           </article>
         </section>
         <aside
-          className={`fixed inset-y-0 right-0 z-40 w-[310px] overflow-y-auto border-l border-[#dce0da] bg-white p-5 shadow-2xl transition-transform lg:static lg:z-auto lg:mt-5 lg:h-[calc(100vh-88px)] lg:w-[300px] lg:translate-x-0 lg:rounded-l-2xl lg:shadow-none ${palette ? "translate-x-0" : "translate-x-full"}`}
+          className={`fixed inset-y-0 right-0 z-40 flex w-[310px] flex-col overflow-hidden border-l border-[#dce0da] bg-white p-5 shadow-2xl transition-transform lg:static lg:z-auto lg:mt-5 lg:h-[calc(100vh-88px)] lg:w-[300px] lg:translate-x-0 lg:rounded-l-2xl lg:shadow-none ${palette ? "translate-x-0" : "translate-x-full"}`}
         >
           <div className="flex items-center justify-between">
             <div>
@@ -451,17 +451,19 @@ export function TestPage() {
               <X />
             </button>
           </div>
-          <div className="mt-5 grid grid-cols-5 gap-2">
-            {data.questions.map((q, i) => (
-              <button
-                key={q.id}
-                aria-label={`${t("question")} ${i + 1}`}
-                onClick={() => go(i)}
-                className={`grid aspect-square place-items-center rounded-lg text-xs font-extrabold transition ${i === index ? "ring-2 ring-forest ring-offset-2" : ""} ${paletteClass(answers[q.id], i === index)}`}
-              >
-                {i + 1}
-              </button>
-            ))}
+          <div className="mt-5 min-h-0 flex-1 overflow-y-auto overscroll-contain pr-1">
+            <div className="grid grid-cols-5 gap-2">
+              {data.questions.map((q, i) => (
+                <button
+                  key={q.id}
+                  aria-label={`${t("question")} ${i + 1}`}
+                  onClick={() => go(i)}
+                  className={`grid aspect-square place-items-center rounded-lg text-xs font-extrabold transition ${i === index ? "ring-2 ring-forest ring-offset-2" : ""} ${paletteClass(answers[q.id], i === index)}`}
+                >
+                  {i + 1}
+                </button>
+              ))}
+            </div>
           </div>
           <div className="mt-7 border-t border-[#e7e9e4] pt-5">
             <p className="text-xs font-extrabold uppercase tracking-wider text-[#68766f]">
