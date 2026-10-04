@@ -3,9 +3,11 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useState,
   type ReactNode,
 } from "react";
+import { errorMessage, subscribeToErrors } from "../lib/errors";
 
 type Toast = { id: number; message: string; type: "success" | "error" };
 const ToastContext = createContext<{
@@ -15,14 +17,25 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const show = useCallback(
     (message: string, type: Toast["type"] = "success") => {
-      const id = Date.now();
-      setToasts((t) => [...t, { id, message, type }]);
+      const id = Date.now() + Math.random();
+      setToasts((t) =>
+        t.some((toast) => toast.message === message && toast.type === type)
+          ? t
+          : [...t, { id, message, type }],
+      );
       window.setTimeout(
         () => setToasts((t) => t.filter((x) => x.id !== id)),
         3500,
       );
     },
     [],
+  );
+  useEffect(
+    () =>
+      subscribeToErrors((error) => {
+        show(errorMessage(error), "error");
+      }),
+    [show],
   );
   return (
     <ToastContext.Provider value={{ show }}>

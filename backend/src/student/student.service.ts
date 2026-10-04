@@ -79,7 +79,27 @@ export class StudentService {
   }
 
   async dashboard(userId: string) {
-    const [available, attempts, engagement] = await Promise.all([
+    const completedAttempts: Prisma.AttemptWhereInput = {
+      userId,
+      status: { not: "IN_PROGRESS" },
+    };
+    const releasedAttempts: Prisma.AttemptWhereInput = {
+      ...completedAttempts,
+      exam: {
+        OR: [
+          { settings: { is: null } },
+          { settings: { is: { showResultImmediately: true } } },
+        ],
+      },
+    };
+    const [
+      available,
+      recentAttempts,
+      attemptCount,
+      releasedMetrics,
+      completedTotals,
+      engagement,
+    ] = await Promise.all([
       this.prisma.exam.findMany({
         where: { status: "PUBLISHED" },
         orderBy: { publishedAt: "desc" },
@@ -103,8 +123,9 @@ export class StudentService {
         },
       }),
       this.prisma.attempt.findMany({
-        where: { userId, status: { not: "IN_PROGRESS" } },
+        where: completedAttempts,
         orderBy: { submittedAt: "desc" },
+        take: 6,
         include: {
           exam: {
             select: {
@@ -120,6 +141,20 @@ export class StudentService {
           },
         },
       }),
+      this.prisma.attempt.count({ where: completedAttempts }),
+      this.prisma.attempt.aggregate({
+        where: releasedAttempts,
+        _avg: { percentage: true, accuracy: true },
+        _max: { percentage: true },
+      }),
+      this.prisma.attempt.aggregate({
+        where: completedAttempts,
+        _sum: {
+          correctCount: true,
+          wrongCount: true,
+          timeTakenSeconds: true,
+        },
+      }),
       this.prisma.userStatistic.findUnique({
         where: { userId },
         select: {
@@ -129,23 +164,16 @@ export class StudentService {
         },
       }),
     ]);
-    const released = attempts.filter((a) => a.exam.settings?.showResultImmediately ?? true);
-    const scores = released.map((a) => Number(a.percentage));
-    const totalAnswered = attempts.reduce(
-      (sum, a) => sum + (a.correctCount ?? 0) + (a.wrongCount ?? 0),
-      0,
-    );
     return {
       stats: {
-        testsAttempted: attempts.length,
-        averageScore: avg(scores),
-        bestScore: scores.length ? Math.max(...scores) : 0,
-        averageAccuracy: avg(released.map((a) => Number(a.accuracy))),
-        totalQuestionsAttempted: totalAnswered,
-        totalPracticeTimeSeconds: attempts.reduce(
-          (sum, attempt) => sum + (attempt.timeTakenSeconds ?? 0),
-          0,
-        ),
+        testsAttempted: attemptCount,
+        averageScore: Number(releasedMetrics._avg.percentage ?? 0),
+        bestScore: Number(releasedMetrics._max.percentage ?? 0),
+        averageAccuracy: Number(releasedMetrics._avg.accuracy ?? 0),
+        totalQuestionsAttempted:
+          (completedTotals._sum.correctCount ?? 0) +
+          (completedTotals._sum.wrongCount ?? 0),
+        totalPracticeTimeSeconds: completedTotals._sum.timeTakenSeconds ?? 0,
       },
       engagement: {
         points: engagement?.points ?? 0,
@@ -154,7 +182,7 @@ export class StudentService {
         dailyRewardPoints: 10,
       },
       availableExams: available.map(toExamCard),
-      recentAttempts: attempts.slice(0, 6).map(toAttemptRow),
+      recentAttempts: recentAttempts.map(toAttemptRow),
     };
   }
 

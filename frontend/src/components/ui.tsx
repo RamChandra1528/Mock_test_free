@@ -1,6 +1,7 @@
 import { AlertCircle, Inbox, LoaderCircle, X } from "lucide-react";
 import type { ReactNode } from "react";
 import { useEffect, useId, useRef } from "react";
+import { errorMessage } from "../lib/errors";
 
 export function Badge({
   children,
@@ -78,13 +79,25 @@ export function Empty({
     </div>
   );
 }
-export function ErrorState({ error }: { error: unknown }) {
+export function ErrorState({
+  error,
+  onRetry = () => window.location.reload(),
+}: {
+  error: unknown;
+  onRetry?: () => void;
+}) {
   return (
-    <div className="card flex min-h-[220px] items-center justify-center gap-3 border-rose-100 bg-rose-50/40 p-6 text-rose-800">
-      <AlertCircle />
-      <p className="font-semibold">
-        {error instanceof Error ? error.message : "Unable to load this page"}
-      </p>
+    <div className="card flex min-h-[220px] flex-col items-center justify-center gap-3 border-rose-100 bg-rose-50/40 p-6 text-center text-rose-800" role="alert">
+      <AlertCircle className="h-6 w-6" />
+      <div>
+        <h2 className="font-display font-bold">Unable to load this content</h2>
+        <p className="mt-1 text-sm font-semibold">
+          {errorMessage(error)}
+        </p>
+      </div>
+      <button className="btn-secondary !border-rose-200 !text-rose-800" onClick={onRetry}>
+        Try again
+      </button>
     </div>
   );
 }
