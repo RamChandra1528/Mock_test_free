@@ -130,6 +130,66 @@ For a first local bootstrap without a migration, `npm exec -w backend prisma db 
 
 Never commit a real `.env` file. Use a high-entropy JWT secret and non-default database credentials in production.
 
+## Deploy frontend on Netlify and API on Vercel
+
+The repository includes `netlify.toml`, so Netlify will build the React application with the root workspace lockfile and publish `frontend/dist`. The SPA rewrite also keeps direct links such as `/login` and `/student/dashboard` working.
+
+Before deploying, provision two production services outside Netlify and Vercel:
+
+- A managed **MySQL** database. Copy its connection string as `DATABASE_URL`.
+- Persistent object storage for images, PDFs, and imported source files. Vercel Functions cannot be used as persistent disk storage, and their request/response body limit means the current 150 MB file-import workflow cannot go through the API.
+
+### 1. Deploy the API to Vercel
+
+1. Push this repository to GitHub, GitLab, or Bitbucket and import it into Vercel.
+2. Set Vercel's **Root Directory** to `backend`. Vercel recognizes this NestJS app's `src/main.ts`; no custom server wrapper is required.
+3. Add these environment variables in Vercel (Production, Preview if desired):
+
+   ```text
+   DATABASE_URL=<managed MySQL connection string>
+   JWT_SECRET=<a long random secret>
+   JWT_EXPIRES_IN=8h
+   NODE_ENV=production
+   COOKIE_SECURE=true
+   COOKIE_SAME_SITE=none
+   FRONTEND_URL=https://<your-netlify-site>.netlify.app
+   MAX_UPLOAD_MB=4
+   THROTTLE_TTL_MS=60000
+   THROTTLE_LIMIT=180
+   ```
+
+   Do not set `VITE_API_URL` in Vercel; it belongs to the browser build on Netlify. Set `UPLOAD_DIR` only for local development until object storage has been integrated.
+4. Run database migrations from a secure machine or CI job that can reach the production database. Supply the production `DATABASE_URL` to that process, then run:
+
+   ```bash
+   npm exec -w backend prisma migrate deploy
+   ```
+
+   Seed only a new empty production database, and do not run the development seed against an existing production database.
+5. Deploy, then copy the API URL, for example `https://mockmaster-api.vercel.app`. The browser API URL is that address plus `/api`.
+
+### 2. Deploy the frontend to Netlify
+
+1. Import the same repository into Netlify. Leave the base directory at the repository root; `netlify.toml` supplies the build command and publish directory.
+2. In Netlify environment variables, add:
+
+   ```text
+   VITE_API_URL=https://<your-vercel-api>.vercel.app/api
+   ```
+
+3. Deploy the site and copy its final `https://…netlify.app` URL.
+4. Back in Vercel, set `FRONTEND_URL` to that exact URL and redeploy the API.
+
+The final order matters: the API needs the final Netlify origin for credentialed CORS and for embedded PDFs. Separate Netlify and Vercel domains are cross-site, so the production API must use `COOKIE_SECURE=true` and `COOKIE_SAME_SITE=none`; the application now supports this setting. Some privacy-focused browsers block third-party cookies entirely, even with `SameSite=None`. For reliable authentication, use a custom domain with the frontend at `app.example.com` (Netlify) and the API at `api.example.com` (Vercel), then change `FRONTEND_URL` and `VITE_API_URL` to those URLs and use `COOKIE_SAME_SITE=lax`.
+
+### Production limitations to resolve before enabling uploads
+
+This project currently saves media and imported documents under `backend/uploads`. That works locally and in Docker, but Vercel Function files are not persistent between invocations. Uploads will be lost, and any file over Vercel's 4.5 MB function payload limit is rejected. Move media storage to an object-storage provider and use direct browser-to-storage uploads (signed URLs) before turning on image/PDF uploads or the existing 150 MB imports. Existing files must also be copied to that provider and their stored `/uploads/...` URLs migrated.
+
+The one-minute `@Interval` attempt-expiry task is also not a reliable serverless scheduler because Vercel instances sleep and scale independently. Replace it with an authenticated Vercel Cron route or an external scheduler/queue before relying on automatic test expiry in production.
+
+References: [Vercel's NestJS deployment guide](https://vercel.com/kb/guide/ship-a-nestjs-app-on-vercel), [Vercel Function limits](https://vercel.com/docs/functions/limitations), and [Netlify's SPA configuration guide](https://docs.netlify.com/build/configure-builds/javascript-spas/).
+
 ## Docker
 
 ```bash

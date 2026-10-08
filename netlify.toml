@@ -1,0 +1,11 @@
+[build]
+  # The frontend is an npm workspace. Build it from the repository root so
+  # Netlify uses the committed root lockfile.
+  command = "npm run build -w frontend"
+  publish = "frontend/dist"
+
+# React Router uses browser history, so all application URLs must load the SPA.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

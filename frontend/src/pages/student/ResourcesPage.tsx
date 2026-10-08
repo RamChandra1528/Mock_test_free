@@ -9,10 +9,13 @@ import {
   Eye,
   GraduationCap,
   LibraryBig,
+  Search,
   Target,
+  X,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import { useMemo, useState } from "react";
 import { Badge, Empty, ErrorState, Loading, PageHeader } from "../../components/ui";
 import { api } from "../../lib/api";
 import { resolveMediaUrl } from "../../lib/media";
@@ -22,6 +25,8 @@ type StudyMaterial = {
   title: string;
   description?: string | null;
   exam?: string | null;
+  category?: string | null;
+  tags?: string[] | null;
   imageUrl?: string | null;
   fileName: string;
   updatedAt: string;
@@ -84,11 +89,33 @@ const studyPlan = [
 ];
 
 export function StudentResourcesPage() {
+  const [search, setSearch] = useState("");
   const materials = useQuery({
     queryKey: ["study-materials"],
     queryFn: () =>
       api.get<StudyMaterial[]>("/student/materials").then((response) => response.data),
   });
+  const searchTerms = useMemo(
+    () => search.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean),
+    [search],
+  );
+  const filteredMaterials = useMemo(() => {
+    if (!materials.data || !searchTerms.length) return materials.data ?? [];
+    return materials.data.filter((material) => {
+      const searchableText = [
+        material.title,
+        material.description,
+        material.exam,
+        material.category,
+        material.fileName,
+        ...(material.tags ?? []),
+      ]
+        .filter((value): value is string => Boolean(value))
+        .join(" ")
+        .toLocaleLowerCase();
+      return searchTerms.every((term) => searchableText.includes(term));
+    });
+  }, [materials.data, searchTerms]);
   return (
     <div className="pb-4">
       <PageHeader
@@ -125,8 +152,38 @@ export function StudentResourcesPage() {
         ) : materials.error ? (
           <ErrorState error={materials.error} />
         ) : materials.data?.length ? (
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {materials.data.map((material) => (
+          <>
+            <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <label className="relative block w-full sm:max-w-md">
+                <span className="sr-only">Search resources</span>
+                <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#668278]" aria-hidden="true" />
+                <input
+                  className="input w-full !rounded-xl !py-3 pl-10 pr-10"
+                  type="search"
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                  placeholder="Search by title, topic, category or tag"
+                />
+                {search && (
+                  <button
+                    className="absolute right-2 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-lg text-[#668278] hover:bg-[#edf2ee] hover:text-forest"
+                    type="button"
+                    aria-label="Clear resource search"
+                    onClick={() => setSearch("")}
+                  >
+                    <X className="h-4 w-4" aria-hidden="true" />
+                  </button>
+                )}
+              </label>
+              {searchTerms.length > 0 && (
+                <p className="shrink-0 text-sm font-semibold text-[#668278]" aria-live="polite">
+                  {filteredMaterials.length} {filteredMaterials.length === 1 ? "result" : "results"}
+                </p>
+              )}
+            </div>
+            {filteredMaterials.length ? (
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {filteredMaterials.map((material) => (
               <article className="card flex min-h-[420px] flex-col overflow-hidden p-4" key={material.id}>
                 <div className="relative h-64 overflow-hidden rounded-2xl bg-[#f4f8f6]">
                   <span className="absolute left-3 top-3 z-10 rounded-full bg-[#e8faf1] px-3 py-1 text-[11px] font-extrabold text-[#17624e] shadow-sm">
@@ -156,8 +213,16 @@ export function StudentResourcesPage() {
                   </Link>
                 </div>
               </article>
-            ))}
-          </div>
+                ))}
+              </div>
+            ) : (
+              <Empty
+                title="No matching resources"
+                description={`We couldn't find any resources matching “${search.trim()}”. Try a different keyword or clear your search.`}
+                action={<button className="btn-secondary" type="button" onClick={() => setSearch("")}>Clear search</button>}
+              />
+            )}
+          </>
         ) : (
           <Empty title="No books published yet" description="Your admin will publish books and preparation PDFs here soon." />
         )}

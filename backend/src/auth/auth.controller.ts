@@ -50,10 +50,18 @@ export class AuthController {
   }
 
   private cookieOptions() {
+    // Netlify and Vercel use different sites. In that production setup the
+    // browser only sends the session cookie on API requests when it is marked
+    // SameSite=None (which also requires Secure). Keep Lax as the safe local
+    // development default.
+    const sameSite =
+      this.config.get("COOKIE_SAME_SITE", "lax").toLowerCase() === "none"
+        ? ("none" as const)
+        : ("lax" as const);
     return {
       httpOnly: true,
       secure: this.config.get("COOKIE_SECURE", "false") === "true",
-      sameSite: "lax" as const,
+      sameSite,
       path: "/",
     };
   }
